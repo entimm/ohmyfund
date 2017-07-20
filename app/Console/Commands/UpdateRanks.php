@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Fund;
+use App\Statistic;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -70,11 +71,31 @@ class UpdateRanks extends Command
         $funds = Fund::get();
         foreach ($funds as $fund) {
             if (!isset($records[$fund->code])) continue;
-            $fund->fill($records[$fund->code]);
+            $record = $records[$fund->code];
+            $fund->fill($record);
+            $statisticUpdated = $this->tryUpdateStatistic($fund, $record);
             $fund->save();
-            $this->info("{$fund->code} | {$records[$fund->code]['rank_date']} | {$records[$fund->code]['born_date']}");
-            unset($records[$fund->code]);
+            $this->info("{$fund->code} | {$record['rank_date']} | {$record['born_date']}".($statisticUpdated ? ' +' : ''));
         }
-        dd($records);
+    }
+
+    protected function tryUpdateStatistic($fund, $record)
+    {
+        // fixme: 暂时先不执行
+        if (false && date_diff(date_create($fund->count_date), date_create($record['rank_date']))->days == 1) {
+            $statistic = Statistic::firstOrNew([
+                'code' => $fund->code,
+                'date' => $record['rank_date'],
+            ]);
+            if (!$statistic->exists) {
+                $statistic->fill($record);
+                $statistic->update_way = 2;
+                if ($statistic->save()) {
+                    $fund->count_date = $record['rank_date'];
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

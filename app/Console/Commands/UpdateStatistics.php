@@ -43,7 +43,7 @@ class UpdateStatistics extends Command
      */
     public function handle()
     {
-        $funds = Fund::where('count_date', '<>', date('Y-m-d'))
+        $funds = Fund::where('count_date', '<', date('Y-m-d'))
             ->whereNotIn('status', [3, 4]) // 过滤没有数据和极少数据的基金
             ->whereNotIn('type', [5]) // 过滤货币基金
             ->get();
@@ -57,8 +57,16 @@ class UpdateStatistics extends Command
         // 通过 count_date 判断这只基金是否有被处理过
         $per = $fund->count_date ? self::BUFFER_DAY : self::INFINITE_DAY;
         $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fund->code}&page=1&per={$per}";
-        $content = $response = resolve(Client::class)->get($url)->getBody()->getContents();
-
+        do {
+            $retry = false;
+            try {
+                $content = resolve(Client::class)->get($url)->getBody()->getContents();
+            } catch (\Exception $e) {
+                dump($e);
+                sleep(10);
+                $retry = true;
+            }
+        } while($retry);
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecords = $matches[1];
         if (!$totalRecords) {
