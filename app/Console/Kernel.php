@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\UpdateCompanies::class,
         Commands\UpdateFunds::class,
         Commands\UpdateStatistics::class,
+        Commands\UpdateRanks::class,
     ];
 
     /**
