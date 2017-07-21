@@ -13,7 +13,7 @@ class AddUpdateWayToStatisticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('statistics', function (Blueprint $table) {
+        Schema::table('statistics', function (Blueprint $table) {
             /*
              * 目前有2种更新次表的方式
              * 1. 一种是通过拉取单个基金历史记录的方式，此方式需要爬大量链接
@@ -30,7 +30,7 @@ class AddUpdateWayToStatisticsTable extends Migration
      */
     public function down()
     {
-        Schema::table('funds', function (Blueprint $table) {
+        Schema::table('statistics', function (Blueprint $table) {
             $table->dropColumn('update_way');
         });
     }
