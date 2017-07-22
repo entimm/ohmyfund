@@ -82,7 +82,7 @@ class UpdateRanks extends Command
     protected function tryUpdateStatistic($fund, $record)
     {
         // fixme: 暂时先不执行
-        if (false && date_diff(date_create($fund->count_date), date_create($record['rank_date']))->days == 1) {
+        if (false && date_diff(date_create($fund->profit_date), date_create($record['rank_date']))->days == 1) {
             $statistic = Statistic::firstOrNew([
                 'code' => $fund->code,
                 'date' => $record['rank_date'],
@@ -91,7 +91,7 @@ class UpdateRanks extends Command
                 $statistic->fill($record);
                 $statistic->update_way = 2;
                 if ($statistic->save()) {
-                    $fund->count_date = $record['rank_date'];
+                    $fund->profit_date = $record['rank_date'];
                     return true;
                 }
             }

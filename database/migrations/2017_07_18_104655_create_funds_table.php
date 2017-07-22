@@ -20,7 +20,8 @@ class CreateFundsTable extends Migration
             $table->tinyInteger('type');
             $table->string('short_name');
             $table->string('pinyin_name');
-            $table->date('count_date')->nullable()->comment('统计日期');
+            $table->date('profit_date')->nullable()->comment('收益日期');
+            $table->timestamp('counted_at')->nullable()->comment('统计时间');
             $table->timestamps();
             $table->unique(['code']);
         });

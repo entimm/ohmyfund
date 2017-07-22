@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Statistic extends Model
 {
-    protected $fillable = ['code', 'date', 'unit','total', 'rate', 'buy_status', 'sell_status'];
+    protected $fillable = ['code', 'date', 'unit','total', 'rate', 'buy_status', 'sell_status', 'bonus'];
 
     public static $buyStatusList = [
         1 => '开放申购',

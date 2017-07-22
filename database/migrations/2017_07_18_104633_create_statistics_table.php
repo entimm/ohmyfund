@@ -20,8 +20,8 @@ class CreateStatisticsTable extends Migration
             $table->integer('unit')->nullable()->comment('单位净值');
             $table->integer('total')->nullable()->comment('累计净值');
             $table->integer('rate')->nullable()->comment('日增长率');
-            $table->string('buy_status')->nullable()->comment('申购状态');
-            $table->string('sell_status')->nullable()->comment('赎回状态');
+            $table->tinyInteger('buy_status')->nullable()->comment('申购状态');
+            $table->tinyInteger('sell_status')->nullable()->comment('赎回状态');
             $table->timestamps();
             $table->unique(['code', 'date']);
         });
