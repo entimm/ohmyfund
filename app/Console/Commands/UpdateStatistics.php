@@ -60,9 +60,12 @@ class UpdateStatistics extends Command
         })->whereNotIn('status', [3, 4, 5]) // 过滤没有数据和极少数据、有异常的基金
             ->whereNotIn('type', [5, 8]) // 过滤货币基金、理财型基金
             ->get();
-        foreach ($funds as $fund) {
+        $count = count($funds);
+        foreach ($funds as $key => $fund) {
             $touchNum = $this->updateOneFund($fund);
-            $this->info("{$fund->profit_date} | {$fund->code} | {$touchNum}");
+            // 进度百分数
+            $processPercent = str_pad(round(($key + 1)*100/$count, 2).'%', 7, ' ', STR_PAD_LEFT);
+            $this->info("{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
         }
     }
 
