@@ -42,12 +42,13 @@ class UpdateRanks extends Command
     public function handle(Client $client)
     {
         $url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=all&st=asc&pi=1&pn=20000';
-        $content = $response = $client->get($url)->getBody()->getContents();
+        $content = $client->get($url)->getBody()->getContents();
         $beginPos = strpos($content, '[');
         $endPos = strpos($content, ']');
         $json = substr($content, $beginPos, $endPos - $beginPos + 1);
-        $records = [];
         $result = json_decode($json, true);
+
+        $records = [];
         foreach ($result as $item) {
             $item = explode(',', $item);
             $records[$item[0]] = [
@@ -68,34 +69,14 @@ class UpdateRanks extends Command
                 'born_date' => $item[16] ?: null,
             ];
         }
+
         $funds = Fund::get();
         foreach ($funds as $fund) {
             if (!isset($records[$fund->code])) continue;
             $record = $records[$fund->code];
             $fund->fill($record);
-            $statisticUpdated = $this->tryUpdateStatistic($fund, $record);
             $fund->save();
-            $this->info("{$fund->code} | {$record['rank_date']} | {$record['born_date']}".($statisticUpdated ? ' +' : ''));
+            $this->info("{$fund->code} | {$record['rank_date']} | {$record['born_date']}");
         }
-    }
-
-    protected function tryUpdateStatistic($fund, $record)
-    {
-        // fixme: 暂时先不执行
-        if (false && date_diff(date_create($fund->profit_date), date_create($record['rank_date']))->days == 1) {
-            $statistic = Statistic::firstOrNew([
-                'code' => $fund->code,
-                'date' => $record['rank_date'],
-            ]);
-            if (!$statistic->exists) {
-                $statistic->fill($record);
-                $statistic->update_way = 2;
-                if ($statistic->save()) {
-                    $fund->profit_date = $record['rank_date'];
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

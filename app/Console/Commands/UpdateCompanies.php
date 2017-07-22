@@ -42,11 +42,12 @@ class UpdateCompanies extends Command
     public function handle(Client $client)
     {
         $url = 'http://fund.eastmoney.com/js/jjjz_gs.js';
-        $content = $response = $client->get($url)->getBody()->getContents();
+        $content = $client->get($url)->getBody()->getContents();
         $beginPos = strpos($content, '[[');
         $endPos = strpos($content, ']}');
         $json = substr($content, $beginPos, $endPos - $beginPos + 1);
         $records = json_decode($json, true);
+
         foreach ($records as $record) {
             Company::updateOrCreate(['code' => $record[0]], ['name' => $record[1]]);
         }

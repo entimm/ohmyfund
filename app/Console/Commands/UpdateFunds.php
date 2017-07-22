@@ -40,10 +40,11 @@ class UpdateFunds extends Command
     public function handle(Client $client)
     {
         $url = 'http://fund.eastmoney.com/js/fundcode_search.js';
-        $content = $response = $client->get($url)->getBody()->getContents();
+        $content = $client->get($url)->getBody()->getContents();
         $beginPos = strpos($content, '[[');
         $json = substr($content, $beginPos, strlen($content) - $beginPos -1);
         $records = json_decode($json, true);
+
         foreach ($records as $record) {
             Fund::updateOrCreate(['code' => $record[0]], [
                 'short_name' => $record[1],

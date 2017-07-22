@@ -25,6 +25,9 @@ class UpdateStatistics extends Command
      */
     protected $description = 'Update statistic';
 
+    const BUFFER_DAY = 10;
+    const INFINITE_DAY = 10000;
+
     /**
      * Create a new command instance.
      *
@@ -34,9 +37,6 @@ class UpdateStatistics extends Command
     {
         parent::__construct();
     }
-
-    const BUFFER_DAY = 10;
-    const INFINITE_DAY = 10000;
 
     /**
      * Execute the console command.
