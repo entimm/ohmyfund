@@ -16,6 +16,7 @@ class Fund extends Model
         2, // 忽略
         3, // 空数据
         4, // 极少数据
+        5, // 异常数据
     ];
 
     public static $types = [
