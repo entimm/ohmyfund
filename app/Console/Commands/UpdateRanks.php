@@ -71,12 +71,15 @@ class UpdateRanks extends Command
         }
 
         $funds = Fund::get();
-        foreach ($funds as $fund) {
-            if (!isset($records[$fund->code])) continue;
-            $record = $records[$fund->code];
-            $fund->fill($record);
-            $fund->save();
-            $this->info("{$fund->code} | {$record['rank_date']} | {$record['born_date']}");
+        $count = count($funds);
+        foreach ($funds as $key => $fund) {
+            if (isset($records[$fund->code])) {
+                $record = $records[$fund->code];
+                $fund->fill($record);
+                $fund->save();
+            }
+            $processPercent = str_pad(round(($key + 1)*100/$count, 2).'%', 7, ' ', STR_PAD_LEFT);
+            $this->info("{$processPercent} | {$fund->code} | {$record['rank_date']} | {$record['born_date']}");
         }
     }
 }

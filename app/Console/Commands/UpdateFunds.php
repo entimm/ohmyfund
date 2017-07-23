@@ -44,14 +44,19 @@ class UpdateFunds extends Command
         $beginPos = strpos($content, '[[');
         $json = substr($content, $beginPos, strlen($content) - $beginPos -1);
         $records = json_decode($json, true);
+        $this->info('update funds');
 
+        $progressBar = $this->output->createProgressBar(count($records));
+        $progressBar->setBarWidth(100);
         foreach ($records as $record) {
-            Fund::updateOrCreate(['code' => $record[0]], [
+            Fund::firstOrCreate(['code' => $record[0]], [
                 'short_name' => $record[1],
                 'name' => $record[2],
                 'type' => array_flip(Fund::$types)[$record[3]],
                 'pinyin_name' => $record[4],
             ]);
+            $progressBar->advance();
         }
+        $progressBar->finish();
     }
 }

@@ -66,6 +66,7 @@ class UpdateStatistics extends Command
             // 进度百分数
             $processPercent = str_pad(round(($key + 1)*100/$count, 2).'%', 7, ' ', STR_PAD_LEFT);
             $this->info("{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
+            $fund->save();
         }
     }
 
@@ -96,8 +97,6 @@ class UpdateStatistics extends Command
         if (!$totalRecord) {
             // 如果没有历史就进行标记
             $fund->status = 3;
-            $this->warn("{$fund->code} has records {$totalRecord}");
-            $fund->save();
             return 0;
         }
 
@@ -121,7 +120,6 @@ class UpdateStatistics extends Command
                     'row' => $row,
                 ]);
                 $fund->status = 5;
-                $fund->save();
                 return 0;
             }
             array_unshift($records, $record);
@@ -137,7 +135,6 @@ class UpdateStatistics extends Command
             ]);
             $this->error("{$totalRecord} <> ".count($records));
             $fund->status = 5;
-            $fund->save();
             return 0;
         }
         // 开启事务，保证下面sql语句一起执行成功
@@ -167,7 +164,6 @@ class UpdateStatistics extends Command
             $fund->status = 4;
         }
         $fund->counted_at = Carbon::now();
-        $fund->save();
         return $touchNum;
     }
 
