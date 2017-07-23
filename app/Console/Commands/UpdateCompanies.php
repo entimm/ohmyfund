@@ -51,6 +51,6 @@ class UpdateCompanies extends Command
         foreach ($records as $record) {
             Company::updateOrCreate(['code' => $record[0]], ['name' => $record[1]]);
         }
-        $this->info('update companies done');
+        $this->info('update companies done 😎');
     }
 }

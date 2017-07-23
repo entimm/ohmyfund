@@ -41,6 +41,7 @@ class UpdateRanks extends Command
      */
     public function handle(Client $client)
     {
+        $this->info('update ranks 🙏');
         $url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=all&st=asc&pi=1&pn=20000';
         $content = $client->get($url)->getBody()->getContents();
         $beginPos = strpos($content, '[');
@@ -81,5 +82,6 @@ class UpdateRanks extends Command
             $processPercent = str_pad(round(($key + 1)*100/$count, 2).'%', 7, ' ', STR_PAD_LEFT);
             $this->info("{$processPercent} | {$fund->code} | {$record['rank_date']} | {$record['born_date']}");
         }
+        $this->info('update ranks done 😎');
     }
 }

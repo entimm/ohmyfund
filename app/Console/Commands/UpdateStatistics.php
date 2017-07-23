@@ -49,6 +49,7 @@ class UpdateStatistics extends Command
      */
     public function handle()
     {
+        $this->info('update statistic 🙏');
         $funds = Fund::where(function ($query) {
             // 过滤掉今天结算过的
             $query->where('profit_date', '<', date('Y-m-d'))
@@ -65,9 +66,10 @@ class UpdateStatistics extends Command
             $touchNum = $this->updateOneFund($fund);
             // 进度百分数
             $processPercent = str_pad(round(($key + 1)*100/$count, 2).'%', 7, ' ', STR_PAD_LEFT);
-            $this->info("{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
+            $this->info("😃{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
             $fund->save();
         }
+        $this->info('update statistic done 😎');
     }
 
     protected function updateOneFund($fund)
