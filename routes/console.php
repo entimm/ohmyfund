@@ -16,3 +16,11 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('update', function () {
+    $this->call('update:companies');
+    $this->call('update:funds');
+    $this->call('update:ranks');
+    $this->call('update:statistic');
+
+})->describe('Update all');
