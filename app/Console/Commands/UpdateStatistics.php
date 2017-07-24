@@ -144,7 +144,7 @@ class UpdateStatistics extends Command
         }
         // 开启事务，保证下面sql语句一起执行成功
         $touchNum = 0;
-        DB::transaction(function () use ($records, $fund, $touchNum) {
+        DB::transaction(function () use ($records, $fund, &$touchNum) {
             foreach ($records as $key => $record) {
                 $statistic = Statistic::firstOrNew([
                     'code' => $fund->code,
