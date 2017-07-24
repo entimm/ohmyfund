@@ -66,6 +66,7 @@ class UpdateStatistics extends Command
             $touchNum = $this->updateOneFund($fund);
             // 进度百分数
             $processPercent = str_pad(round(($key + 1) * 100 / $count, 2).'%', 7, ' ', STR_PAD_LEFT);
+            // 进度 | 最新收益日期 | 基金代码 | 更新条数
             $this->info("😃{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
             $fund->save();
         }

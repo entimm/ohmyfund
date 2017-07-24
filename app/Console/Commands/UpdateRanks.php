@@ -78,6 +78,7 @@ class UpdateRanks extends Command
                 $fund->save();
             }
             $processPercent = str_pad(round(($key + 1) * 100 / $count, 2).'%', 7, ' ', STR_PAD_LEFT);
+            // 进度 | 基金代码 | 排行日期 | 基金成立日期
             $this->info("{$processPercent} | {$fund->code} | {$record['rank_date']} | {$record['born_date']}");
         }
         $this->info('update ranks done 😎');
