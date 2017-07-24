@@ -15,19 +15,19 @@ class AddRankFieldsToFundsTable extends Migration
     {
         Schema::table('funds', function (Blueprint $table) {
             $table->integer('unit')->default('0');
-            $table->integer('total')->default('0');;
-            $table->integer('rate')->default('0');;
+            $table->integer('total')->default('0');
+            $table->integer('rate')->default('0');
 
-            $table->integer('in_1week')->default('0');;
-            $table->integer('in_1month')->default('0');;
-            $table->integer('in_3month')->default('0');;
-            $table->integer('in_6month')->default('0');;
-            $table->integer('current_year')->default('0');;
-            $table->integer('in_1year')->default('0');;
-            $table->integer('in_2year')->default('0');;
-            $table->integer('in_3year')->default('0');;
-            $table->integer('in_5year')->default('0');;
-            $table->integer('since_born')->default('0');;
+            $table->integer('in_1week')->default('0');
+            $table->integer('in_1month')->default('0');
+            $table->integer('in_3month')->default('0');
+            $table->integer('in_6month')->default('0');
+            $table->integer('current_year')->default('0');
+            $table->integer('in_1year')->default('0');
+            $table->integer('in_2year')->default('0');
+            $table->integer('in_3year')->default('0');
+            $table->integer('in_5year')->default('0');
+            $table->integer('since_born')->default('0');
 
             $table->date('born_date')->nullable();
         });

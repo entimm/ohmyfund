@@ -42,7 +42,7 @@ class UpdateFunds extends Command
         $url = 'http://fund.eastmoney.com/js/fundcode_search.js';
         $content = $client->get($url)->getBody()->getContents();
         $beginPos = strpos($content, '[[');
-        $json = substr($content, $beginPos, strlen($content) - $beginPos -1);
+        $json = substr($content, $beginPos, strlen($content) - $beginPos - 1);
         $records = json_decode($json, true);
         $this->info('update funds 🙏');
 

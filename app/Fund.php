@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fund extends Model
 {
-    protected $fillable = ['code', 'name', 'type','short_name', 'pinyin_name',
+    protected $fillable = ['code', 'name', 'type', 'short_name', 'pinyin_name',
         'unit', 'total', 'rate', 'in_1week', 'in_1month', 'in_3month', 'in_6month',
-        'current_year', 'in_1year', 'in_2year', 'in_3year', 'in_5year', 'since_born', 'born_date'];
+        'current_year', 'in_1year', 'in_2year', 'in_3year', 'in_5year', 'since_born', 'born_date', ];
 
     public static $statusList = [
         0, // 默认状态
@@ -40,5 +40,4 @@ class Fund extends Model
       18 => '债券创新-场内',
       19 => '封闭式',
     ];
-
 }

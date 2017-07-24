@@ -27,7 +27,7 @@ class UpdateStatistics extends Command
     protected $description = 'Update statistic';
 
     /**
-     * 数据拉取数据量限制
+     * 数据拉取数据量限制.
      */
     const BUFFER_DAY = 10;
     const INFINITE_DAY = 10000;
@@ -65,7 +65,7 @@ class UpdateStatistics extends Command
         foreach ($funds as $key => $fund) {
             $touchNum = $this->updateOneFund($fund);
             // 进度百分数
-            $processPercent = str_pad(round(($key + 1)*100/$count, 2).'%', 7, ' ', STR_PAD_LEFT);
+            $processPercent = str_pad(round(($key + 1) * 100 / $count, 2).'%', 7, ' ', STR_PAD_LEFT);
             $this->info("😃{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
             $fund->save();
         }
@@ -92,13 +92,14 @@ class UpdateStatistics extends Command
                 sleep(10);
                 $retry = true;
             }
-        } while($retry);
+        } while ($retry);
 
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecord = $matches[1];
-        if (!$totalRecord) {
+        if (! $totalRecord) {
             // 如果没有历史就进行标记
             $fund->status = 3;
+
             return 0;
         }
 
@@ -122,6 +123,7 @@ class UpdateStatistics extends Command
                     'row' => $row,
                 ]);
                 $fund->status = 5;
+
                 return 0;
             }
             array_unshift($records, $record);
@@ -137,6 +139,7 @@ class UpdateStatistics extends Command
             ]);
             $this->error("{$totalRecord} <> ".count($records));
             $fund->status = 5;
+
             return 0;
         }
         // 开启事务，保证下面sql语句一起执行成功
@@ -155,7 +158,9 @@ class UpdateStatistics extends Command
                     'bonus' => $record[6],
                 ]);
                 // 如果存在数据，那么就停止后续数据库操作
-                if ($statistic->exists) break;
+                if ($statistic->exists) {
+                    break;
+                }
                 $statistic->save();
                 $touchNum++;
             }
@@ -166,13 +171,16 @@ class UpdateStatistics extends Command
             $fund->status = 4;
         }
         $fund->counted_at = Carbon::now();
+
         return $touchNum;
     }
 
     protected function resolveRecord($elements, $records)
     {
         $record = [];
-        if (count($elements) < 6) throw new \Exception('记录格式异常');
+        if (count($elements) < 6) {
+            throw new \Exception('记录格式异常');
+        }
         // 处理单条数据的每一个字段
         foreach ($elements as $kk => $element) {
             // 处理日期,这个比较特殊，要特殊处理
@@ -203,11 +211,15 @@ class UpdateStatistics extends Command
             } elseif ($kk == 4) {
                 // 转换申购状态
                 $value = $value ? array_search($value, Statistic::$buyStatusList) : 0;
-                if ($value === false) throw new \Exception('未知申购状态');
+                if ($value === false) {
+                    throw new \Exception('未知申购状态');
+                }
             } elseif ($kk == 5) {
                 // 转换赎回状态
                 $value = $value ? array_search($value, Statistic::$sellStatusList) : 0;
-                if ($value === false) throw new \Exception('未知赎回状态');
+                if ($value === false) {
+                    throw new \Exception('未知赎回状态');
+                }
             } elseif ($kk == 6) {
                 // 处理分红
                 if ($value && preg_match('/每份派现金(\d*\.\d*)元/', $value, $matches)) {
@@ -218,6 +230,7 @@ class UpdateStatistics extends Command
             }
             $record[] = $value;
         }
+
         return $record;
     }
 }

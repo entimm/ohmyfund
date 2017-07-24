@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Fund;
-use App\Statistic;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 
 class UpdateRanks extends Command
 {
@@ -79,7 +77,7 @@ class UpdateRanks extends Command
                 $fund->fill($record);
                 $fund->save();
             }
-            $processPercent = str_pad(round(($key + 1)*100/$count, 2).'%', 7, ' ', STR_PAD_LEFT);
+            $processPercent = str_pad(round(($key + 1) * 100 / $count, 2).'%', 7, ' ', STR_PAD_LEFT);
             $this->info("{$processPercent} | {$fund->code} | {$record['rank_date']} | {$record['born_date']}");
         }
         $this->info('update ranks done 😎');

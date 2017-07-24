@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Company;
-use App\Conpany;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\DB;
 
 class UpdateCompanies extends Command
 {
