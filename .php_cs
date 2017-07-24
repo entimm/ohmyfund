@@ -9,6 +9,7 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->in(__DIR__);
 $fixers = array(
     'alias_functions',
+    'array_element_white_space_after_comma',
     'blankline_after_open_tag',
     'braces',
     'concat_without_spaces',
@@ -38,6 +39,7 @@ $fixers = array(
     'namespace_no_leading_whitespace',
     'no_blank_lines_after_class_opening',
     'no_empty_lines_after_phpdocs',
+    'no_php4_constructor',
     'object_operator',
     'operators_spaces',
     'parenthesis',
