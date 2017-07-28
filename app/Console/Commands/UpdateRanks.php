@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Fund;
+use App\Services\CrawlService;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
@@ -24,8 +25,6 @@ class UpdateRanks extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -40,34 +39,7 @@ class UpdateRanks extends Command
     public function handle(Client $client)
     {
         $this->info('update ranks 🙏');
-        $url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=all&st=asc&pi=1&pn=20000';
-        $content = $client->get($url)->getBody()->getContents();
-        $beginPos = strpos($content, '[');
-        $endPos = strpos($content, ']');
-        $json = substr($content, $beginPos, $endPos - $beginPos + 1);
-        $result = json_decode($json, true);
-
-        $records = [];
-        foreach ($result as $item) {
-            $item = explode(',', $item);
-            $records[$item[0]] = [
-                'rank_date' => $item[3] ?: null,
-                'unit' => $item[4] * 10000,
-                'total' => $item[5] * 10000,
-                'rate' => $item[6] * 10000,
-                'in_1week' => $item[7] * 10000,
-                'in_1month' => $item[8] * 10000,
-                'in_3month' => $item[9] * 10000,
-                'in_6month' => $item[10] * 10000,
-                'current_year' => $item[14] * 10000,
-                'in_1year' => $item[11] * 10000,
-                'in_2year' => $item[12] * 10000,
-                'in_3year' => $item[13] * 10000,
-                'in_5year' => $item[24] * 10000,
-                'since_born' => $item[15] * 10000,
-                'born_date' => $item[16] ?: null,
-            ];
-        }
+        $records = resolve(CrawlService::class)->ranks();
 
         $funds = Fund::get();
         $count = count($funds);

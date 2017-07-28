@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Fund;
-use GuzzleHttp\Client;
+use App\Services\CrawlService;
 use Illuminate\Console\Command;
 
 class UpdateFunds extends Command
@@ -24,8 +24,6 @@ class UpdateFunds extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -39,12 +37,8 @@ class UpdateFunds extends Command
      */
     public function handle(Client $client)
     {
-        $url = 'http://fund.eastmoney.com/js/fundcode_search.js';
-        $content = $client->get($url)->getBody()->getContents();
-        $beginPos = strpos($content, '[[');
-        $json = substr($content, $beginPos, strlen($content) - $beginPos - 1);
-        $records = json_decode($json, true);
         $this->info('update funds 🙏');
+        $records = resolve(CrawlService::class)->funds();
 
         $progressBar = $this->output->createProgressBar(count($records));
         $progressBar->setBarWidth(50);

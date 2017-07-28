@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Company;
+use App\Services\CrawlService;
 use Illuminate\Console\Command;
-use GuzzleHttp\Client;
 
 class UpdateCompanies extends Command
 {
@@ -24,8 +24,6 @@ class UpdateCompanies extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -37,15 +35,9 @@ class UpdateCompanies extends Command
      *
      * @return mixed
      */
-    public function handle(Client $client)
+    public function handle()
     {
-        $url = 'http://fund.eastmoney.com/js/jjjz_gs.js';
-        $content = $client->get($url)->getBody()->getContents();
-        $beginPos = strpos($content, '[[');
-        $endPos = strpos($content, ']}');
-        $json = substr($content, $beginPos, $endPos - $beginPos + 1);
-        $records = json_decode($json, true);
-
+        $records = resolve(CrawlService::class)->companies();
         foreach ($records as $record) {
             Company::updateOrCreate(['code' => $record[0]], ['name' => $record[1]]);
         }
