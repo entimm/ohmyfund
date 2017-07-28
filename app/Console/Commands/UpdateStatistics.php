@@ -122,7 +122,7 @@ class UpdateStatistics extends Command
         });
         // 标记10天内都没数据的基金
         $diffDay = date_diff(date_create($fund->profit_date), date_create())->days;
-        if ($diffDay > self::BUFFER_DAY) {
+        if ($diffDay > 10) {
             $fund->status = 4;
         }
         $fund->counted_at = Carbon::now();

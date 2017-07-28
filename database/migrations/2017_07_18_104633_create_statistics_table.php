@@ -23,6 +23,7 @@ class CreateStatisticsTable extends Migration
             $table->tinyInteger('buy_status')->nullable()->comment('申购状态');
             $table->tinyInteger('sell_status')->nullable()->comment('赎回状态');
             $table->timestamps();
+
             $table->unique(['code', 'date']);
         });
     }

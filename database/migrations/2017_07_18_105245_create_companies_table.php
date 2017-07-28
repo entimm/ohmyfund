@@ -18,6 +18,7 @@ class CreateCompaniesTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->timestamps();
+
             $table->unique(['code']);
         });
     }

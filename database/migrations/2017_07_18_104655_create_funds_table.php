@@ -23,6 +23,7 @@ class CreateFundsTable extends Migration
             $table->date('profit_date')->nullable()->comment('收益日期');
             $table->timestamp('counted_at')->nullable()->comment('统计时间');
             $table->timestamps();
+
             $table->unique(['code']);
         });
     }

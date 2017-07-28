@@ -35,7 +35,7 @@ class UpdateFunds extends Command
      *
      * @return mixed
      */
-    public function handle(Client $client)
+    public function handle()
     {
         $this->info('update funds 🙏');
         $records = resolve(CrawlService::class)->funds();
@@ -52,6 +52,6 @@ class UpdateFunds extends Command
             $progressBar->advance();
         }
         $progressBar->finish();
-        $this->info('😎');
+        $this->info('update funds done 😎');
     }
 }

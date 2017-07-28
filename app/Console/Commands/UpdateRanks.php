@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Fund;
 use App\Services\CrawlService;
-use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
 class UpdateRanks extends Command
@@ -36,7 +35,7 @@ class UpdateRanks extends Command
      *
      * @return mixed
      */
-    public function handle(Client $client)
+    public function handle()
     {
         $this->info('update ranks 🙏');
         $records = resolve(CrawlService::class)->ranks();
