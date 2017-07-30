@@ -25,6 +25,9 @@ class XueQiuService
 
     public function tryAuth($username, $password)
     {
+        if ($this->cookie->count()) {
+            return true;
+        }
         $response = $this->client->post(self::POST_LOGIN_PATH, [
             'headers' => [
                 'User-Agent' => 'Mozilla/5.0 (X11; U; Linux x86; en-US; rv:1.9.0.5) Gecko',
