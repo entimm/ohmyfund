@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Fund;
-use App\Services\CrawlService;
+use App\Services\EastmoneyService;
 use Illuminate\Console\Command;
 
 class UpdateFunds extends Command
@@ -38,7 +38,7 @@ class UpdateFunds extends Command
     public function handle()
     {
         $this->info('update funds 🙏');
-        $records = resolve(CrawlService::class)->funds();
+        $records = resolve(EastmoneyService::class)->funds();
 
         $progressBar = $this->output->createProgressBar(count($records));
         $progressBar->setBarWidth(50);

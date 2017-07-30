@@ -9,7 +9,7 @@ use App\Statistic;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 
-class CrawlService
+class EastmoneyService
 {
     /**
      * 数据拉取数据量限制.
@@ -193,4 +193,32 @@ class CrawlService
 
         return $record;
     }
+
+    public function evaluate($fundCodes = [])
+    {
+        foreach ($fundCodes as $code) {
+            $data = $this->evaluateOne($code);
+        }
+    }
+
+    protected function evaluateOne($fundCode)
+    {
+        $microTime = microtime();
+        $url = "http://fundgz.1234567.com.cn/js/{$fundCode}.js?rt={$microTime}";
+        $content = $this->client->get($url)->getBody()->getContents();
+        $beginPos = strpos($content, '{');
+        $json = substr($content, $beginPos, -2);
+        $result = json_decode($json, true);
+        $data = [
+            'code' => $result['fundcode'],
+            'name' => $result['name'],
+            'date' => $result['jzrq'],
+            'origin' => $result['dwjz'],
+            'value' => $result['gsz'],
+            'rate' => $result['gszzl'],
+            'time' => $result['gztime'],
+        ];
+        return $data;
+    }
+
 }

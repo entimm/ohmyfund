@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Fund;
-use App\Services\CrawlService;
+use App\Services\EastmoneyService;
 use Illuminate\Console\Command;
 
 class UpdateRanks extends Command
@@ -38,7 +38,7 @@ class UpdateRanks extends Command
     public function handle()
     {
         $this->info('update ranks 🙏');
-        $records = resolve(CrawlService::class)->ranks();
+        $records = resolve(EastmoneyService::class)->ranks();
 
         $funds = Fund::get();
         $count = count($funds);

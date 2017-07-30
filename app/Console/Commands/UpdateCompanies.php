@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Company;
-use App\Services\CrawlService;
+use App\Services\EastmoneyService;
 use Illuminate\Console\Command;
 
 class UpdateCompanies extends Command
@@ -37,7 +37,7 @@ class UpdateCompanies extends Command
      */
     public function handle()
     {
-        $records = resolve(CrawlService::class)->companies();
+        $records = resolve(EastmoneyService::class)->companies();
         foreach ($records as $record) {
             Company::updateOrCreate(['code' => $record[0]], ['name' => $record[1]]);
         }
