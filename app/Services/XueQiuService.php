@@ -33,7 +33,7 @@ class XueQiuService
                 'X-Requested-With' => 'XMLHttpRequest',
             ],
             'cookies' => $this->cookie,
-            'form_params'    => [
+            'form_params' => [
                 'remember_me' => true,
                 'username' => $username,
                 'password' => $password,

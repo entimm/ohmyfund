@@ -105,7 +105,7 @@ class EastmoneyService
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecord = $matches[1];
         if (! $totalRecord) {
-            throw new NonDataException;
+            throw new NonDataException();
         }
 
         // 解析行记录
