@@ -199,9 +199,11 @@ class EastmoneyService
 
     public function evaluate($fundCodes = [])
     {
+        $list = [];
         foreach ($fundCodes as $code) {
-            $data = $this->evaluateOne($code);
+            $list[] = $this->evaluateOne($code);
         }
+        return $list;
     }
 
     protected function evaluateOne($fundCode)
