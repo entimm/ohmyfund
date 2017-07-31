@@ -3,11 +3,8 @@
 namespace App\Exceptions;
 
 /**
- * Class ValidateFailException
- *
- * @package \App\Exceptions
+ * Class ValidateFailException.
  */
 class ValidateException extends \Exception
 {
-
 }

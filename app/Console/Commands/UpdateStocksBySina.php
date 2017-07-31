@@ -86,6 +86,7 @@ class UpdateStocksBySina extends Command
         $record['high'] *= 1000;
         $record['low'] *= 1000;
         $record['close'] *= 1000;
+
         return $record;
     }
 
@@ -114,6 +115,7 @@ class UpdateStocksBySina extends Command
         $record['low'] = $record['l'] * 1000;
         $record['close'] = $record['c'] * 1000;
         $record['volume'] = $record['v'];
+
         return $record;
     }
 

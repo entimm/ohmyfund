@@ -3,8 +3,7 @@
 namespace App\Exceptions;
 
 /**
- * Class ResolveRecordException
- *
+ * Class ResolveRecordException.
  */
 class ResolveErrorException extends \Exception
 {

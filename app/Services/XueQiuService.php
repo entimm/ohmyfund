@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\FileCookieJar;
 
 class XueQiuService
@@ -39,8 +38,9 @@ class XueQiuService
                 'username' => $username,
                 'password' => $password,
             ],
-            'verify' => false
+            'verify' => false,
         ]);
+
         return $response->getStatusCode() == 200;
     }
 
@@ -65,6 +65,7 @@ class XueQiuService
         if (isset($data[$symbol])) {
             return $data[$symbol];
         }
+
         return false;
     }
 
@@ -91,9 +92,10 @@ class XueQiuService
 
         $content = $response->getBody()->getContents();
         $data = json_decode($content, true);
-        if (!empty($data['chartlist'])) {
+        if (! empty($data['chartlist'])) {
             return $data['chartlist'];
         }
+
         return false;
     }
 }

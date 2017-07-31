@@ -52,7 +52,6 @@ class UpdateStocks extends Command
             $stock->name = $quotes['name'];
             $stock->data = array_except($quotes, ['symbol', 'code', 'name']);
 
-
             $span = $stock->profit_date ? 10 : 0;
             $list = $xueQiu->resolveHistory($symbol, 'normal', $span);
             $list = array_reverse($list);
@@ -63,7 +62,7 @@ class UpdateStocks extends Command
                     $item['symbol'] = $symbol;
                     $item['date'] = $date;
                     $history = StockNormalHistories::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
-                    if (!$history->wasRecentlyCreated) {
+                    if (! $history->wasRecentlyCreated) {
                         break;
                     }
                     $touchNum++;
@@ -80,7 +79,7 @@ class UpdateStocks extends Command
                     $item['symbol'] = $symbol;
                     $item['date'] = $date;
                     $history = StockBeforeHistories::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
-                    if (!$history->wasRecentlyCreated) {
+                    if (! $history->wasRecentlyCreated) {
                         break;
                     }
                     $touchNum++;
@@ -88,8 +87,7 @@ class UpdateStocks extends Command
             });
             $this->info("{$symbol} | before | {$touchNum}");
 
-
-            $stock->profit_date = date('Y-m-d',$list[0]['timestamp'] / 1000);
+            $stock->profit_date = date('Y-m-d', $list[0]['timestamp'] / 1000);
             $stock->counted_at = Carbon::now();
 
             $stock->save();

@@ -19,6 +19,7 @@ class SinaService
         $content = $this->client->get($url)->getBody()->getContents();
         $json = $this->makeJson($content);
         $records = $json ? json_decode($json, true) : [];
+
         return $records;
     }
 
@@ -30,15 +31,18 @@ class SinaService
         $content = substr($content, $beginPos, -2);
         $json = $this->makeJson($content);
         $records = $json ? json_decode($json, true) : [];
+
         return $records;
     }
 
     private function makeJson($content)
     {
-        if(preg_match('/\w:/', $content)){
+        if (preg_match('/\w:/', $content)) {
             $json = preg_replace('/(\w+):/is', '"$1":', $content);
+
             return $json;
         }
+
         return false;
     }
 }

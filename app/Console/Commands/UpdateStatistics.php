@@ -72,10 +72,11 @@ class UpdateStatistics extends Command
     {
         try {
             // 通过 profit_date 判断这只基金是否有被处理过
-            $records = resolve(EastmoneyService::class)->statistic($fund->code, !!$fund->profit_date);
+            $records = resolve(EastmoneyService::class)->statistic($fund->code, ! ! $fund->profit_date);
         } catch (NonDataException $e) {
             // 如果没有历史就进行标记
             $fund->status = 3;
+
             return 0;
         } catch (ResolveErrorException $e) {
             Log::error($e->getMessage(), [

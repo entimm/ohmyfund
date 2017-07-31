@@ -22,5 +22,4 @@ Artisan::command('update', function () {
     $this->call('update:funds');
     $this->call('update:ranks');
     $this->call('update:statistic');
-
 })->describe('Update all');

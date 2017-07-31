@@ -32,6 +32,7 @@ class EastmoneyService
         $endPos = strpos($content, ']}');
         $json = substr($content, $beginPos, $endPos - $beginPos + 1);
         $records = json_decode($json, true);
+
         return $records;
     }
 
@@ -42,6 +43,7 @@ class EastmoneyService
         $beginPos = strpos($content, '[[');
         $json = substr($content, $beginPos, strlen($content) - $beginPos - 1);
         $records = json_decode($json, true);
+
         return $records;
     }
 
@@ -132,6 +134,7 @@ class EastmoneyService
         if ($per == self::INFINITE_DAY && $totalRecord != count($records)) {
             throw new ValidateException("数据自我验证失败：{$totalRecord} <> ".count($records));
         }
+
         return $records;
     }
 
@@ -218,7 +221,7 @@ class EastmoneyService
             'rate' => $result['gszzl'],
             'time' => $result['gztime'],
         ];
+
         return $data;
     }
-
 }
