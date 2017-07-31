@@ -43,10 +43,8 @@ class UpdateStocks extends Command
     {
         $this->info('update stock data... 🙏');
 
-        $xueQiu = resolve(XueQiuService::class);
-        $xueQiu->tryAuth(env('XUEQIU_USERNAME'), env('XUEQIU_PASSWORD'));
         foreach ($this->stocks() as $symbol) {
-            $quotes = $xueQiu->resolveQuotes($symbol);
+            $quotes = resolve('xueqiu')->resolveQuotes($symbol);
             $stock = Stock::firstOrNew(array_only($quotes, 'symbol'));
             $stock->code = $quotes['code'];
             $stock->name = $quotes['name'];
@@ -66,10 +64,10 @@ class UpdateStocks extends Command
 
     protected function process($symbol, $type, $span)
     {
-        $list = $xueQiu->resolveHistory($symbol, $type, $span);
+        $list = resolve('xueqiu')->resolveHistory($symbol, $type, $span);
         $list = array_reverse($list);
         $touchNum = 0;
-        DB::transaction(function () use ($list, $symbol, &$touchNum) {
+        DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {
             foreach ($list as $item) {
                 $date = date('Y-m-d', $item['timestamp'] / 1000);
                 $item['symbol'] = $symbol;

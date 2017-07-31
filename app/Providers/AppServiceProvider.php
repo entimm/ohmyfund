@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\XueQiuService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('xueqiu', function ($app) {
+            $xueQiu = resolve(XueQiuService::class);
+            $xueQiu->tryAuth(env('XUEQIU_USERNAME'), env('XUEQIU_PASSWORD'));
+            return $xueQiu;
+        });
     }
 }
