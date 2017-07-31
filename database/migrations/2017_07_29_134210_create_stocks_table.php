@@ -19,7 +19,6 @@ class CreateStocksTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->json('data')->nullable();
-            $table->date('profit_date')->nullable();
             $table->timestamp('counted_at')->nullable();
             $table->timestamps();
 

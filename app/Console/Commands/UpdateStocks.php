@@ -52,48 +52,37 @@ class UpdateStocks extends Command
             $stock->name = $quotes['name'];
             $stock->data = array_except($quotes, ['symbol', 'code', 'name']);
 
-            $span = $stock->profit_date ? 10 : 0;
-            $list = $xueQiu->resolveHistory($symbol, 'normal', $span);
-            $list = array_reverse($list);
-            $touchNum = 0;
-            DB::transaction(function () use ($list, $symbol, &$touchNum) {
-                foreach ($list as $item) {
-                    $date = date('Y-m-d', $item['timestamp'] / 1000);
-                    $item['symbol'] = $symbol;
-                    $item['date'] = $date;
-                    $history = StockNormalHistories::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
-                    if (! $history->wasRecentlyCreated) {
-                        break;
-                    }
-                    $touchNum++;
-                }
-            });
-            $this->info("{$symbol} | normal | {$touchNum}");
+            $span = $stock->counted_at ? 10 : 0;
+            $this->process($symbol, 'normal', $span);
+            $this->process($symbol, 'before', $span);
 
-            $list = $xueQiu->resolveHistory($symbol, 'before', $span);
-            $list = array_reverse($list);
-            $touchNum = 0;
-            DB::transaction(function () use ($list, $symbol, &$touchNum) {
-                foreach ($list as $item) {
-                    $date = date('Y-m-d', $item['timestamp'] / 1000);
-                    $item['symbol'] = $symbol;
-                    $item['date'] = $date;
-                    $history = StockBeforeHistories::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
-                    if (! $history->wasRecentlyCreated) {
-                        break;
-                    }
-                    $touchNum++;
-                }
-            });
-            $this->info("{$symbol} | before | {$touchNum}");
-
-            $stock->profit_date = date('Y-m-d', $list[0]['timestamp'] / 1000);
             $stock->counted_at = Carbon::now();
 
             $stock->save();
         }
 
         $this->info('update stock data done 😎');
+    }
+
+    protected function process($symbol, $type, $span)
+    {
+        $list = $xueQiu->resolveHistory($symbol, $type, $span);
+        $list = array_reverse($list);
+        $touchNum = 0;
+        DB::transaction(function () use ($list, $symbol, &$touchNum) {
+            foreach ($list as $item) {
+                $date = date('Y-m-d', $item['timestamp'] / 1000);
+                $item['symbol'] = $symbol;
+                $item['date'] = $date;
+                $className = $type == 'normal' ? StockNormalHistories::class : StockBeforeHistories::class;
+                $history = $className::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
+                if (! $history->wasRecentlyCreated) {
+                    break;
+                }
+                $touchNum++;
+            }
+        });
+        $this->info("{$symbol} | $type | {$touchNum}");
     }
 
     private function stocks()
