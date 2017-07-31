@@ -15,13 +15,13 @@ class CreateStatisticsTable extends Migration
     {
         Schema::create('statistics', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code', 20)->nullable()->comment('基金代码');
-            $table->date('date')->nullable()->comment('日期');
-            $table->integer('unit')->nullable()->comment('单位净值');
-            $table->integer('total')->nullable()->comment('累计净值');
-            $table->integer('rate')->nullable()->comment('日增长率');
-            $table->tinyInteger('buy_status')->nullable()->comment('申购状态');
-            $table->tinyInteger('sell_status')->nullable()->comment('赎回状态');
+            $table->string('code', 20)->comment('基金代码');
+            $table->date('date')->comment('日期');
+            $table->integer('unit')->comment('单位净值');
+            $table->integer('total')->comment('累计净值');
+            $table->integer('rate')->comment('日增长率');
+            $table->tinyInteger('buy_status')->comment('申购状态');
+            $table->tinyInteger('sell_status')->comment('赎回状态');
             $table->timestamps();
 
             $table->unique(['code', 'date']);

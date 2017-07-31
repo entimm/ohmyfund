@@ -15,15 +15,15 @@ class CreateStockNormalHistoriesTable extends Migration
     {
         Schema::create('stock_normal_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('symbol')->nullable();
+            $table->string('symbol');
 
-            $table->double('open', 10, 4)->nullable();
-            $table->double('high', 10, 4)->nullable();
-            $table->double('low', 10, 4)->nullable();
-            $table->double('close', 10, 4)->nullable();
+            $table->double('open', 10, 4);
+            $table->double('high', 10, 4);
+            $table->double('low', 10, 4);
+            $table->double('close', 10, 4);
 
-            $table->bigInteger('volume')->nullable();
-            $table->bigInteger('lot_volume')->nullable();
+            $table->bigInteger('volume');
+            $table->bigInteger('lot_volume');
 
             $table->double('percent', 10, 4)->nullable();
             $table->double('turnrate', 10, 4)->nullable();
@@ -38,7 +38,7 @@ class CreateStockNormalHistoriesTable extends Migration
             $table->double('dea', 10, 4)->nullable();
             $table->double('macd', 10, 4)->nullable();
 
-            $table->date('date')->nullable();
+            $table->date('date');
             $table->timestamps();
 
             $table->unique(['symbol', 'date']);

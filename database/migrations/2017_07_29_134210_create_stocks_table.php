@@ -15,9 +15,9 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('symbol')->nullable();
-            $table->string('code')->nullable();
-            $table->string('name')->nullable();
+            $table->string('symbol');
+            $table->string('code');
+            $table->string('name');
             $table->json('data')->nullable();
             $table->date('profit_date')->nullable();
             $table->timestamp('counted_at')->nullable();
