@@ -40,4 +40,9 @@ class Fund extends Model
       18 => '债券创新-场内',
       19 => '封闭式',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'code';
+    }
 }

@@ -13,6 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
+
+Route::get('funds/{code}/history', 'FundController@history');
+Route::resource('funds', 'FundController', ['only' => [
+    'index', 'show'
+]]);
+
+Route::get('stocks/{symbol}/history', 'StockController@history');
+Route::resource('stocks', 'StockController', ['only' => [
+    'index', 'show'
+]]);
+
