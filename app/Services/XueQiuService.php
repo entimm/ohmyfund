@@ -95,7 +95,7 @@ class XueQiuService
 
         $content = $response->getBody()->getContents();
         $data = json_decode($content, true);
-        if (! empty($data['chartlist'])) {
+        if (isset($data['chartlist'])) {
             return $data['chartlist'];
         }
 
