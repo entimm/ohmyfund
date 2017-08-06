@@ -47,18 +47,20 @@ class XueQiuService
     public function resolveQuotes($symbol)
     {
         $symbol = strtoupper($symbol);
-        $response = $this->client->get('https://xueqiu.com/v4/stock/quote.json', [
-            'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (X11; U; Linux x86; en-US; rv:1.9.0.5) Gecko',
-            ],
-            'query' => [
-                'code' => $symbol,
-                '_' => microtime(),
-            ],
-            'cookies' => $this->cookie,
-            'verify' => false,
+        $response = $this->retryRequest(function () use ($symbol) {
+            return $this->client->get('https://xueqiu.com/v4/stock/quote.json', [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (X11; U; Linux x86; en-US; rv:1.9.0.5) Gecko',
+                ],
+                'query' => [
+                    'code' => $symbol,
+                    '_' => microtime(),
+                ],
+                'cookies' => $this->cookie,
+                'verify' => false,
 
-        ]);
+            ]);
+        }, 1);
 
         $content = $response->getBody()->getContents();
         $data = json_decode($content, true);
@@ -73,22 +75,24 @@ class XueQiuService
     {
         $symbol = strtoupper($symbol);
         $sinceTime = $span ? (time() - $span * 86400) * 1000 : null;
-        $response = $this->client->get('https://xueqiu.com/stock/forchartk/stocklist.json', [
-            'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (X11; U; Linux x86; en-US; rv:1.9.0.5) Gecko',
-            ],
-            'query' => [
-                'symbol' => $symbol,
-                'period' => '1day', // all、1day、1weel、1month
-                'type' => $type, // before 前复权、normal 不复权
-                'begin' => $sinceTime,
-                'end' => microtime(),
-                '_' => microtime(),
-            ],
-            'cookies' => $this->cookie,
-            'verify' => false,
+        $response = $this->retryRequest(function () use ($symbol, $type, $sinceTime) {
+            return $this->client->get('https://xueqiu.com/stock/forchartk/stocklist.json', [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (X11; U; Linux x86; en-US; rv:1.9.0.5) Gecko',
+                ],
+                'query' => [
+                    'symbol' => $symbol,
+                    'period' => '1day', // all、1day、1weel、1month
+                    'type' => $type, // before 前复权、normal 不复权
+                    'begin' => $sinceTime,
+                    'end' => microtime(),
+                    '_' => microtime(),
+                ],
+                'cookies' => $this->cookie,
+                'verify' => false,
 
-        ]);
+            ]);
+        }, 1);
 
         $content = $response->getBody()->getContents();
         $data = json_decode($content, true);
@@ -97,5 +101,18 @@ class XueQiuService
         }
 
         return false;
+    }
+
+    private function retryRequest(callable $callback, $sleep = 0)
+    {
+        try {
+            return $callback();
+        } catch (\Exception $e) {
+            if ($sleep) {
+                usleep($sleep * 1000);
+            }
+            $this->cookie->clear();
+            return $callback();
+        }
     }
 }
