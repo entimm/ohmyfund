@@ -41,7 +41,7 @@ class UpdateStocks extends Command
     {
         $this->info('update stock data... 🙏');
 
-        foreach ($this->stocks() as $symbol) {
+        foreach (config('stocks') as $symbol) {
             $quotes = resolve('xueqiu')->resolveQuotes($symbol);
             $stock = Stock::firstOrNew(array_only($quotes, 'symbol'));
             $stock->code = $quotes['code'];
@@ -83,26 +83,5 @@ class UpdateStocks extends Command
         });
 
         $this->info("{$symbol} | {$typeName} | {$touchNum}");
-    }
-
-    private function stocks()
-    {
-        return [
-            'sh000001',
-            'sh000002',
-            'sh000003',
-            'sh000016',
-
-            'sz399001',
-            'sz399005',
-            'sz399006',
-            'sz399300',
-
-            'HKHSI',
-
-            'QQQ',
-            'SP500',
-            'DJI30',
-        ];
     }
 }
