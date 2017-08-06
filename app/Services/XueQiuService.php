@@ -45,7 +45,7 @@ class XueQiuService
         return $response->getStatusCode() == 200;
     }
 
-    public function resolveQuotes($symbol)
+    public function requestQuotes($symbol)
     {
         $symbol = strtoupper($symbol);
         $response = $this->retryRequest(function () use ($symbol) {
@@ -72,7 +72,7 @@ class XueQiuService
         return false;
     }
 
-    public function resolveHistory($symbol, $typeName, $countedAt = 0)
+    public function requestHistory($symbol, $typeName, $countedAt = 0)
     {
         $symbol = strtoupper($symbol);
         $response = $this->retryRequest(function () use ($symbol, $typeName, $countedAt) {

@@ -37,7 +37,7 @@ class UpdateCompanies extends Command
      */
     public function handle()
     {
-        $records = resolve(EastmoneyService::class)->companies();
+        $records = resolve(EastmoneyService::class)->requestCompanies();
         foreach ($records as $record) {
             Company::updateOrCreate(['code' => $record[0]], ['name' => $record[1]]);
         }

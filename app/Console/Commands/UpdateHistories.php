@@ -72,7 +72,7 @@ class UpdateHistories extends Command
     {
         try {
             // 通过 profit_date 判断这只基金是否有被处理过
-            $records = resolve(EastmoneyService::class)->history($fund->code, $fund->counted_at);
+            $records = resolve(EastmoneyService::class)->requestHistories($fund->code, $fund->counted_at);
         } catch (NonDataException $e) {
             // 如果没有历史就进行标记
             $fund->status = 3;

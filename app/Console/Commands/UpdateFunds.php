@@ -38,7 +38,7 @@ class UpdateFunds extends Command
     public function handle()
     {
         $this->info('update funds 🙏');
-        $records = resolve(EastmoneyService::class)->funds();
+        $records = resolve(EastmoneyService::class)->requestFunds();
 
         $progressBar = $this->output->createProgressBar(count($records));
         $progressBar->setBarWidth(50);

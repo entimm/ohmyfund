@@ -13,7 +13,7 @@ class SinaService
         $this->client = $client;
     }
 
-    public function resolveCn($stock)
+    public function requestCnStock($stock)
     {
         $url = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol={$stock}&scale=240&datalen=100000";
         $content = $this->client->get($url)->getBody()->getContents();
@@ -23,7 +23,7 @@ class SinaService
         return $records;
     }
 
-    public function resolveUs($stock)
+    public function requestUsStock($stock)
     {
         $url = "http://stock.finance.sina.com.cn/usstock/api/jsonp_v2.php/var%20_{$stock}=/US_MinKService.getDailyK?symbol=.{$stock}";
         $content = $this->client->get($url)->getBody()->getContents();

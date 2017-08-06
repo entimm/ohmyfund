@@ -38,7 +38,7 @@ class UpdateRanks extends Command
     public function handle()
     {
         $this->info('update ranks 🙏');
-        $records = resolve(EastmoneyService::class)->ranks();
+        $records = resolve(EastmoneyService::class)->requestRanks();
 
         $funds = Fund::get();
         $count = count($funds);

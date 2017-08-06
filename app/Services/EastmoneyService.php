@@ -23,7 +23,7 @@ class EastmoneyService
         $this->client = $client;
     }
 
-    public function companies()
+    public function requestCompanies()
     {
         $url = 'http://fund.eastmoney.com/js/jjjz_gs.js';
         $content = $this->client->get($url)->getBody()->getContents();
@@ -35,7 +35,7 @@ class EastmoneyService
         return $records;
     }
 
-    public function funds()
+    public function requestFunds()
     {
         $url = 'http://fund.eastmoney.com/js/fundcode_search.js';
         $content = $this->client->get($url)->getBody()->getContents();
@@ -46,7 +46,7 @@ class EastmoneyService
         return $records;
     }
 
-    public function ranks()
+    public function requestRanks()
     {
         $url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=all&st=asc&pi=1&pn=20000';
         $content = $this->client->get($url)->getBody()->getContents();
@@ -80,7 +80,7 @@ class EastmoneyService
         return $records;
     }
 
-    public function history($fundCode, $fundCountedAt)
+    public function requestHistories($fundCode, $fundCountedAt)
     {
         $pageSize = self::INFINITE_DAY;
         if ($fundCountedAt) {
@@ -187,16 +187,16 @@ class EastmoneyService
         return $record;
     }
 
-    public function evaluate($fundCodes = [])
+    public function requestEvaluates($fundCodes = [])
     {
         $list = [];
         foreach ($fundCodes as $code) {
-            $list[] = $this->evaluateOne($code);
+            $list[] = $this->requestOneEvaluate($code);
         }
         return $list;
     }
 
-    protected function evaluateOne($fundCode)
+    protected function requestOneEvaluate($fundCode)
     {
         $microTime = microtime();
         $url = "http://fundgz.1234567.com.cn/js/{$fundCode}.js?rt={$microTime}";
