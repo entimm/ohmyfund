@@ -18,7 +18,7 @@ class StockController extends Controller
         return $stock;
     }
 
-    public function history(Request $request, $symbol)
+    public function candlesticks(Request $request, $symbol)
     {
         $this->validate($request, [
             'type' => 'string',
@@ -28,14 +28,43 @@ class StockController extends Controller
 
         $begin = $request->get('begin');
         $end = $request->get('end');
-        $type = $request->get('type');
-        $histories = StockHistories::where('symbol', $symbol)
+        $type = $request->get('type') ?: 1;
+        $candlestick = StockHistories::where('symbol', $symbol)
+            ->select([
+                'open',
+                'high',
+                'low',
+                'close',
+                'volume',
+            ])
             ->where('type', $type)
             ->when($begin, function($query) use ($begin) {
                 return $query->where('date', '>=', $begin);
             })->when($end, function($query) use ($end) {
                 return $query->where('date', '<=', $end);
             })->get();
-        return $histories;
+        return $candlestick;
+    }
+
+    public function values(Request $request, $symbol)
+    {
+        $this->validate($request, [
+            'type' => 'string',
+            'begin' => 'date',
+            'end' => 'date',
+        ]);
+
+        $begin = $request->get('begin');
+        $end = $request->get('end');
+        $type = $request->get('type') ?: 1;
+        $values = StockHistories::where('symbol', $symbol)
+            ->select(['close', 'date'])
+            ->where('type', $type)
+            ->when($begin, function($query) use ($begin) {
+                return $query->where('date', '>=', $begin);
+            })->when($end, function($query) use ($end) {
+                return $query->where('date', '<=', $end);
+            })->get();
+        return $values;
     }
 }

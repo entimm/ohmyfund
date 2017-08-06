@@ -24,7 +24,8 @@ Route::resource('funds', 'FundController', ['only' => [
     'index', 'show'
 ]]);
 
-Route::get('stocks/{symbol}/history', 'StockController@history');
+Route::get('stocks/{symbol}/candlesticks', 'StockController@candlesticks');
+Route::get('stocks/{symbol}/values', 'StockController@values');
 Route::resource('stocks', 'StockController', ['only' => [
     'index', 'show'
 ]]);
