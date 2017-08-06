@@ -87,11 +87,16 @@ class UpdateHistories extends Command
 
             return 0;
         } catch (ValidateException $e) {
-            Log::error('未通过数据验证', [
+            Log::error($e->getMessage(), [
                 'fund_code' => $fund->code,
-                'msg' => $e->getMessage(),
             ]);
             $fund->status = 5;
+
+            return 0;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage(), [
+                'fund_code' => $fund->code,
+            ]);
 
             return 0;
         }

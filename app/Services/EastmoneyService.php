@@ -7,7 +7,6 @@ use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
 use App\History;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Log;
 
 class EastmoneyService
 {
@@ -84,23 +83,11 @@ class EastmoneyService
     public function history($fundCode, $local = true)
     {
         $per = $local ? self::BUFFER_DAY : self::INFINITE_DAY;
-        // 如果网络异常就不断间隔重试
-        do {
-            static $tryTimes = 0;
-            $retry = false;
-            try {
-                $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$per}";
-                $content = $this->client->get($url)->getBody()->getContents();
-            } catch (\Exception $e) {
-                $tryTimes++;
-                Log::error($e->getMessage(), [
-                    'fund_code' => $fundCode,
-                    'try_times' => $tryTimes,
-                ]);
-                sleep(10);
-                $retry = true;
-            }
-        } while ($retry);
+        // 如果网络异常就间隔重试5次
+        $content = retry(5, function () use ($fundCode, $per) {
+            $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$per}";
+            return $this->client->get($url)->getBody()->getContents();
+        });
 
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecord = $matches[1];
