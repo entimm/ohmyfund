@@ -87,7 +87,7 @@ class EastmoneyService
         $content = retry(5, function () use ($fundCode, $per) {
             $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$per}";
             return $this->client->get($url)->getBody()->getContents();
-        });
+        }, 1);
 
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecord = $matches[1];
