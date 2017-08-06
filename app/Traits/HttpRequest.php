@@ -21,6 +21,7 @@ trait HttpRequest
         if ($query) {
             $options['query'] = $query;
         }
+
         return $this->request('get', $endpoint, $options);
     }
 
@@ -36,6 +37,7 @@ trait HttpRequest
     protected function post($endpoint, $params = [], $options = [])
     {
         $options['form_params'] = $params;
+
         return $this->request('post', $endpoint, $options);
     }
 
@@ -56,6 +58,7 @@ trait HttpRequest
         $options = array_merge($options, [
             'headers' => $headers,
         ]);
+
         return retry(3, function () use ($method, $endpoint, $options) {
             return $this->resolveResponse($this->getHttpClient($this->getBaseOptions())->{$method}($endpoint, $options));
         });

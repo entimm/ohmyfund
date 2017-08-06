@@ -21,12 +21,11 @@ Route::middleware('auth:api')->group(function () {
 
 Route::get('funds/{code}/history', 'FundController@history');
 Route::resource('funds', 'FundController', ['only' => [
-    'index', 'show'
+    'index', 'show',
 ]]);
 
 Route::get('stocks/{symbol}/candlesticks', 'StockController@candlesticks');
 Route::get('stocks/{symbol}/values', 'StockController@values');
 Route::resource('stocks', 'StockController', ['only' => [
-    'index', 'show'
+    'index', 'show',
 ]]);
-

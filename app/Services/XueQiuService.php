@@ -90,6 +90,7 @@ class XueQiuService
                 usleep($sleep * 1000);
             }
             $this->cookie->clear();
+
             return $callback();
         }
     }

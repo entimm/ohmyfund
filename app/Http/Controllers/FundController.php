@@ -29,11 +29,12 @@ class FundController extends Controller
         $end = $request->get('end');
         $histories = History::select(['date', 'unit', 'rate'])
             ->where('code', $code)
-            ->when($begin, function($query) use ($begin) {
+            ->when($begin, function ($query) use ($begin) {
                 return $query->where('date', '>=', $begin);
-            })->when($end, function($query) use ($end) {
+            })->when($end, function ($query) use ($end) {
                 return $query->where('date', '<=', $end);
             })->get();
+
         return $histories;
     }
 }

@@ -190,6 +190,7 @@ class EastmoneyService
         foreach ($fundCodes as $code) {
             $list[] = $this->requestOneEvaluate($code);
         }
+
         return $list;
     }
 
