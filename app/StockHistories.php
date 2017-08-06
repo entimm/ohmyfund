@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StockNormalHistories extends Model
+class StockHistories extends Model
 {
     protected $fillable = [
         'symbol',
@@ -24,6 +24,7 @@ class StockNormalHistories extends Model
         'dif',
         'dea',
         'macd',
+        'type',
         'date',
     ];
 
@@ -44,4 +45,7 @@ class StockNormalHistories extends Model
         'SP500',
         'DJI30',
     ];
+
+    const NORMAL_TYPE = 1;
+    const BEFORE_TYPE = 2;
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStockBeforeHistoriesTable extends Migration
+class CreateStockHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStockBeforeHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_before_histories', function (Blueprint $table) {
+        Schema::create('stock_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('symbol');
 
@@ -38,10 +38,11 @@ class CreateStockBeforeHistoriesTable extends Migration
             $table->double('dea', 10, 4)->nullable();
             $table->double('macd', 10, 4)->nullable();
 
+            $table->tinyInteger('type');
             $table->date('date');
             $table->timestamps();
 
-            $table->unique(['symbol', 'date']);
+            $table->unique(['symbol', 'date', 'type']);
         });
     }
 
@@ -52,6 +53,6 @@ class CreateStockBeforeHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_before_histories');
+        Schema::dropIfExists('stock_histories');
     }
 }

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Stock;
-use App\StockBeforeHistories;
-use App\StockNormalHistories;
+use App\StockHistories;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -30,8 +29,8 @@ class StockController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
         $type = $request->get('type');
-        $className = $type == 'normal' ? StockNormalHistories::class : StockBeforeHistories::class;
-        $histories = $className::where('symbol', $symbol)
+        $histories = StockHistories::where('symbol', $symbol)
+            ->where('type', $type)
             ->when($begin, function($query) use ($begin) {
                 return $query->where('date', '>=', $begin);
             })->when($end, function($query) use ($end) {

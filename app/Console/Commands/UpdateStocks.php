@@ -3,8 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Stock;
-use App\StockBeforeHistories;
-use App\StockNormalHistories;
+use App\StockHistories;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
@@ -50,8 +49,8 @@ class UpdateStocks extends Command
             $stock->data = array_except($quotes, ['symbol', 'code', 'name']);
 
             $span = $stock->counted_at ? 10 : 0;
-            $this->process($symbol, 'normal', $span);
-            $this->process($symbol, 'before', $span);
+            $this->process($symbol, StockHistories::NORMAL_TYPE, $span);
+            $this->process($symbol, StockHistories::BEFORE_TYPE, $span);
 
             $stock->counted_at = Carbon::now();
 
@@ -63,7 +62,8 @@ class UpdateStocks extends Command
 
     protected function process($symbol, $type, $span)
     {
-        $list = resolve('xueqiu')->resolveHistory($symbol, $type, $span);
+        $typeName = $type == StockHistories::NORMAL_TYPE ? 'normal' : 'before';
+        $list = resolve('xueqiu')->resolveHistory($symbol, $typeName, $span);
         $list = array_reverse($list);
         $touchNum = 0;
         DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {
@@ -71,15 +71,16 @@ class UpdateStocks extends Command
                 $date = date('Y-m-d', $item['timestamp'] / 1000);
                 $item['symbol'] = $symbol;
                 $item['date'] = $date;
-                $className = $type == 'normal' ? StockNormalHistories::class : StockBeforeHistories::class;
-                $history = $className::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
+                $item['type'] = $type;
+                $history = StockHistories::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
                 if (! $history->wasRecentlyCreated) {
                     break;
                 }
                 $touchNum++;
             }
         });
-        $this->info("{$symbol} | $type | {$touchNum}");
+
+        $this->info("{$symbol} | $typeName | {$touchNum}");
     }
 
     private function stocks()
