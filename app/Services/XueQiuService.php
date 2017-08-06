@@ -20,6 +20,7 @@ class XueQiuService
     {
         $this->client = $client;
         $this->cookie = new FileCookieJar('cookie_jar.txt', true);
+        $this->tryAuth();
     }
 
     public function tryAuth()
