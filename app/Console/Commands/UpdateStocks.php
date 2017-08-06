@@ -69,10 +69,12 @@ class UpdateStocks extends Command
         DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {
             foreach ($list as $item) {
                 $date = date('Y-m-d', $item['timestamp'] / 1000);
-                $item['symbol'] = $symbol;
-                $item['date'] = $date;
-                $item['type'] = $type;
-                $history = StockHistories::firstOrCreate(['symbol' => $symbol, 'date' => $date], $item);
+                $uniqueKeys = [
+                    'symbol' => $symbol,
+                    'date' => $date,
+                    'type' => $type,
+                ];
+                $history = StockHistories::firstOrCreate($uniqueKeys, $item);
                 if (! $history->wasRecentlyCreated) {
                     break;
                 }
@@ -80,7 +82,7 @@ class UpdateStocks extends Command
             }
         });
 
-        $this->info("{$symbol} | $typeName | {$touchNum}");
+        $this->info("{$symbol} | {$typeName} | {$touchNum}");
     }
 
     private function stocks()
