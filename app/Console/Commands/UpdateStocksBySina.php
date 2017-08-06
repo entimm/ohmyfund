@@ -7,6 +7,9 @@ use App\StockHistories;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
+/*
+ * @deprecated
+ */
 class UpdateStocksBySina extends Command
 {
     /**
