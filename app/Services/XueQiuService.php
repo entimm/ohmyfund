@@ -83,7 +83,7 @@ class XueQiuService
                     'symbol' => $symbol,
                     'period' => '1day', // all、1day、1weel、1month
                     'type' => $typeName, // before 前复权、normal 不复权
-                    'begin' => ($countedAt - 86400) * 1000,
+                    'begin' => max(($countedAt - 86400) * 1000, 0),
                     'end' => microtime(),
                     '_' => microtime(),
                 ],
