@@ -96,6 +96,7 @@ class UpdateHistories extends Command
         } catch (\Exception $e) {
             Log::error($e->getMessage(), [
                 'fund_code' => $fund->code,
+                'where' => $e->getFile().':'.$e->getLine(),
             ]);
 
             return 0;
