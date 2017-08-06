@@ -63,7 +63,7 @@ class UpdateStocks extends Command
     {
         $symbol = $stock->symbol;
         $typeName = $type == StockHistories::NORMAL_TYPE ? 'normal' : 'before';
-        $list = resolve('xueqiu')->resolveHistory($symbol, $typeName, strtotime($stock->counted_at));
+        $list = resolve('xueqiu')->resolveHistory($symbol, $typeName, $stock->counted_at->getTimestamp());
         $list = array_reverse($list);
         $touchNum = 0;
         DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {

@@ -12,6 +12,12 @@ class Stock extends Model
         'data' => 'array',
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'counted_at'
+    ];
+
     public function getRouteKeyName()
     {
         return 'symbol';

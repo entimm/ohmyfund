@@ -84,7 +84,7 @@ class EastmoneyService
     {
         $pageSize = self::INFINITE_DAY;
         if ($fundCountedAt) {
-            $pageSize = Carbon::now()->diffInDays(Carbon::createFromTimestamp($fundCountedAt)) + 1;
+            $pageSize = Carbon::now()->diffInDays($fundCountedAt) + 1;
         }
         // 如果网络异常就间隔重试5次
         $content = retry(5, function () use ($fundCode, $pageSize) {

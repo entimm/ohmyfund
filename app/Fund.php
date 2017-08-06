@@ -8,7 +8,13 @@ class Fund extends Model
 {
     protected $fillable = ['code', 'name', 'type', 'short_name', 'pinyin_name',
         'unit', 'total', 'rate', 'in_1week', 'in_1month', 'in_3month', 'in_6month',
-        'current_year', 'in_1year', 'in_2year', 'in_3year', 'in_5year', 'since_born', 'born_date', ];
+        'current_year', 'in_1year', 'in_2year', 'in_3year', 'in_5year', 'since_born', 'born_date'];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'counted_at'
+    ];
 
     public static $statusList = [
         0, // 默认状态
