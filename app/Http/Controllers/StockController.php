@@ -36,6 +36,7 @@ class StockController extends Controller
                 'low',
                 'close',
                 'volume',
+                'date',
             ])
             ->where('type', $type)
             ->when($begin, function($query) use ($begin) {
