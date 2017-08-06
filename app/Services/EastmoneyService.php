@@ -6,11 +6,13 @@ use App\Exceptions\NonDataException;
 use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
 use App\History;
+use App\Traits\HttpRequest;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 
 class EastmoneyService
 {
+    use HttpRequest;
+
     /**
      * 数据拉取数据量限制.
      */
@@ -18,15 +20,11 @@ class EastmoneyService
 
     private $client;
 
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-    }
-
     public function requestCompanies()
     {
         $url = 'http://fund.eastmoney.com/js/jjjz_gs.js';
-        $content = $this->client->get($url)->getBody()->getContents();
+        $content = $this->get($url);
+
         $beginPos = strpos($content, '[[');
         $endPos = strpos($content, ']}');
         $json = substr($content, $beginPos, $endPos - $beginPos + 1);
@@ -38,7 +36,8 @@ class EastmoneyService
     public function requestFunds()
     {
         $url = 'http://fund.eastmoney.com/js/fundcode_search.js';
-        $content = $this->client->get($url)->getBody()->getContents();
+        $content = $this->get($url);
+
         $beginPos = strpos($content, '[[');
         $json = substr($content, $beginPos, strlen($content) - $beginPos - 1);
         $records = json_decode($json, true);
@@ -49,7 +48,8 @@ class EastmoneyService
     public function requestRanks()
     {
         $url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=all&st=asc&pi=1&pn=20000';
-        $content = $this->client->get($url)->getBody()->getContents();
+        $content = $this->get($url);
+
         $beginPos = strpos($content, '[');
         $endPos = strpos($content, ']');
         $json = substr($content, $beginPos, $endPos - $beginPos + 1);
@@ -86,11 +86,8 @@ class EastmoneyService
         if ($fundCountedAt) {
             $pageSize = Carbon::now()->diffInDays($fundCountedAt) + 1;
         }
-        // 如果网络异常就间隔重试5次
-        $content = retry(5, function () use ($fundCode, $pageSize) {
-            $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$pageSize}";
-            return $this->client->get($url)->getBody()->getContents();
-        }, 1);
+        $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$pageSize}";
+        $content = $this->get($url);
 
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecord = $matches[1];
@@ -200,7 +197,8 @@ class EastmoneyService
     {
         $microTime = microtime();
         $url = "http://fundgz.1234567.com.cn/js/{$fundCode}.js?rt={$microTime}";
-        $content = $this->client->get($url)->getBody()->getContents();
+        $content = $this->get($url);
+
         $beginPos = strpos($content, '{');
         $json = substr($content, $beginPos, -2);
         $result = json_decode($json, true);
