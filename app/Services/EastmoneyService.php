@@ -6,6 +6,7 @@ use App\Exceptions\NonDataException;
 use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
 use App\History;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 
 class EastmoneyService
@@ -13,7 +14,6 @@ class EastmoneyService
     /**
      * 数据拉取数据量限制.
      */
-    const BUFFER_DAY = 10;
     const INFINITE_DAY = 10000;
 
     private $client;
@@ -80,12 +80,15 @@ class EastmoneyService
         return $records;
     }
 
-    public function history($fundCode, $local = true)
+    public function history($fundCode, $fundCountedAt)
     {
-        $per = $local ? self::BUFFER_DAY : self::INFINITE_DAY;
+        $pageSize = self::INFINITE_DAY;
+        if ($fundCountedAt) {
+            $pageSize = Carbon::now()->diffInDays(Carbon::createFromTimestamp($fundCountedAt)) + 1;
+        }
         // 如果网络异常就间隔重试5次
-        $content = retry(5, function () use ($fundCode, $per) {
-            $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$per}";
+        $content = retry(5, function () use ($fundCode, $pageSize) {
+            $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$pageSize}";
             return $this->client->get($url)->getBody()->getContents();
         }, 1);
 
@@ -118,7 +121,7 @@ class EastmoneyService
         }
 
         // 验证数据是否解析有误
-        if ($per == self::INFINITE_DAY && $totalRecord != count($records)) {
+        if ($pageSize == self::INFINITE_DAY && $totalRecord != count($records)) {
             throw new ValidateException("数据自我验证失败：{$totalRecord} <> ".count($records));
         }
 

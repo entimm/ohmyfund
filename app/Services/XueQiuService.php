@@ -71,11 +71,10 @@ class XueQiuService
         return false;
     }
 
-    public function resolveHistory($symbol, $typeName, $span = 10)
+    public function resolveHistory($symbol, $typeName, $countedAt = 0)
     {
         $symbol = strtoupper($symbol);
-        $sinceTime = $span ? (time() - $span * 86400) * 1000 : null;
-        $response = $this->retryRequest(function () use ($symbol, $typeName, $sinceTime) {
+        $response = $this->retryRequest(function () use ($symbol, $typeName, $countedAt) {
             return $this->client->get('https://xueqiu.com/stock/forchartk/stocklist.json', [
                 'headers' => [
                     'User-Agent' => 'Mozilla/5.0 (X11; U; Linux x86; en-US; rv:1.9.0.5) Gecko',
@@ -84,7 +83,7 @@ class XueQiuService
                     'symbol' => $symbol,
                     'period' => '1day', // all、1day、1weel、1month
                     'type' => $typeName, // before 前复权、normal 不复权
-                    'begin' => $sinceTime,
+                    'begin' => ($countedAt - 86400) * 1000,
                     'end' => microtime(),
                     '_' => microtime(),
                 ],

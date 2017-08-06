@@ -48,9 +48,8 @@ class UpdateStocks extends Command
             $stock->name = $quotes['name'];
             $stock->data = array_except($quotes, ['symbol', 'code', 'name']);
 
-            $span = $stock->counted_at ? 10 : 0;
-            $this->process($symbol, StockHistories::NORMAL_TYPE, $span);
-            $this->process($symbol, StockHistories::BEFORE_TYPE, $span);
+            $this->process($stock, StockHistories::NORMAL_TYPE);
+            $this->process($stock, StockHistories::BEFORE_TYPE);
 
             $stock->counted_at = Carbon::now();
 
@@ -60,10 +59,11 @@ class UpdateStocks extends Command
         $this->info('update stock data done 😎');
     }
 
-    protected function process($symbol, $type, $span)
+    protected function process($stock, $type)
     {
+        $symbol = $stock->symbol;
         $typeName = $type == StockHistories::NORMAL_TYPE ? 'normal' : 'before';
-        $list = resolve('xueqiu')->resolveHistory($symbol, $typeName, $span);
+        $list = resolve('xueqiu')->resolveHistory($symbol, $typeName, $stock->counted_at);
         $list = array_reverse($list);
         $touchNum = 0;
         DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {
