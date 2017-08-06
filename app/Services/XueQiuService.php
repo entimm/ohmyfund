@@ -22,7 +22,7 @@ class XueQiuService
         $this->cookie = new FileCookieJar('cookie_jar.txt', true);
     }
 
-    public function tryAuth($username, $password)
+    public function tryAuth()
     {
         if ($this->cookie->count()) {
             return true;
@@ -35,8 +35,8 @@ class XueQiuService
             'cookies' => $this->cookie,
             'form_params' => [
                 'remember_me' => true,
-                'username' => $username,
-                'password' => $password,
+                'username' => env('XUEQIU_USERNAME'),
+                'password' => env('XUEQIU_PASSWORD'),
             ],
             'verify' => false,
         ]);

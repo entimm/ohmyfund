@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('xueqiu', function ($app) {
             $xueQiu = resolve(XueQiuService::class);
-            $xueQiu->tryAuth(env('XUEQIU_USERNAME'), env('XUEQIU_PASSWORD'));
+            $xueQiu->tryAuth();
             return $xueQiu;
         });
     }
