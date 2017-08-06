@@ -18,7 +18,9 @@ trait HttpRequest
      */
     protected function get($endpoint, $query = [], $options = [])
     {
-        $options['query'] = $query;
+        if ($query) {
+            $options['query'] = $query;
+        }
         return $this->request('get', $endpoint, $options);
     }
 

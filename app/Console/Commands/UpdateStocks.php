@@ -43,7 +43,7 @@ class UpdateStocks extends Command
         $this->info('update stock data... 🙏');
 
         foreach (config('stocks') as $symbol) {
-            $quotes = resolve(XueQiuService::class)->resolveQuotes($symbol);
+            $quotes = resolve(XueQiuService::class)->requestQuotes($symbol);
             $stock = Stock::firstOrNew(array_only($quotes, 'symbol'));
             $stock->code = $quotes['code'];
             $stock->name = $quotes['name'];
@@ -64,7 +64,7 @@ class UpdateStocks extends Command
     {
         $symbol = $stock->symbol;
         $typeName = $type == StockHistories::NORMAL_TYPE ? 'normal' : 'before';
-        $list = resolve(XueQiuService::class)->resolveHistory($symbol, $typeName, $stock->counted_at->getTimestamp());
+        $list = resolve(XueQiuService::class)->requestHistory($symbol, $typeName, $stock->counted_at->getTimestamp());
         $list = array_reverse($list);
         $touchNum = 0;
         DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {

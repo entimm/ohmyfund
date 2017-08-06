@@ -38,10 +38,10 @@ class UpdateRanks extends Command
     public function handle()
     {
         $this->info('update ranks 🙏');
-        $records = resolve(EastmoneyService::class)->requestRanks();
 
         $funds = Fund::get();
         $count = count($funds);
+        $records = resolve(EastmoneyService::class)->requestRanks();
         foreach ($funds as $key => $fund) {
             if (isset($records[$fund->code])) {
                 $record = $records[$fund->code];
