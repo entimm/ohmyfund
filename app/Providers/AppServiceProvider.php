@@ -24,9 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('xueqiu', function ($app) {
-            $xueQiu = resolve(XueQiuService::class);
-            return $xueQiu;
-        });
+        //
     }
 }

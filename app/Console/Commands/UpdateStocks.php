@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\XueQiuService;
 use App\Stock;
 use App\StockHistories;
 use Carbon\Carbon;
@@ -42,7 +43,7 @@ class UpdateStocks extends Command
         $this->info('update stock data... 🙏');
 
         foreach (config('stocks') as $symbol) {
-            $quotes = resolve('xueqiu')->resolveQuotes($symbol);
+            $quotes = resolve(XueQiuService::class)->resolveQuotes($symbol);
             $stock = Stock::firstOrNew(array_only($quotes, 'symbol'));
             $stock->code = $quotes['code'];
             $stock->name = $quotes['name'];
@@ -63,7 +64,7 @@ class UpdateStocks extends Command
     {
         $symbol = $stock->symbol;
         $typeName = $type == StockHistories::NORMAL_TYPE ? 'normal' : 'before';
-        $list = resolve('xueqiu')->resolveHistory($symbol, $typeName, $stock->counted_at->getTimestamp());
+        $list = resolve(XueQiuService::class)->resolveHistory($symbol, $typeName, $stock->counted_at->getTimestamp());
         $list = array_reverse($list);
         $touchNum = 0;
         DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {
