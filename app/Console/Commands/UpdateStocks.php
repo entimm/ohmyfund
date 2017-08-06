@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Services\XueQiuService;
 use App\Stock;
 use App\StockBeforeHistories;
 use App\StockNormalHistories;

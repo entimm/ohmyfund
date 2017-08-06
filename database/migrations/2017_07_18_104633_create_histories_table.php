@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatisticsTable extends Migration
+class CreateHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStatisticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('statistics', function (Blueprint $table) {
+        Schema::create('histories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 20)->comment('基金代码');
             $table->date('date')->comment('日期');
@@ -35,6 +35,6 @@ class CreateStatisticsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statistics');
+        Schema::dropIfExists('histories');
     }
 }

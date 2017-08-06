@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\UpdateCompanies::class,
         Commands\UpdateFunds::class,
-        Commands\UpdateStatistics::class,
+        Commands\UpdateHistories::class,
         Commands\UpdateRanks::class,
         Commands\UpdateStocks::class,
     ];

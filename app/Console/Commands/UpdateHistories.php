@@ -7,27 +7,27 @@ use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
 use App\Fund;
 use App\Services\EastmoneyService;
-use App\Statistic;
+use App\History;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
-class UpdateStatistics extends Command
+class UpdateHistories extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'update:statistic';
+    protected $signature = 'update:histories';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update statistic';
+    protected $description = 'Update history';
 
     /**
      * Create a new command instance.
@@ -44,7 +44,7 @@ class UpdateStatistics extends Command
      */
     public function handle()
     {
-        $this->info('update statistic 🙏');
+        $this->info('update history 🙏');
         $funds = Fund::where(function ($query) {
             // 过滤掉今天结算过的
             $query->where('profit_date', '<', date('Y-m-d'))
@@ -65,14 +65,14 @@ class UpdateStatistics extends Command
             $this->info("😃{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
             $fund->save();
         }
-        $this->info('update statistic done 😎');
+        $this->info('update history done 😎');
     }
 
     protected function updateOneFund($fund)
     {
         try {
             // 通过 profit_date 判断这只基金是否有被处理过
-            $records = resolve(EastmoneyService::class)->statistic($fund->code, ! ! $fund->profit_date);
+            $records = resolve(EastmoneyService::class)->history($fund->code, ! ! $fund->profit_date);
         } catch (NonDataException $e) {
             // 如果没有历史就进行标记
             $fund->status = 3;
@@ -102,7 +102,7 @@ class UpdateStatistics extends Command
         $touchNum = 0;
         DB::transaction(function () use ($records, $fund, &$touchNum) {
             foreach ($records as $key => $record) {
-                $statistic = Statistic::firstOrNew([
+                $history = History::firstOrNew([
                     'code' => $fund->code,
                     'date' => $record[0],
                 ], [
@@ -114,10 +114,10 @@ class UpdateStatistics extends Command
                     'bonus' => $record[6],
                 ]);
                 // 如果存在数据，那么就停止后续数据库操作
-                if ($statistic->exists) {
+                if ($history->exists) {
                     break;
                 }
-                $statistic->save();
+                $history->save();
                 $touchNum++;
             }
         });

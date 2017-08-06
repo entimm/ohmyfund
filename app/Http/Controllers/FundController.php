@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Fund;
-use App\Statistic;
+use App\History;
 use Illuminate\Http\Request;
 
 class FundController extends Controller
@@ -27,7 +27,7 @@ class FundController extends Controller
 
         $begin = $request->get('begin');
         $end = $request->get('end');
-        $histories = Statistic::where('code', $code)
+        $histories = History::where('code', $code)
             ->when($begin, function($query) use ($begin) {
                 return $query->where('date', '>=', $begin);
             })->when($end, function($query) use ($end) {

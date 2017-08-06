@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Exceptions\NonDataException;
 use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
-use App\Statistic;
+use App\History;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 
@@ -81,7 +81,7 @@ class EastmoneyService
         return $records;
     }
 
-    public function statistic($fundCode, $local = true)
+    public function history($fundCode, $local = true)
     {
         $per = $local ? self::BUFFER_DAY : self::INFINITE_DAY;
         // 如果网络异常就不断间隔重试
@@ -122,7 +122,7 @@ class EastmoneyService
             $elements = array_filter($elements);
 
             try {
-                $record = $this->resolveStatisticRecord($elements, $records);
+                $record = $this->resolveHistoryRecord($elements, $records);
             } catch (\Exception $e) {
                 throw new ResolveErrorException($e->getMessage(), $row);
             }
@@ -138,7 +138,7 @@ class EastmoneyService
         return $records;
     }
 
-    protected function resolveStatisticRecord($elements, $records)
+    protected function resolveHistoryRecord($elements, $records)
     {
         $record = [];
         if (count($elements) < 6) {
@@ -173,13 +173,13 @@ class EastmoneyService
                 $value *= 10000;
             } elseif ($kk == 4) {
                 // 转换申购状态
-                $value = $value ? array_search($value, Statistic::$buyStatusList) : 0;
+                $value = $value ? array_search($value, History::$buyStatusList) : 0;
                 if ($value === false) {
                     throw new \Exception('未知申购状态');
                 }
             } elseif ($kk == 5) {
                 // 转换赎回状态
-                $value = $value ? array_search($value, Statistic::$sellStatusList) : 0;
+                $value = $value ? array_search($value, History::$sellStatusList) : 0;
                 if ($value === false) {
                     throw new \Exception('未知赎回状态');
                 }
