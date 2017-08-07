@@ -18,8 +18,6 @@ class EastmoneyService
      */
     const INFINITE_DAY = 10000;
 
-    private $client;
-
     public function requestCompanies()
     {
         $url = 'http://fund.eastmoney.com/js/jjjz_gs.js';

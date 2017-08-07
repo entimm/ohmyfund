@@ -14,7 +14,7 @@ trait HttpRequest
      * @param array  $query
      * @param array  $options
      *
-     * @return array
+     * @return mixed
      */
     protected function get($endpoint, $query = [], $options = [])
     {
@@ -32,7 +32,7 @@ trait HttpRequest
      * @param array  $params
      * @param array  $options
      *
-     * @return array
+     * @return mixed
      */
     protected function post($endpoint, $params = [], $options = [])
     {
@@ -48,7 +48,7 @@ trait HttpRequest
      * @param string $endpoint
      * @param array  $options  http://docs.guzzlephp.org/en/latest/request-options.html
      *
-     * @return array
+     * @return mixed
      */
     protected function request($method, $endpoint, $options = [])
     {
