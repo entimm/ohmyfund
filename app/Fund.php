@@ -4,6 +4,61 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Fund
+ *
+ * @mixin \Eloquent
+ * @property int $id
+ * @property string $code
+ * @property string $name
+ * @property int $type
+ * @property string $short_name
+ * @property string $pinyin_name
+ * @property string|null $profit_date 收益日期
+ * @property \Carbon\Carbon|null $counted_at 统计时间
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $status
+ * @property int $unit
+ * @property int $total
+ * @property int $rate
+ * @property int $in_1week
+ * @property int $in_1month
+ * @property int $in_3month
+ * @property int $in_6month
+ * @property int $current_year
+ * @property int $in_1year
+ * @property int $in_2year
+ * @property int $in_3year
+ * @property int $in_5year
+ * @property int $since_born
+ * @property string|null $born_date
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereBornDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereCountedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereCurrentYear($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn1month($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn1week($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn1year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn2year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn3month($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn3year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn5year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereIn6month($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund wherePinyinName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereProfitDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereShortName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereSinceBorn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereUnit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fund whereUpdatedAt($value)
+ */
 class Fund extends Model
 {
     protected $fillable = ['code', 'name', 'type', 'short_name', 'pinyin_name',

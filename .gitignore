@@ -13,3 +13,5 @@ npm-debug.log
 /public
 yarn.lock
 cookie_jar.txt
+_ide_helper.php
+.phpstorm.meta.php
