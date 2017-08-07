@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Services\XueQiuService;
-use App\Stock;
-use App\StockHistories;
+use App\Entities\Stock;
+use App\Entities\StockHistories;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;

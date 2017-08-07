@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Stock;
-use App\StockHistories;
+use App\Entities\Stock;
+use App\Entities\StockHistories;
 use Illuminate\Http\Request;
 
 class StockController extends Controller

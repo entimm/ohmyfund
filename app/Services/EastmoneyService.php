@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Exceptions\NonDataException;
 use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
-use App\History;
+use App\Entities\History;
 use App\Traits\HttpRequest;
 use Carbon\Carbon;
 

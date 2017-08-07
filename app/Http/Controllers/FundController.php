@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Fund;
-use App\History;
+use App\Entities\Fund;
+use App\Entities\History;
 use Illuminate\Http\Request;
 
 class FundController extends Controller
