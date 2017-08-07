@@ -9,7 +9,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
-
+/config/local.php
 /public
 yarn.lock
 cookie_jar.txt

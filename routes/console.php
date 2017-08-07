@@ -1,6 +1,8 @@
 <?php
 
+use App\Services\EastmoneyService;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +25,19 @@ Artisan::command('update', function () {
     $this->call('update:ranks');
     $this->call('update:histories');
 })->describe('Update all');
+
+Artisan::command('evaluate', function () {
+    $headers = [
+        '代码',
+        '名称',
+        '日期',
+        '原值',
+        '估算值',
+        '估算增长率',
+        '估值时间',
+    ];
+    foreach (config('local.tracks', []) as $codes) {
+        $list = resolve(EastmoneyService::class)->requestEvaluates($codes);
+        $this->table($headers, $list);
+    }
+});
