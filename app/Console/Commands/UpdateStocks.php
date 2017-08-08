@@ -53,9 +53,7 @@ class UpdateStocks extends Command
 
         foreach (config('stocks') as $symbol) {
             $quotes = resolve(XueQiuService::class)->requestQuotes($symbol);
-            $stock = Stock::firstOrNew(array_only($quotes, 'symbol'));
-            $stock->code = $quotes['code'];
-            $stock->name = $quotes['name'];
+            $stock = Stock::firstOrNew(array_only($quotes, 'symbol'), $quotes);
             $stock->data = array_except($quotes, ['symbol', 'code', 'name']);
 
             $this->process($stock, StockHistories::NORMAL_TYPE);

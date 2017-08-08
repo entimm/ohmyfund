@@ -45,7 +45,7 @@ class HistoryRepository extends BaseRepository
         DB::transaction(function () use ($records, $fundCode, &$touchNum) {
             foreach ($records as $key => $record) {
                 $record['code'] = $fundCode;
-                $history = $this->firstOrNew($record);
+                $history = History::firstOrNew(array_only($record, ['code', 'date'], $record));
                 // 如果存在数据，那么就停止后续数据库操作
                 if ($history->exists) {
                     break;
