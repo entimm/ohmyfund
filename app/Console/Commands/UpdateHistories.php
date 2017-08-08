@@ -2,16 +2,16 @@
 
 namespace App\Console\Commands;
 
+use App\Entities\Fund;
 use App\Exceptions\NonDataException;
 use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
-use App\Entities\Fund;
+use App\Repositories\FundRepository;
+use App\Repositories\HistoryRepository;
 use App\Services\EastmoneyService;
-use App\Entities\History;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 
 class UpdateHistories extends Command
 {
@@ -30,11 +30,28 @@ class UpdateHistories extends Command
     protected $description = 'Update history';
 
     /**
-     * Create a new command instance.
+     * @var HistoryRepository
      */
-    public function __construct()
+    protected $historyRepository;
+
+    /**
+     * @var FundRepository
+     */
+    private $fundRepository;
+
+
+    /**
+     * Create a new command instance.
+     *
+     * @param HistoryRepository $historyRepository
+     * @param FundRepository    $fundRepository
+     */
+    public function __construct(HistoryRepository $historyRepository, FundRepository $fundRepository)
     {
         parent::__construct();
+
+        $this->historyRepository = $historyRepository;
+        $this->fundRepository = $fundRepository;
     }
 
     /**
@@ -45,17 +62,7 @@ class UpdateHistories extends Command
     public function handle()
     {
         $this->info('update history 🙏');
-        $funds = Fund::where(function ($query) {
-            // 过滤掉今天结算过的
-            $query->where('profit_date', '<', date('Y-m-d'))
-                ->orWhereNull('profit_date');
-        })->where(function ($query) {
-            // 60分钟内更新过的不在更新
-            $query->where('counted_at', '<', Carbon::now()->subMinutes(60))
-                ->orWhereNull('counted_at');
-        })->whereNotIn('status', [3, 4, 5]) // 过滤没有数据和极少数据、有异常的基金
-            ->whereNotIn('type', [5, 8]) // 过滤货币基金、理财型基金
-            ->get();
+        $funds = $this->fundRepository->toUpdates();
         $count = count($funds);
         foreach ($funds as $key => $fund) {
             $touchNum = $this->updateOneFund($fund);
@@ -68,7 +75,16 @@ class UpdateHistories extends Command
         $this->info('update history done 😎');
     }
 
-    protected function updateOneFund($fund)
+
+    /**
+     * 更新单个基金的历史净值
+     *
+     *
+     * @param Fund $fund
+     *
+     * @return int
+     */
+    protected function updateOneFund(Fund $fund)
     {
         try {
             // 通过 profit_date 判断这只基金是否有被处理过
@@ -102,36 +118,13 @@ class UpdateHistories extends Command
             return 0;
         }
 
-        $fund->profit_date = $records[0][0] ?: null;
-
-        // 开启事务，保证下面sql语句一起执行成功
-        $touchNum = 0;
-        DB::transaction(function () use ($records, $fund, &$touchNum) {
-            foreach ($records as $key => $record) {
-                $history = History::firstOrNew([
-                    'code' => $fund->code,
-                    'date' => $record[0],
-                ], [
-                    'unit' => $record[1],
-                    'total' => $record[2],
-                    'rate' => $record[3],
-                    'buy_status' => $record[4],
-                    'sell_status' => $record[5],
-                    'bonus' => $record[6],
-                ]);
-                // 如果存在数据，那么就停止后续数据库操作
-                if ($history->exists) {
-                    break;
-                }
-                $history->save();
-                $touchNum++;
-            }
-        });
+        $touchNum = $this->historyRepository->saveRecords($records, $fund->code);
         // 标记10天内都没数据的基金
         $diffDay = date_diff(date_create($fund->profit_date), date_create())->days;
         if ($diffDay > 10) {
             $fund->status = 4;
         }
+        $fund->profit_date = $records[0]['date'] ?: null;
         $fund->counted_at = Carbon::now();
 
         return $touchNum;

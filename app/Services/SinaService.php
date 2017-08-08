@@ -8,6 +8,14 @@ class SinaService
 {
     use HttpRequest;
 
+
+    /**
+     * 获取国内股
+     *
+     * @param $stock
+     *
+     * @return array|mixed
+     */
     public function requestCnStock($stock)
     {
         $url = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol={$stock}&scale=240&datalen=100000";
@@ -18,6 +26,14 @@ class SinaService
         return $records;
     }
 
+
+    /**
+     * 获取美国股
+     *
+     * @param $stock
+     *
+     * @return array|mixed
+     */
     public function requestUsStock($stock)
     {
         $url = "http://stock.finance.sina.com.cn/usstock/api/jsonp_v2.php/var%20_{$stock}=/US_MinKService.getDailyK?symbol=.{$stock}";
@@ -30,6 +46,14 @@ class SinaService
         return $records;
     }
 
+
+    /**
+     * js对象转换为json
+     *
+     * @param $content
+     *
+     * @return bool|mixed
+     */
     private function makeJson($content)
     {
         if (preg_match('/\w:/', $content)) {

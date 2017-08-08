@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Repositories\StockHistoryRepository;
 use App\Services\XueQiuService;
 use App\Entities\Stock;
 use App\Entities\StockHistories;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
 class UpdateStocks extends Command
@@ -26,11 +26,21 @@ class UpdateStocks extends Command
     protected $description = 'Update stocks';
 
     /**
-     * Create a new command instance.
+     * @var StockHistoryRepository
      */
-    public function __construct()
+    private $stockHistoryRepository;
+
+
+    /**
+     * Create a new command instance.
+     *
+     * @param StockHistoryRepository $stockHistoryRepository
+     */
+    public function __construct(StockHistoryRepository $stockHistoryRepository)
     {
         parent::__construct();
+
+        $this->stockHistoryRepository = $stockHistoryRepository;
     }
 
     /**
@@ -60,29 +70,21 @@ class UpdateStocks extends Command
         $this->info('update stock data done 😎');
     }
 
+
+    /**
+     * 获取前复权\未复权股票历史
+     *
+     * @param \Illuminate\Database\Eloquent\Model $stock
+     * @param $type
+     */
     protected function process($stock, $type)
     {
         $symbol = $stock->symbol;
         $typeName = $type == StockHistories::NORMAL_TYPE ? 'normal' : 'before';
-        $list = resolve(XueQiuService::class)->requestHistory($symbol, $typeName, $stock->counted_at->getTimestamp());
+        $list = resolve(XueQiuService::class)->requestHistory($symbol, $typeName, $stock->counted_at ? $stock->counted_at->getTimestamp() : 0);
         $list = array_reverse($list);
-        $touchNum = 0;
-        DB::transaction(function () use ($list, $symbol, &$touchNum, $type) {
-            foreach ($list as $item) {
-                $date = date('Y-m-d', $item['timestamp'] / 1000);
-                $uniqueKeys = [
-                    'symbol' => $symbol,
-                    'date' => $date,
-                    'type' => $type,
-                ];
-                $history = StockHistories::firstOrCreate($uniqueKeys, $item);
-                if (! $history->wasRecentlyCreated) {
-                    break;
-                }
-                $touchNum++;
-            }
-        });
 
+        $touchNum = $this->stockHistoryRepository->saveRecords($list, $symbol, $type);
         $this->info("{$symbol} | {$typeName} | {$touchNum}");
     }
 }

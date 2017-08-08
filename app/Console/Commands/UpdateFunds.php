@@ -43,15 +43,9 @@ class UpdateFunds extends Command
         $progressBar = $this->output->createProgressBar(count($records));
         $progressBar->setBarWidth(50);
         foreach ($records as $record) {
-            Fund::firstOrCreate(['code' => $record[0]], [
-                'short_name' => $record[1],
-                'name' => $record[2],
-                'type' => array_flip(Fund::$types)[$record[3]],
-                'pinyin_name' => $record[4],
-            ]);
+            Fund::firstOrCreate(['code' => $record['code']], $record);
             $progressBar->advance();
         }
         $progressBar->finish();
-        $this->info('update funds done 😎');
     }
 }

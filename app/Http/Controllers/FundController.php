@@ -13,11 +13,28 @@ class FundController extends Controller
         return Fund::get();
     }
 
+
+    /**
+     * 基金的当前数据
+     *
+     * @param Fund $fund
+     *
+     * @return Fund
+     */
     public function show(Fund $fund)
     {
         return $fund;
     }
 
+
+    /**
+     * 基金的历史净值
+     *
+     * @param Request $request
+     * @param         $code
+     *
+     * @return mixed
+     */
     public function history(Request $request, $code)
     {
         $this->validate($request, [

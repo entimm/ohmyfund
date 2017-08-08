@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Entities\Fund;
 use App\Exceptions\NonDataException;
 use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
 use App\Entities\History;
 use App\Traits\HttpRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class EastmoneyService
 {
@@ -18,6 +20,12 @@ class EastmoneyService
      */
     const INFINITE_DAY = 10000;
 
+
+    /**
+     * 获取基金公司
+     *
+     * @return mixed
+     */
     public function requestCompanies()
     {
         $url = 'http://fund.eastmoney.com/js/jjjz_gs.js';
@@ -27,10 +35,22 @@ class EastmoneyService
         $endPos = strpos($content, ']}');
         $json = substr($content, $beginPos, $endPos - $beginPos + 1);
         $records = json_decode($json, true);
+        array_walk($records, function ($record) {
+            return [
+                'code' => $record[0],
+                'name' => $record[1],
+            ];
+        });
 
         return $records;
     }
 
+
+    /**
+     * 获取基金基本数据
+     *
+     * @return mixed
+     */
     public function requestFunds()
     {
         $url = 'http://fund.eastmoney.com/js/fundcode_search.js';
@@ -39,10 +59,20 @@ class EastmoneyService
         $beginPos = strpos($content, '[[');
         $json = substr($content, $beginPos, strlen($content) - $beginPos - 1);
         $records = json_decode($json, true);
+        array_walk($records, function (&$record) {
+            $record = array_combine(['code', 'short_name', 'name', 'type', 'pinyin_name'], $record);
+            $record['type'] = array_flip(Fund::$types)[$record['type']];
+        });
 
         return $records;
     }
 
+
+    /**
+     * 获取基金排名
+     *
+     * @return array
+     */
     public function requestRanks()
     {
         $url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=all&st=asc&pi=1&pn=20000';
@@ -51,33 +81,45 @@ class EastmoneyService
         $beginPos = strpos($content, '[');
         $endPos = strpos($content, ']');
         $json = substr($content, $beginPos, $endPos - $beginPos + 1);
-        $result = json_decode($json, true);
+        $records = json_decode($json, true);
 
-        $records = [];
-        foreach ($result as $item) {
+        $records = Collection::make($records)->mapWithKeys(function ($item) {
             $item = explode(',', $item);
-            $records[$item[0]] = [
-                'rank_date' => $item[3] ?: null,
-                'unit' => $item[4] * 10000,
-                'total' => $item[5] * 10000,
-                'rate' => $item[6] * 10000,
-                'in_1week' => $item[7] * 10000,
-                'in_1month' => $item[8] * 10000,
-                'in_3month' => $item[9] * 10000,
-                'in_6month' => $item[10] * 10000,
-                'current_year' => $item[14] * 10000,
-                'in_1year' => $item[11] * 10000,
-                'in_2year' => $item[12] * 10000,
-                'in_3year' => $item[13] * 10000,
-                'in_5year' => $item[24] * 10000,
-                'since_born' => $item[15] * 10000,
-                'born_date' => $item[16] ?: null,
+            return [
+                $item[0] => [
+                    'rank_date' => $item[3] ?: null,
+                    'unit' => $item[4] * 10000,
+                    'total' => $item[5] * 10000,
+                    'rate' => $item[6] * 10000,
+                    'in_1week' => $item[7] * 10000,
+                    'in_1month' => $item[8] * 10000,
+                    'in_3month' => $item[9] * 10000,
+                    'in_6month' => $item[10] * 10000,
+                    'current_year' => $item[14] * 10000,
+                    'in_1year' => $item[11] * 10000,
+                    'in_2year' => $item[12] * 10000,
+                    'in_3year' => $item[13] * 10000,
+                    'in_5year' => $item[24] * 10000,
+                    'since_born' => $item[15] * 10000,
+                    'born_date' => $item[16] ?: null,
+                ]
             ];
-        }
-
-        return $records;
+        });
+        return $records->toArray();
     }
 
+
+    /**
+     * 获取基金净值历史
+     *
+     * @param $fundCode
+     * @param $fundCountedAt
+     *
+     * @return array
+     * @throws NonDataException
+     * @throws ResolveErrorException
+     * @throws ValidateException
+     */
     public function requestHistories($fundCode, $fundCountedAt)
     {
         $pageSize = self::INFINITE_DAY;
@@ -123,18 +165,39 @@ class EastmoneyService
         return $records;
     }
 
+
+    /**
+     * 解析基金净值记录
+     *
+     * @param $elements
+     * @param $records
+     *
+     * @return array
+     * @throws \Exception
+     */
     protected function resolveHistoryRecord($elements, $records)
     {
         $record = [];
         if (count($elements) < 6) {
             throw new \Exception('记录格式异常');
         }
+        $keyMaps = [
+            'date',
+            'unit',
+            'total',
+            'rate',
+            'buy_status',
+            'sell_status',
+            'bonus',
+        ];
         // 处理单条数据的每一个字段
         foreach ($elements as $kk => $element) {
+            $last = $records[0] ?? null;
+            $key = $keyMaps[$kk];
             // 处理日期,这个比较特殊，要特殊处理
             if ($kk == 0) {
                 preg_match('/\d{4}-\d{2}-\d{2}/', $element, $matches);
-                $record[] = $matches[0];
+                $record[$key] = $matches[0];
                 continue;
             }
 
@@ -144,7 +207,7 @@ class EastmoneyService
 
             if (in_array($kk, [1, 2])) {
                 // 处理单位净值、累计净值,如果为空就取之前的值
-                $value = $value ? $value * 10000 : (isset($records[0]) ? $records[0][$kk] : 0);
+                $value = $value ? $value * 10000 : ($last[$kk] ?: 0);
             } elseif ($kk == 3) {
                 /*
                  * 处理盈亏率
@@ -153,7 +216,7 @@ class EastmoneyService
                  */
                 $value = $value ? substr($value, 0, strlen($value) - 1) : null;
                 if (is_null($value)) {
-                    $value = isset($records[0]) ? ($record[1] / $records[0][1] - 1) * 100 : 0;
+                    $value = $last ? ($record['unit'] / $last['unit'] - 1) * 100 : 0;
                 }
                 $value *= 10000;
             } elseif ($kk == 4) {
@@ -176,12 +239,20 @@ class EastmoneyService
                     $value = 0;
                 }
             }
-            $record[] = $value;
+            $record[$key] = $value;
         }
 
         return $record;
     }
 
+
+    /**
+     * 获取一组基金估值
+     *
+     * @param array $fundCodes
+     *
+     * @return array
+     */
     public function requestEvaluates($fundCodes = [])
     {
         $list = [];
@@ -192,6 +263,14 @@ class EastmoneyService
         return $list;
     }
 
+
+    /**
+     * 获取单个基金估值
+     *
+     * @param $fundCode
+     *
+     * @return array
+     */
     protected function requestOneEvaluate($fundCode)
     {
         $microTime = microtime();

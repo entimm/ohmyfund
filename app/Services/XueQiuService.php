@@ -16,16 +16,24 @@ class XueQiuService
     const POST_LOGIN_PATH = self::BASE_PATH.'/snowman/login';
     const STOCK_LIST_PATH = self::BASE_PATH.'/stock/forchartk/stocklist.json';
 
+
+    /**
+     * XueQiuService constructor.
+     */
     public function __construct()
     {
         $this->cookie = new FileCookieJar('cookie_jar.txt', true);
         $this->tryAuth();
     }
 
+
+    /**
+     * 登陆认证雪球
+     */
     public function tryAuth()
     {
         if ($this->cookie->count()) {
-            return true;
+            return;
         }
         $this->post(self::POST_LOGIN_PATH, [
             'remember_me' => true,
@@ -37,6 +45,14 @@ class XueQiuService
         ]);
     }
 
+
+    /**
+     * 获取当前报价
+     *
+     * @param $symbol
+     *
+     * @return array|bool
+     */
     public function requestQuotes($symbol)
     {
         $symbol = strtoupper($symbol);
@@ -57,6 +73,16 @@ class XueQiuService
         return false;
     }
 
+
+    /**
+     * 获取历史
+     *
+     * @param     $symbol
+     * @param     $typeName
+     * @param int $countedAt
+     *
+     * @return array|bool
+     */
     public function requestHistory($symbol, $typeName, $countedAt = 0)
     {
         $symbol = strtoupper($symbol);
@@ -81,6 +107,15 @@ class XueQiuService
         return false;
     }
 
+
+    /**
+     * 获取内容，如果失败一次则清除cookie后尝试认证，然后再进行内容的获取
+     *
+     * @param callable $callback
+     * @param int      $sleep
+     *
+     * @return mixed
+     */
     private function retryRequest(callable $callback, $sleep = 0)
     {
         try {
@@ -90,6 +125,7 @@ class XueQiuService
                 usleep($sleep * 1000);
             }
             $this->cookie->clear();
+            $this->tryAuth();
 
             return $callback();
         }
