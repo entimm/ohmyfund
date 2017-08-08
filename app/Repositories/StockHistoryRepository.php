@@ -62,9 +62,8 @@ class StockHistoryRepository extends BaseRepository
         return $touchNum;
     }
 
-
     /**
-     * 蜡烛图数据
+     * 蜡烛图数据.
      *
      * @param $symbol
      * @param $type
@@ -91,7 +90,7 @@ class StockHistoryRepository extends BaseRepository
     }
 
     /**
-     * 收盘数据
+     * 收盘数据.
      *
      * @param $symbol
      * @param $type
