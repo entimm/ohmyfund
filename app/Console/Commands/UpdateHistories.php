@@ -77,7 +77,6 @@ class UpdateHistories extends Command
     /**
      * 更新单个基金的历史净值
      *
-     *
      * @param Fund $fund
      *
      * @return int

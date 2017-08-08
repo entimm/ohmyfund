@@ -4,10 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Entities\Fund;
 use App\Entities\History;
+use App\Repositories\FundRepository;
 use Illuminate\Http\Request;
 
 class FundController extends Controller
 {
+
+    /**
+     * @var FundRepository
+     */
+    private $fundRepository;
+
+
+    /**
+     * FundController constructor.
+     *
+     * @param FundRepository $fundRepository
+     */
+    public function __construct(FundRepository $fundRepository)
+    {
+        $this->fundRepository = $fundRepository;
+    }
+
+
     public function index(Request $request)
     {
         return Fund::get();

@@ -3,11 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Stock;
+use App\Repositories\StockHistoryRepository;
 use Illuminate\Http\Request;
 use App\Entities\StockHistories;
 
 class StockController extends Controller
 {
+
+    /**
+     * @var StockHistoryRepository
+     */
+    private $stockHistoryRepository;
+
+
+    /**
+     * StockController constructor.
+     *
+     * @param StockHistoryRepository $stockHistoryRepository
+     */
+    public function __construct(StockHistoryRepository $stockHistoryRepository)
+    {
+        $this->stockHistoryRepository = $stockHistoryRepository;
+    }
+
+
     /**
      * @param Request $request
      *
@@ -47,21 +66,7 @@ class StockController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
         $type = $request->get('type') ?: 1;
-        $candlestick = StockHistories::where('symbol', $symbol)
-            ->select([
-                'open',
-                'high',
-                'low',
-                'close',
-                'volume',
-                'date',
-            ])
-            ->where('type', $type)
-            ->when($begin, function ($query) use ($begin) {
-                return $query->where('date', '>=', $begin);
-            })->when($end, function ($query) use ($end) {
-                return $query->where('date', '<=', $end);
-            })->get();
+        $candlestick = $this->stockHistoryRepository->candlestick($symbol, $type, $begin, $end);
 
         return $candlestick;
     }
@@ -85,14 +90,7 @@ class StockController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
         $type = $request->get('type') ?: 1;
-        $values = StockHistories::where('symbol', $symbol)
-            ->select(['close', 'date'])
-            ->where('type', $type)
-            ->when($begin, function ($query) use ($begin) {
-                return $query->where('date', '>=', $begin);
-            })->when($end, function ($query) use ($end) {
-                return $query->where('date', '<=', $end);
-            })->get();
+        $values = $this->stockHistoryRepository->values($symbol, $type, $begin, $end);
 
         return $values;
     }

@@ -33,8 +33,9 @@ class StockHistoryRepository extends BaseRepository
     /**
      * 保存基金历史记录，并返回操作数量.
      *
-     * @param $records
-     * @param $fundCode
+     * @param $list
+     * @param $symbol
+     * @param $type
      *
      * @return int
      */
@@ -59,5 +60,55 @@ class StockHistoryRepository extends BaseRepository
         });
 
         return $touchNum;
+    }
+
+
+    /**
+     * 蜡烛图数据
+     *
+     * @param $symbol
+     * @param $type
+     * @param $begin
+     * @param $end
+     */
+    public function candlestick($symbol, $type, $begin, $end)
+    {
+        StockHistories::where('symbol', $symbol)
+            ->select([
+                'open',
+                'high',
+                'low',
+                'close',
+                'volume',
+                'date',
+            ])
+            ->where('type', $type)
+            ->when($begin, function ($query) use ($begin) {
+                return $query->where('date', '>=', $begin);
+            })->when($end, function ($query) use ($end) {
+                return $query->where('date', '<=', $end);
+            })->get();
+    }
+
+    /**
+     * 收盘数据
+     *
+     * @param $symbol
+     * @param $type
+     * @param $begin
+     * @param $end
+     *
+     * @return mixed
+     */
+    public function values($symbol, $type, $begin, $end)
+    {
+        return StockHistories::where('symbol', $symbol)
+            ->select(['close', 'date'])
+            ->where('type', $type)
+            ->when($begin, function ($query) use ($begin) {
+                return $query->where('date', '>=', $begin);
+            })->when($end, function ($query) use ($end) {
+                return $query->where('date', '<=', $end);
+            })->get();
     }
 }
