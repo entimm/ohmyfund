@@ -2,20 +2,18 @@
 
 namespace App\Repositories;
 
-use App\Entities\StockHistories;
 use DB;
+use App\Entities\StockHistories;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Entities\History;
 
 /**
- * Class StockHistoryRepository
- * @package namespace App\Repositories\Eloquent;
+ * Class StockHistoryRepository.
  */
 class StockHistoryRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -25,7 +23,7 @@ class StockHistoryRepository extends BaseRepository
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
@@ -33,7 +31,7 @@ class StockHistoryRepository extends BaseRepository
     }
 
     /**
-     * 保存基金历史记录，并返回操作数量
+     * 保存基金历史记录，并返回操作数量.
      *
      * @param $records
      * @param $fundCode
@@ -59,6 +57,7 @@ class StockHistoryRepository extends BaseRepository
                 $touchNum++;
             }
         });
+
         return $touchNum;
     }
 }

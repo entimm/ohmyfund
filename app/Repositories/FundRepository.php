@@ -3,18 +3,17 @@
 namespace App\Repositories;
 
 use Carbon\Carbon;
+use App\Entities\Fund;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Entities\Fund;
 
 /**
- * Class FundRepository
- * @package namespace App\Repositories\Eloquent;
+ * Class FundRepository.
  */
 class FundRepository extends BaseRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -24,7 +23,7 @@ class FundRepository extends BaseRepository
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
@@ -32,7 +31,7 @@ class FundRepository extends BaseRepository
     }
 
     /**
-     * 获取即将更新的基金集合
+     * 获取即将更新的基金集合.
      */
     public function toUpdates()
     {

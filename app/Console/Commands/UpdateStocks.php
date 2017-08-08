@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Repositories\StockHistoryRepository;
-use App\Services\XueQiuService;
-use App\Entities\Stock;
-use App\Entities\StockHistories;
 use Carbon\Carbon;
+use App\Entities\Stock;
+use App\Services\XueQiuService;
 use Illuminate\Console\Command;
+use App\Entities\StockHistories;
+use App\Repositories\StockHistoryRepository;
 
 class UpdateStocks extends Command
 {
@@ -29,7 +29,6 @@ class UpdateStocks extends Command
      * @var StockHistoryRepository
      */
     private $stockHistoryRepository;
-
 
     /**
      * Create a new command instance.
@@ -70,9 +69,8 @@ class UpdateStocks extends Command
         $this->info('update stock data done 😎');
     }
 
-
     /**
-     * 获取前复权\未复权股票历史
+     * 获取前复权\未复权股票历史.
      *
      * @param \Illuminate\Database\Eloquent\Model $stock
      * @param $type

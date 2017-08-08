@@ -7,7 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * App\Entities\Stock
+ * App\Entities\Stock.
  *
  * @property int $id
  * @property string $symbol
@@ -17,6 +17,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property \Carbon\Carbon|null $counted_at
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereCountedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereCreatedAt($value)

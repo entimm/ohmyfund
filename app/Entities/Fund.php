@@ -7,7 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * App\Entities\Fund
+ * App\Entities\Fund.
  *
  * @property int $id
  * @property string $code
@@ -34,6 +34,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property int $in_5year
  * @property int $since_born
  * @property string|null $born_date
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereBornDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereCountedAt($value)

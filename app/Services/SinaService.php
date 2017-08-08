@@ -8,7 +8,6 @@ class SinaService
 {
     use HttpRequest;
 
-
     /**
      * 获取国内股
      *
@@ -25,7 +24,6 @@ class SinaService
 
         return $records;
     }
-
 
     /**
      * 获取美国股
@@ -46,9 +44,8 @@ class SinaService
         return $records;
     }
 
-
     /**
-     * js对象转换为json
+     * js对象转换为json.
      *
      * @param $content
      *

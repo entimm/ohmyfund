@@ -2,16 +2,16 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\Fund;
-use App\Exceptions\NonDataException;
-use App\Exceptions\ResolveErrorException;
-use App\Exceptions\ValidateException;
-use App\Repositories\FundRepository;
-use App\Repositories\HistoryRepository;
-use App\Services\EastmoneyService;
 use Carbon\Carbon;
+use App\Entities\Fund;
 use Illuminate\Console\Command;
+use App\Services\EastmoneyService;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\NonDataException;
+use App\Repositories\FundRepository;
+use App\Exceptions\ValidateException;
+use App\Repositories\HistoryRepository;
+use App\Exceptions\ResolveErrorException;
 
 class UpdateHistories extends Command
 {
@@ -38,7 +38,6 @@ class UpdateHistories extends Command
      * @var FundRepository
      */
     private $fundRepository;
-
 
     /**
      * Create a new command instance.
@@ -74,7 +73,6 @@ class UpdateHistories extends Command
         }
         $this->info('update history done 😎');
     }
-
 
     /**
      * 更新单个基金的历史净值

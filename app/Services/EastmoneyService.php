@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Entities\Fund;
-use App\Exceptions\NonDataException;
-use App\Exceptions\ResolveErrorException;
-use App\Exceptions\ValidateException;
 use App\Entities\History;
 use App\Traits\HttpRequest;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use App\Exceptions\NonDataException;
+use App\Exceptions\ValidateException;
+use App\Exceptions\ResolveErrorException;
 
 class EastmoneyService
 {
@@ -20,9 +20,8 @@ class EastmoneyService
      */
     const INFINITE_DAY = 10000;
 
-
     /**
-     * 获取基金公司
+     * 获取基金公司.
      *
      * @return mixed
      */
@@ -45,9 +44,8 @@ class EastmoneyService
         return $records;
     }
 
-
     /**
-     * 获取基金基本数据
+     * 获取基金基本数据.
      *
      * @return mixed
      */
@@ -67,9 +65,8 @@ class EastmoneyService
         return $records;
     }
 
-
     /**
-     * 获取基金排名
+     * 获取基金排名.
      *
      * @return array
      */
@@ -85,6 +82,7 @@ class EastmoneyService
 
         $records = Collection::make($records)->mapWithKeys(function ($item) {
             $item = explode(',', $item);
+
             return [
                 $item[0] => [
                     'rank_date' => $item[3] ?: null,
@@ -102,23 +100,24 @@ class EastmoneyService
                     'in_5year' => $item[24] * 10000,
                     'since_born' => $item[15] * 10000,
                     'born_date' => $item[16] ?: null,
-                ]
+                ],
             ];
         });
+
         return $records->toArray();
     }
 
-
     /**
-     * 获取基金净值历史
+     * 获取基金净值历史.
      *
      * @param $fundCode
      * @param $fundCountedAt
      *
-     * @return array
      * @throws NonDataException
      * @throws ResolveErrorException
      * @throws ValidateException
+     *
+     * @return array
      */
     public function requestHistories($fundCode, $fundCountedAt)
     {
@@ -165,15 +164,15 @@ class EastmoneyService
         return $records;
     }
 
-
     /**
-     * 解析基金净值记录
+     * 解析基金净值记录.
      *
      * @param $elements
      * @param $records
      *
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
     protected function resolveHistoryRecord($elements, $records)
     {
@@ -245,7 +244,6 @@ class EastmoneyService
         return $record;
     }
 
-
     /**
      * 获取一组基金估值
      *
@@ -262,7 +260,6 @@ class EastmoneyService
 
         return $list;
     }
-
 
     /**
      * 获取单个基金估值
