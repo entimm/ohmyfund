@@ -7,7 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * App\Entities\History
+ * App\Entities\History.
  *
  * @property int $id
  * @property string $code 基金代码
@@ -20,6 +20,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property int $bonus 分红
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereBonus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereBuyStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereCode($value)

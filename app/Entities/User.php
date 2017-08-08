@@ -2,13 +2,13 @@
 
 namespace App\Entities;
 
+use Illuminate\Notifications\Notifiable;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * App\Entities\User
+ * App\Entities\User.
  *
  * @property int $id
  * @property string $name
@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\User whereId($value)

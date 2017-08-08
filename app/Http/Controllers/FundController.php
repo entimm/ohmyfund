@@ -13,9 +13,8 @@ class FundController extends Controller
         return Fund::get();
     }
 
-
     /**
-     * 基金的当前数据
+     * 基金的当前数据.
      *
      * @param Fund $fund
      *
@@ -25,7 +24,6 @@ class FundController extends Controller
     {
         return $fund;
     }
-
 
     /**
      * 基金的历史净值

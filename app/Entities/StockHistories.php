@@ -7,7 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * App\Entities\StockHistories
+ * App\Entities\StockHistories.
  *
  * @property int $id
  * @property string $symbol
@@ -31,6 +31,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property string $date
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\StockHistories whereChg($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\StockHistories whereClose($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\StockHistories whereCreatedAt($value)

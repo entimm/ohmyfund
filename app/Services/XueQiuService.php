@@ -16,7 +16,6 @@ class XueQiuService
     const POST_LOGIN_PATH = self::BASE_PATH.'/snowman/login';
     const STOCK_LIST_PATH = self::BASE_PATH.'/stock/forchartk/stocklist.json';
 
-
     /**
      * XueQiuService constructor.
      */
@@ -26,9 +25,8 @@ class XueQiuService
         $this->tryAuth();
     }
 
-
     /**
-     * 登陆认证雪球
+     * 登陆认证雪球.
      */
     public function tryAuth()
     {
@@ -45,9 +43,8 @@ class XueQiuService
         ]);
     }
 
-
     /**
-     * 获取当前报价
+     * 获取当前报价.
      *
      * @param $symbol
      *
@@ -73,9 +70,8 @@ class XueQiuService
         return false;
     }
 
-
     /**
-     * 获取历史
+     * 获取历史.
      *
      * @param     $symbol
      * @param     $typeName
@@ -107,9 +103,8 @@ class XueQiuService
         return false;
     }
 
-
     /**
-     * 获取内容，如果失败一次则清除cookie后尝试认证，然后再进行内容的获取
+     * 获取内容，如果失败一次则清除cookie后尝试认证，然后再进行内容的获取.
      *
      * @param callable $callback
      * @param int      $sleep

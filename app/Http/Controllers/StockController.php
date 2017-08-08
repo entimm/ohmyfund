@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Stock;
-use App\Entities\StockHistories;
 use Illuminate\Http\Request;
+use App\Entities\StockHistories;
 
 class StockController extends Controller
 {
-
     /**
      * @param Request $request
      *
@@ -18,7 +17,6 @@ class StockController extends Controller
     {
         return Stock::get();
     }
-
 
     /**
      * @param Stock $stock
@@ -30,9 +28,8 @@ class StockController extends Controller
         return $stock;
     }
 
-
     /**
-     * 股票蜡烛图历史数据
+     * 股票蜡烛图历史数据.
      *
      * @param Request $request
      * @param         $symbol
@@ -69,9 +66,8 @@ class StockController extends Controller
         return $candlestick;
     }
 
-
     /**
-     * 股票收市值历史
+     * 股票收市值历史.
      *
      * @param Request $request
      * @param         $symbol
