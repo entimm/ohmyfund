@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Stock;
-use App\Repositories\StockHistoryRepository;
 use Illuminate\Http\Request;
-use App\Entities\StockHistories;
+use App\Repositories\StockHistoryRepository;
 
 class StockController extends Controller
 {
-
     /**
      * @var StockHistoryRepository
      */
     private $stockHistoryRepository;
-
 
     /**
      * StockController constructor.
@@ -25,7 +22,6 @@ class StockController extends Controller
     {
         $this->stockHistoryRepository = $stockHistoryRepository;
     }
-
 
     /**
      * @param Request $request
