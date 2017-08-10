@@ -23,4 +23,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function stock($symbol)
+    {
+        return view('stock', compact('symbol'));
+    }
+
+    public function fund($code)
+    {
+        return view('fund', compact('code'));
+    }
 }

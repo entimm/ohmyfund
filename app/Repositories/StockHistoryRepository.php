@@ -72,7 +72,7 @@ class StockHistoryRepository extends BaseRepository
      */
     public function candlestick($symbol, $type, $begin, $end)
     {
-        StockHistories::where('symbol', $symbol)
+        return StockHistories::where('symbol', $symbol)
             ->select([
                 'open',
                 'high',
