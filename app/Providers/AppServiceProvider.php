@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Entities\Stock;
+use View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $stocks = Stock::select(['symbol', 'name'])->get();
+        View::share('stocks', $stocks);
     }
 
     /**

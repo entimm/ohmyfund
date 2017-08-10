@@ -19,6 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/rank', 'HomeController@rank')->name('rank');
+
 Route::get('/stock/{symbol}', 'HomeController@stock')->name('stock');
 
 Route::get('/fund/{code}', 'HomeController@fund')->name('fund');

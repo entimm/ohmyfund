@@ -47,4 +47,16 @@ class FundRepository extends BaseRepository
         ->whereNotIn('type', [5, 8]) // 过滤货币基金、理财型基金
         ->get();
     }
+
+    /**
+     * 获取将作显示的基金集合
+     */
+    public function toShows()
+    {
+        return $this->scopeQuery(function ($query) {
+            return $query->whereNotIn('status', [3, 4, 5])
+                ->whereNotIn('type', [5, 8])
+                ->take(500);
+        })->all();
+    }
 }
