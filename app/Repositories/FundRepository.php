@@ -49,7 +49,7 @@ class FundRepository extends BaseRepository
     }
 
     /**
-     * 获取将作显示的基金集合
+     * 获取将作显示的基金集合.
      */
     public function toShows()
     {
