@@ -30,6 +30,11 @@ class FundRepository extends BaseRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    public function presenter()
+    {
+        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+    }
+
     /**
      * 获取即将更新的基金集合.
      */

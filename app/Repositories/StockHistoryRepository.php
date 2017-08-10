@@ -72,21 +72,22 @@ class StockHistoryRepository extends BaseRepository
      */
     public function candlestick($symbol, $type, $begin, $end)
     {
-        return StockHistories::where('symbol', $symbol)
-            ->select([
-                'open',
-                'high',
-                'low',
-                'close',
-                'volume',
-                'date',
-            ])
-            ->where('type', $type)
-            ->when($begin, function ($query) use ($begin) {
-                return $query->where('date', '>=', $begin);
-            })->when($end, function ($query) use ($end) {
-                return $query->where('date', '<=', $end);
-            })->get();
+        return $this->scopeQuery(function ($query) use ($symbol, $type, $begin, $end) {
+            return $query->select([
+                    'open',
+                    'high',
+                    'low',
+                    'close',
+                    'volume',
+                    'date',
+                ])->where('symbol', $symbol)
+                ->where('type', $type)
+                ->when($begin, function ($query) use ($begin) {
+                    return $query->where('date', '>=', $begin);
+                })->when($end, function ($query) use ($end) {
+                    return $query->where('date', '<=', $end);
+                });
+        })->all();
     }
 
     /**
@@ -101,13 +102,15 @@ class StockHistoryRepository extends BaseRepository
      */
     public function values($symbol, $type, $begin, $end)
     {
-        return StockHistories::where('symbol', $symbol)
-            ->select(['close', 'date'])
-            ->where('type', $type)
-            ->when($begin, function ($query) use ($begin) {
-                return $query->where('date', '>=', $begin);
-            })->when($end, function ($query) use ($end) {
-                return $query->where('date', '<=', $end);
-            })->get();
+        return $this->scopeQuery(function ($query) use ($symbol, $type, $begin, $end) {
+            return $query->select(['close', 'date'])
+                ->where('symbol', $symbol)
+                ->where('type', $type)
+                ->when($begin, function ($query) use ($begin) {
+                    return $query->where('date', '>=', $begin);
+                })->when($end, function ($query) use ($end) {
+                    return $query->where('date', '<=', $end);
+                });
+        })->all();
     }
 }

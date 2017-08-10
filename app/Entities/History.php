@@ -58,4 +58,16 @@ class History extends Model implements Transformable
         5 => '暂停交易',
         6 => '封闭期',
     ];
+
+    public function transform()
+    {
+        return [
+            'code' => $this->code,
+            'date' => $this->date,
+            'unit' => round($this->unit / 10000, 2),
+            'total' => round($this->total / 10000, 2),
+            'rate' => round($this->rate / 10000, 2),
+            'bonus' => round($this->bonus / 10000, 2),
+        ];
+    }
 }

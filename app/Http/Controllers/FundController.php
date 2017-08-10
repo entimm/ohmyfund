@@ -4,24 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Entities\Fund;
 use App\Entities\History;
+use App\Repositories\HistoryRepository;
 use Illuminate\Http\Request;
-use App\Repositories\FundRepository;
 
 class FundController extends Controller
 {
     /**
-     * @var FundRepository
+     * @var HistoryRepository
      */
-    private $fundRepository;
+    private $historyRepository;
 
     /**
      * FundController constructor.
      *
-     * @param FundRepository $fundRepository
+     * @param HistoryRepository $historyRepository
      */
-    public function __construct(FundRepository $fundRepository)
+    public function __construct(HistoryRepository $historyRepository)
     {
-        $this->fundRepository = $fundRepository;
+        $this->historyRepository = $historyRepository;
     }
 
     public function index(Request $request)
@@ -58,14 +58,7 @@ class FundController extends Controller
 
         $begin = $request->get('begin');
         $end = $request->get('end');
-        $histories = History::select(['date', 'unit', 'rate'])
-            ->where('code', $code)
-            ->when($begin, function ($query) use ($begin) {
-                return $query->where('date', '>=', $begin);
-            })->when($end, function ($query) use ($end) {
-                return $query->where('date', '<=', $end);
-            })->get();
 
-        return $histories;
+        return $this->historyRepository->history($code, $begin, $end)['data'];
     }
 }

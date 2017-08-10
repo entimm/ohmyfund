@@ -62,7 +62,7 @@ class StockController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
         $type = $request->get('type') ?: 1;
-        $candlestick = $this->stockHistoryRepository->candlestick($symbol, $type, $begin, $end);
+        $candlestick = $this->stockHistoryRepository->candlestick($symbol, $type, $begin, $end)['data'];
 
         return $candlestick;
     }
@@ -86,7 +86,7 @@ class StockController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
         $type = $request->get('type') ?: 1;
-        $values = $this->stockHistoryRepository->values($symbol, $type, $begin, $end);
+        $values = $this->stockHistoryRepository->values($symbol, $type, $begin, $end)['data'];
 
         return $values;
     }

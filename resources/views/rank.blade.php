@@ -7,7 +7,7 @@
                 <tr>
                     <td>基金代码</td>
                     <td>名称</td>
-                    {{-- <td>类型</td> --}}
+                    <td>类型</td>
                     @foreach ($columns as $key => $column)
                     <td><a href="{{ route('rank', ['orderBy' => $key, 'sortedBy' => $column['sortedBy']]) }}">
                         {{ $column['name'] }}</a>
@@ -18,11 +18,11 @@
             <tbody>
             @foreach ($funds as $fund)
                 <tr>
-                    <td><a href="{{ route('fund', $fund->code) }}">{{ $fund->code }}</a></td>
-                    <td>{{ $fund->name }}</td>
-                    {{-- <td>{{ $fund->type }}</td> --}}
+                    <td><a href="{{ route('fund', $fund['code']) }}">{{ $fund['code'] }}</a></td>
+                    <td>{{ $fund['name'] }}</td>
+                    <td>{{ $fund['type'] }}</td>
                     @foreach ($columns as $key => $column)
-                    <td>{{ $fund->$key }}</td>
+                    <td>{{ $fund[$key] }}</td>
                     @endforeach
                 </tr>
             @endforeach

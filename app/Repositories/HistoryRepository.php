@@ -30,6 +30,11 @@ class HistoryRepository extends BaseRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    public function presenter()
+    {
+        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+    }
+
     /**
      * 保存基金历史记录，并返回操作数量.
      *
@@ -56,5 +61,18 @@ class HistoryRepository extends BaseRepository
         });
 
         return $touchNum;
+    }
+
+    public function history($code, $begin, $end)
+    {
+        return $this->scopeQuery(function ($query) use ($code, $begin, $end) {
+            return $query->select(['date', 'unit', 'rate'])
+                ->where('code', $code)
+                ->when($begin, function ($query) use ($begin) {
+                    return $query->where('date', '>=', $begin);
+                })->when($end, function ($query) use ($end) {
+                    return $query->where('date', '<=', $end);
+                });
+        })->all();
     }
 }
