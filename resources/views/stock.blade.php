@@ -158,7 +158,7 @@
       });
 
       var stockDataSet = new AmCharts.DataSet();
-      stockDataSet.title = '指数';
+      stockDataSet.title = '{{ $stock->name }}';
       stockDataSet.fieldMappings = [ {
           fromField: "open",
           toField: "open"
@@ -178,7 +178,7 @@
       stockDataSet.compared = false,
           stockDataSet.categoryField = "date",
           stockDataSet.dataLoader = {
-              url: "/api/stocks/{{ $symbol }}/candlesticks",
+              url: "/api/stocks/{{ $stock->symbol }}/candlesticks",
               format: "json",
               showCurtain: true,
               showErrors: true,

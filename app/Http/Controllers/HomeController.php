@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Stock;
 use Illuminate\Http\Request;
 use App\Repositories\FundRepository;
 
@@ -27,9 +28,9 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function stock($symbol)
+    public function stock(Stock $stock)
     {
-        return view('stock', compact('symbol'));
+        return view('stock', compact('stock'));
     }
 
     public function fund($code)
