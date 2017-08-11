@@ -32,7 +32,7 @@ class HistoryRepository extends BaseRepository
 
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
     /**
