@@ -28,6 +28,7 @@
           type: "stock",
           theme: "light",
           dataDateFormat: "YYYY-MM-DD",
+          mouseWheelZoomEnabled:true,
           panels: [ {
               title: "Value",
               percentHeight: 70,
@@ -153,10 +154,7 @@
               async: true,
               reverse: true,
               delimiter: ",",
-              useColumnNames: true,
-              complete: function ( chart ) {
-                  console.log(chart);
-              }
+              useColumnNames: true
           };
       chart.dataSets = [stockDataSet];
   </script>

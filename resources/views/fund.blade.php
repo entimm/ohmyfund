@@ -111,13 +111,5 @@ var chart = AmCharts.makeChart("chartdiv", {
         }
     }
 });
-
-chart.addListener("rendered", zoomChart);
-
-zoomChart();
-
-function zoomChart() {
-    chart.zoomToIndexes(chart.dataProvider.length - 40, chart.dataProvider.length - 1);
-}
 </script>
 @endpush
