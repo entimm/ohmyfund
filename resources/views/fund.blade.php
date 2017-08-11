@@ -12,6 +12,7 @@
 
 @section('content')
 <div class="container">
+    <div style="color:#000; font-weight:bold; text-align:center;">{{ $fund->name }}</div>
     <div id="chartdiv"></div>
 </div>
 @endsection
@@ -58,7 +59,6 @@ var chart = AmCharts.makeChart("chartdiv", {
         lineAlpha: 1,
         lineColor: "#d1526d",
         fillAlphas: 0.3,
-        title: "red line",
         useLineColorForBulletBorder: true,
         valueField: "unit",
         balloonText: "<span style='font-size:12px;'>[[value]]</span>"
@@ -98,7 +98,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         enabled: true
     },
     dataLoader: {
-        url: "/api/funds/{{ $code }}/history",
+        url: "/api/funds/{{ $fund->code }}/history",
         format: "json",
         showCurtain: true,
         showErrors: true,
@@ -106,10 +106,14 @@ var chart = AmCharts.makeChart("chartdiv", {
         reverse: true,
         delimiter: ",",
         useColumnNames: true,
-        complete: function ( chart ) {
-            console.log(chart);
+        complete: function (chart) {
+            chart.addListener("dataUpdated", zoomChart);
         }
     }
 });
+
+function zoomChart() {
+    chart.zoomToIndexes(chart.dataProvider.length - 300, chart.dataProvider.length - 1);
+}
 </script>
 @endpush

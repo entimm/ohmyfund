@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Fund;
 use App\Entities\Stock;
 use Illuminate\Http\Request;
 use App\Repositories\FundRepository;
@@ -33,9 +34,9 @@ class HomeController extends Controller
         return view('stock', compact('stock'));
     }
 
-    public function fund($code)
+    public function fund(Fund $fund)
     {
-        return view('fund', compact('code'));
+        return view('fund', compact('fund'));
     }
 
     public function rank(Request $request, FundRepository $fundRepository)

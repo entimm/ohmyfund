@@ -23,4 +23,4 @@ Route::get('/rank', 'HomeController@rank')->name('rank');
 
 Route::get('/stock/{stock}', 'HomeController@stock')->name('stock');
 
-Route::get('/fund/{code}', 'HomeController@fund')->name('fund');
+Route::get('/fund/{fund}', 'HomeController@fund')->name('fund');
