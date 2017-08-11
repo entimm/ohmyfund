@@ -62,8 +62,8 @@ var chart = AmCharts.makeChart("chartdiv", {
         hideBulletsCount: 50,
         lineThickness: 2,
         lineAlpha: 1,
-        lineColor: "#fe1c40",
-        fillAlphas: 0.2,
+        lineColor: "#ccc",
+        fillAlphas: 0.5,
         useLineColorForBulletBorder: true,
         valueField: "unit",
         balloonText: "<span style='font-size:12px;'>[[value]]</span>"
