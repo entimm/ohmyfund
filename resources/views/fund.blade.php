@@ -33,10 +33,15 @@ var chart = AmCharts.makeChart("chartdiv", {
     autoMarginOffset: 20,
     mouseWheelZoomEnabled:true,
     dataDateFormat: "YYYY-MM-DD",
+    color: "#ccc",
+    plotAreaFillColors: "#333",
+    plotAreaFillAlphas: 1,
     valueAxes: [{
         id: "v1",
         axisAlpha: 0,
         position: "left",
+        gridColor: "#555",
+        gridAlpha: 1,
     }],
     balloon: {
         borderThickness: 1,
@@ -48,7 +53,7 @@ var chart = AmCharts.makeChart("chartdiv", {
           drop:true,
           adjustBorderColor:false,
           horizontalPadding:0,
-          color:"#ffffff"
+          color:"#000"
         },
         bullet: "round",
         bulletBorderAlpha: 1,
@@ -57,7 +62,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         hideBulletsCount: 50,
         lineThickness: 2,
         lineAlpha: 1,
-        lineColor: "#d10456",
+        lineColor: "#fe1c40",
         fillAlphas: 0.2,
         useLineColorForBulletBorder: true,
         valueField: "unit",
@@ -67,16 +72,16 @@ var chart = AmCharts.makeChart("chartdiv", {
         graph: "g1",
         oppositeAxis:false,
         offset:30,
-        scrollbarHeight: 80,
-        backgroundAlpha: 0,
-        selectedBackgroundAlpha: 0.1,
-        selectedBackgroundColor: "#888888",
+        scrollbarHeight: 50,
+        graphType: "line",
+        usePeriod: "WW",
+        backgroundColor: "#333",
+        graphFillColor: "#666",
         graphFillAlpha: 0.5,
-        graphLineAlpha: 0.5,
-        selectedGraphFillAlpha: 0,
-        selectedGraphLineAlpha: 1,
-        autoGridCount:true,
-        color:"#AAAAAA"
+        gridColor: "#555",
+        gridAlpha: 1,
+        selectedBackgroundColor: "#444",
+        selectedGraphFillAlpha: 1
     },
     chartCursor: {
         pan: true,
@@ -92,7 +97,9 @@ var chart = AmCharts.makeChart("chartdiv", {
     categoryAxis: {
         parseDates: true,
         dashLength: 1,
-        minorGridEnabled: true
+        minorGridEnabled: true,
+        gridColor: "#555",
+        gridAlpha: 1,
     },
     export: {
         enabled: true
