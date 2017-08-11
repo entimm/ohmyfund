@@ -60,6 +60,7 @@ class HomeController extends Controller
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
         $funds = $fundRepository->toShows()['data'];
+
         return view('rank', compact('funds', 'columns'));
     }
 }

@@ -118,7 +118,7 @@ class Fund extends Model implements Transformable
             'id' => $this->id,
             'code' => $this->code,
             'name' => $this->name,
-            'type' => Static::$types[$this->type],
+            'type' => static::$types[$this->type],
             'unit' => round($this->unit / 10000, 2),
             'total' => round($this->total / 10000, 2),
             'rate' => round($this->rate / 10000, 2),
