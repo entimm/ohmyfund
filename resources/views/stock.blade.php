@@ -123,6 +123,37 @@
           balloon: {
               textAlign: "left",
               offsetY: 10
+          },
+          periodSelector: {
+            position: "bottom",
+            periods: [{
+              period: "DD",
+              count: 10,
+              label: "10D"
+            }, {
+              period: "MM",
+              count: 1,
+              label: "1M"
+            }, {
+              period: "MM",
+              count: 6,
+              label: "6M"
+            }, {
+              period: "YYYY",
+              count: 1,
+              label: "1Y"
+            }, {
+              period: "YYYY",
+              count: 2,
+              selected: true,
+              label: "2Y"
+            }, {
+              period: "YTD",
+              label: "YTD"
+            }, {
+              period: "MAX",
+              label: "MAX"
+            }]
           }
       });
 
