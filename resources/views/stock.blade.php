@@ -117,6 +117,7 @@
           },
           chartCursorSettings: {
               pan: true,
+              cursorColor: "#d10456",
               valueLineEnabled: true,
               valueLineBalloonEnabled: true
           },
