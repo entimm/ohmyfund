@@ -2,9 +2,8 @@
 
 namespace App\Entities;
 
-use App\Services\EastmoneyService;
 use Cache;
-use Carbon\Carbon;
+use App\Services\EastmoneyService;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -121,7 +120,7 @@ class Fund extends Model implements Transformable
             'id' => $this->id,
             'code' => $this->code,
             'name' => $this->name,
-            'type' => Static::$types[$this->type],
+            'type' => static::$types[$this->type],
             'unit' => round($this->unit / 10000, 2),
             'total' => round($this->total / 10000, 2),
             'rate' => round($this->rate / 10000, 2),
@@ -142,6 +141,7 @@ class Fund extends Model implements Transformable
     public function getHistoriesAttribute()
     {
         $key = 'histories_'.$this->code;
+
         return Cache::remember($key, 10, function () {
             return History::select(['date', 'unit', 'rate'])
                 ->where('code', $this->code)
@@ -159,6 +159,7 @@ class Fund extends Model implements Transformable
         $evaluate = Cache::remember($key, 10, function () {
             return resolve(EastmoneyService::class)->requestOneEvaluate($this->code);
         });
+
         return $evaluate['rate'];
     }
 }
