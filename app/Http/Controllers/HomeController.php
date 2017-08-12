@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Fund;
-use App\Entities\History;
 use App\Entities\Stock;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Repositories\FundRepository;
 use Illuminate\Support\Collection;
+use App\Repositories\FundRepository;
 
 class HomeController extends Controller
 {
@@ -63,9 +61,9 @@ class HomeController extends Controller
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
         $funds = $fundRepository->toShows()['data'];
+
         return view('rank', compact('funds', 'columns'));
     }
-
 
     public function concerns(Request $request)
     {
@@ -92,6 +90,7 @@ class HomeController extends Controller
             $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
         }
         $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
+
         return view('concerns', compact('funds', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
     }
 }
