@@ -96,8 +96,8 @@
     });
 
     var params = {
-        orderBy: "{{ request('orderBy') }}",
-        sortedBy: "{{ request('sortedBy') }}",
+        orderBy: "{{ $orderBy }}",
+        sortedBy: "{{ $sortedBy }}",
         graphScope: "{{ $graphScope }}",
     };
 

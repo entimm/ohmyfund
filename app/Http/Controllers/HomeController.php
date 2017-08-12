@@ -92,6 +92,6 @@ class HomeController extends Controller
             $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
         }
         $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
-        return view('concerns', compact('funds', 'columns', 'graphScope'));
+        return view('concerns', compact('funds', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
     }
 }
