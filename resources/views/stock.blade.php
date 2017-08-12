@@ -211,7 +211,6 @@
           let endDate = event.endDate;
 
           let graph = chart.panels[0].getGraphById('g1');
-          console.log(endDate - startDate);
           if ((endDate - startDate)/(86400*1000) > maxCandlesticks) {
               // change graph type
               if (graph.type != "line") {

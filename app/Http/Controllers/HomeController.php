@@ -93,4 +93,13 @@ class HomeController extends Controller
 
         return view('concerns', compact('funds', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
     }
+
+    public function compare()
+    {
+        $stocks = explode(',', env('COMPARE_STOCKS'));
+        $funds = explode(',', env('COMPARE_FUNDS'));
+        $compareStocksJson = Stock::select(['symbol', 'name as title'])->whereIn('symbol', $stocks)->get()->toJson();
+        $compareFundsJson = Fund::select(['code', 'name as title'])->whereIn('code', $funds)->get()->toJson();
+        return view('compare', compact('compareStocksJson', 'compareFundsJson'));
+    }
 }

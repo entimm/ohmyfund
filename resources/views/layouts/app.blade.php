@@ -51,6 +51,9 @@
                                 <a href="{{ route('concerns') }}">关注基金</a>
                             </li>
                             <li>
+                                <a href="{{ route('compare') }}">基金比较</a>
+                            </li>
+                            <li>
                                 <a href="{{ route('rank') }}">基金排名</a>
                             </li>
                             <li class="dropdown">
