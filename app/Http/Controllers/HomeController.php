@@ -8,6 +8,7 @@ use App\Entities\Stock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FundRepository;
+use Illuminate\Support\Collection;
 
 class HomeController extends Controller
 {
@@ -68,8 +69,9 @@ class HomeController extends Controller
 
     public function concerns()
     {
+        $funds = Collection::make();
         foreach (config('local.concerns', []) as $codes) {
-            $funds = Fund::whereIn('code', $codes)->get();
+            $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
         }
         return view('concerns', compact('funds'));
     }

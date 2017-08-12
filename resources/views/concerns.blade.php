@@ -44,9 +44,26 @@
                                 <td>{{ $fund->born_date ?: '—'}}</td>
                             </tbody>
                             </table>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td colspan="7" class="text-center">7天历史增长率</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <tr>
+                                        @for ($i = 0; $i < 7; $i++)
+                                            <td>{{ $fund->histories[$i]->rate }}</td>
+                                        @endfor
+                                    </tr>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="col-md-3">
-                            <div id="chartdiv-{{ $fund->code }}" style="width: auto; height: 100px;"></div>
+                            <div id="chartdiv-{{ $fund->code }}" style="width: auto; height: 170px;"></div>
                         </div>
                     </div>
                 </div>

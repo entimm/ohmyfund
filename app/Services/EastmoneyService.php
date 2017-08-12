@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Cache;
 use Carbon\Carbon;
 use App\Entities\Fund;
 use App\Entities\History;
@@ -244,18 +245,24 @@ class EastmoneyService
         return $record;
     }
 
+
     /**
      * 获取一组基金估值
      *
      * @param array $fundCodes
+     * @param bool  $cache
      *
      * @return array
      */
-    public function requestEvaluates($fundCodes = [])
+    public function requestEvaluates($fundCodes = [], $cache = true)
     {
         $list = [];
         foreach ($fundCodes as $code) {
-            $list[] = $this->requestOneEvaluate($code);
+            $key = 'evaluate_'.$code;
+            $evaluate = Cache::remember($key, $cache ? 10 : null, function () use ($code) {
+                return $this->requestOneEvaluate($code);
+            });
+            $list[] = $evaluate;
         }
 
         return $list;

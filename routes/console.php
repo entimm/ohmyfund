@@ -2,6 +2,7 @@
 
 use App\Services\EastmoneyService;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -30,14 +31,19 @@ Artisan::command('evaluate', function () {
     $headers = [
         '代码',
         '名称',
-        '日期',
-        '原值',
-        '估算值',
         '估算增长率',
         '估值时间',
     ];
     foreach (config('local.concerns', []) as $codes) {
         $list = resolve(EastmoneyService::class)->requestEvaluates($codes);
+        $list = Collection::make($list)->transform(function ($item) {
+            return [
+                $item['code'],
+                $item['name'],
+                $item['rate'],
+                $item['time'],
+            ];
+        });
         $this->table($headers, $list);
     }
 });
