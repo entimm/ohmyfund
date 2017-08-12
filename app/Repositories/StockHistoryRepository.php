@@ -103,7 +103,7 @@ class StockHistoryRepository extends BaseRepository
     public function values($symbol, $type, $begin, $end)
     {
         return $this->scopeQuery(function ($query) use ($symbol, $type, $begin, $end) {
-            return $query->select(['close', 'date'])
+            return $query->select(['close as value', 'date'])
                 ->where('symbol', $symbol)
                 ->where('type', $type)
                 ->when($begin, function ($query) use ($begin) {

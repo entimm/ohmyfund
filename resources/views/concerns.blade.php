@@ -102,7 +102,7 @@
             graph.balloonText = "<span style='font-size:12px;'>[[rate]] ([[date]])</span>";
             graph.balloon = {
                 color:"#000",
-                "cornerRadius": 5,
+                cornerRadius: 5,
                 borderThickness: 1,
                 shadowAlpha: 0
             };
