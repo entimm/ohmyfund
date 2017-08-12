@@ -36,7 +36,7 @@ Artisan::command('evaluate', function () {
         '估算增长率',
         '估值时间',
     ];
-    foreach (config('local.tracks', []) as $codes) {
+    foreach (config('local.concerns', []) as $codes) {
         $list = resolve(EastmoneyService::class)->requestEvaluates($codes);
         $this->table($headers, $list);
     }

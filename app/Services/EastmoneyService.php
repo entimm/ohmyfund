@@ -268,7 +268,7 @@ class EastmoneyService
      *
      * @return array
      */
-    protected function requestOneEvaluate($fundCode)
+    public function requestOneEvaluate($fundCode)
     {
         $microTime = microtime();
         $url = "http://fundgz.1234567.com.cn/js/{$fundCode}.js?rt={$microTime}";

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Fund;
+use App\Entities\History;
 use App\Entities\Stock;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FundRepository;
 
@@ -61,5 +63,14 @@ class HomeController extends Controller
         }
         $funds = $fundRepository->toShows()['data'];
         return view('rank', compact('funds', 'columns'));
+    }
+
+
+    public function concerns()
+    {
+        foreach (config('local.concerns', []) as $codes) {
+            $funds = Fund::whereIn('code', $codes)->get();
+        }
+        return view('concerns', compact('funds'));
     }
 }

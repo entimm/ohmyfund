@@ -33,7 +33,7 @@ var chart = AmCharts.makeChart("chartdiv", {
     autoMarginOffset: 20,
     mouseWheelZoomEnabled:true,
     dataDateFormat: "YYYY-MM-DD",
-    color: "#ccc",
+    color: "#333",
     plotAreaFillColors: "#333",
     plotAreaFillAlphas: 1,
     valueAxes: [{
@@ -120,7 +120,7 @@ var chart = AmCharts.makeChart("chartdiv", {
 });
 
 function zoomChart() {
-    chart.zoomToIndexes(chart.dataProvider.length - 300, chart.dataProvider.length - 1);
+    chart.zoomToIndexes(chart.dataProvider.length - 100, chart.dataProvider.length - 1);
 }
 </script>
 @endpush

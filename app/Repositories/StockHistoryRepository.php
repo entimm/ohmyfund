@@ -86,7 +86,7 @@ class StockHistoryRepository extends BaseRepository
                     return $query->where('date', '>=', $begin);
                 })->when($end, function ($query) use ($end) {
                     return $query->where('date', '<=', $end);
-                });
+                })->orderBy('date', 'asc');
         })->all();
     }
 
@@ -111,6 +111,7 @@ class StockHistoryRepository extends BaseRepository
                 })->when($end, function ($query) use ($end) {
                     return $query->where('date', '<=', $end);
                 });
-        })->all();
+        })->orderBy('date', 'asc')
+          ->all();
     }
 }

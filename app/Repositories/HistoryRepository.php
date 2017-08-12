@@ -72,7 +72,7 @@ class HistoryRepository extends BaseRepository
                     return $query->where('date', '>=', $begin);
                 })->when($end, function ($query) use ($end) {
                     return $query->where('date', '<=', $end);
-                });
+                })->orderBy('date', 'asc');
         })->all();
     }
 }
