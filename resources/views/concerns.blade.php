@@ -75,7 +75,7 @@
     AmCharts.ready(function () {
     @foreach($funds as $fund)
             var chart = new AmCharts.AmSerialChart();
-            chart.dataProvider = {!! $fund->histories->take($graphScope)->values()->toJson() !!};
+            chart.dataProvider = {!! $fund->histories->take(-$graphScope)->values()->toJson() !!};
             chart.categoryField = "date";
             chart.autoMargins = false;
             chart.marginLeft = 0;
