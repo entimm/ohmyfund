@@ -245,7 +245,6 @@ class EastmoneyService
         return $record;
     }
 
-
     /**
      * 获取一组基金估值
      *
