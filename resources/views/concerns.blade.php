@@ -48,7 +48,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <td colspan="7" class="text-center">7天历史增长率</td>
+                                        <td colspan="7" class="text-center">→ 7天历史增长率 →</td>
                                     </tr>
                                 </thead>
                                 <tbody>
