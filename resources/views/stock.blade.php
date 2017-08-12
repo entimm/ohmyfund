@@ -24,15 +24,17 @@
   <script src="/amcharts/plugins/export/export.min.js"></script>
   <script src="/amcharts/themes/light.js"></script>
   <script>
-      var chart = AmCharts.makeChart("chartdiv", {
+      const maxCandlesticks = 3000;
+      const graphType = "candlestick";
+      let chart = AmCharts.makeChart("chartdiv", {
           type: "stock",
           theme: "light",
           dataDateFormat: "YYYY-MM-DD",
-          mouseWheelZoomEnabled:true,
-          panels: [ {
+          mouseWheelZoomEnabled: true,
+          panels: [{
               title: "Value",
               percentHeight: 70,
-              stockGraphs: [ {
+              stockGraphs: [{
                   type: "candlestick",
                   id: "g1",
                   openField: "open",
@@ -51,39 +53,39 @@
                   comparable: true,
                   compareField: "close",
                   showBalloon: false,
-              } ],
+              }],
               stockLegend: {
                   valueTextRegular: undefined,
                   periodValueTextComparing: "[[percents.value.close]]%"
-                }
-              }, {
-                  title: "Volume",
-                  percentHeight: 30,
-                  marginTop: 1,
-                  columnWidth: 0.6,
-                  showCategoryAxis: false,
-                  stockGraphs: [ {
-                      valueField: "volume",
-                      openField: "open",
-                      type: "column",
-                      showBalloon: false,
-                      fillAlphas: 1,
-                      lineColor: "#fff",
-                      fillColors: "#fff",
-                      negativeLineColor: "#db4c3c",
-                      negativeFillColors: "#db4c3c",
-                      useDataSetColors: false
-                  } ],
-                  stockLegend: {
-                      markerType: "none",
-                      markerSize: 0,
-                      labelText: "",
-                      periodValueTextRegular: "[[value.close]]"
-                  },
-                  valueAxes: [ {
-                      usePrefixes: true
-                  } ]
               }
+          }, {
+              title: "Volume",
+              percentHeight: 30,
+              marginTop: 1,
+              columnWidth: 0.6,
+              showCategoryAxis: false,
+              stockGraphs: [{
+                  valueField: "volume",
+                  openField: "open",
+                  type: "column",
+                  showBalloon: false,
+                  fillAlphas: 1,
+                  lineColor: "#fff",
+                  fillColors: "#fff",
+                  negativeLineColor: "#db4c3c",
+                  negativeFillColors: "#db4c3c",
+                  useDataSetColors: false
+              }],
+              stockLegend: {
+                  markerType: "none",
+                  markerSize: 0,
+                  labelText: "",
+                  periodValueTextRegular: "[[value.close]]"
+              },
+              valueAxes: [{
+                  usePrefixes: true
+              }]
+          }
           ],
           panelsSettings: {
               plotAreaFillColors: "#333",
@@ -126,39 +128,39 @@
               offsetY: 10
           },
           periodSelector: {
-            position: "bottom",
-            periods: [{
-              period: "DD",
-              count: 10,
-              label: "10D"
-            }, {
-              period: "MM",
-              count: 1,
-              label: "1M"
-            }, {
-              period: "MM",
-              count: 6,
-              label: "6M"
-            }, {
-              period: "YYYY",
-              count: 1,
-              label: "1Y"
-            }, {
-              period: "YYYY",
-              count: 2,
-              selected: true,
-              label: "2Y"
-            }, {
-              period: "YTD",
-              label: "YTD"
-            }, {
-              period: "MAX",
-              label: "MAX"
-            }]
+              position: "bottom",
+              periods: [{
+                  period: "DD",
+                  count: 10,
+                  label: "10D"
+              }, {
+                  period: "MM",
+                  count: 1,
+                  label: "1M"
+              }, {
+                  period: "MM",
+                  count: 6,
+                  label: "6M"
+              }, {
+                  period: "YYYY",
+                  count: 1,
+                  label: "1Y"
+              }, {
+                  period: "YYYY",
+                  count: 2,
+                  selected: true,
+                  label: "2Y"
+              }, {
+                  period: "YTD",
+                  label: "YTD"
+              }, {
+                  period: "MAX",
+                  label: "MAX"
+              }]
           }
       });
 
-      var stockDataSet = new AmCharts.DataSet();
+      let stockDataSet = new AmCharts.DataSet();
       stockDataSet.title = '{{ $stock->name }}';
       stockDataSet.fieldMappings = [ {
           fromField: "open",
@@ -176,18 +178,52 @@
           fromField: "volume",
           toField: "volume"
       } ];
-      stockDataSet.compared = false,
-          stockDataSet.categoryField = "date",
-          stockDataSet.dataLoader = {
-              url: "/api/stocks/{{ $stock->symbol }}/candlesticks",
-              format: "json",
-              showCurtain: true,
-              showErrors: true,
-              async: true,
-              reverse: true,
-              delimiter: ",",
-              useColumnNames: true
-          };
+      stockDataSet.compared = false;
+      stockDataSet.categoryField = "date";
+      stockDataSet.dataLoader = {
+          url: "/api/stocks/{{ $stock->symbol }}/candlesticks",
+          format: "json",
+          showCurtain: true,
+          showErrors: true,
+          async: true,
+          reverse: true,
+          delimiter: ",",
+          useColumnNames: true,
+          complete: function (chart) {
+              // chart.addListener("zoomed", handleZoom);
+          }
+      };
       chart.dataSets = [stockDataSet];
+
+      function handleZoom(event) {
+          let startDate = event.startDate;
+          let endDate = event.endDate;
+
+          // as we also want to change graph type depending on the selected period, we call this method
+          changeGraphType(event);
+      }
+
+      function changeGraphType(event) {
+          let startDate = event.startDate;
+          let endDate = event.endDate;
+
+          let graph = chart.panels[0].getGraphById('g1');
+          console.log(endDate - startDate);
+          if ((endDate - startDate)/(86400*1000) > maxCandlesticks) {
+              // change graph type
+              if (graph.type != "line") {
+                  graph.type = "line";
+                  graph.fillAlphas = 0;
+                  chart.validateNow();
+              }
+          } else {
+              // change graph type
+              if (graph.type != graphType) {
+                  graph.type = graphType;
+                  graph.fillAlphas = 1;
+                  chart.validateNow();
+              }
+          }
+      }
   </script>
 @endpush
