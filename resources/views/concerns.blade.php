@@ -5,6 +5,16 @@
 .amcharts-main-div a[href*="www.amcharts.com"] {
     display: none!important;
 }
+
+.rise {
+    color: red;
+    font-weight: bolder;
+}
+
+.fall {
+    color: green;
+    font-weight: bolder;
+}
 </style>
 @endpush
 
@@ -40,7 +50,7 @@
                             <tbody>
                             <tr>
                                 @foreach ($columns as $key => $column)
-                                    <td>{{ $fund->$key ?: '—'}}</td>
+                                    <td class="rate-value">{{ $fund->$key ?: '—'}}</td>
                                 @endforeach
                             </tr>
                             <tr>
@@ -48,7 +58,8 @@
                             </tr>
                             <tr>
                                 @for ($i = 0; $i < 13; $i++)
-                                    <td>{{ $fund->histories->take(-13)->reverse()->values()[$i]->rate }}</td>
+                                    <td class="rate-value">
+                                    {{ $fund->histories->take(-13)->reverse()->values()[$i]->rate }}</td>
                                 @endfor
                             </tr>
                             </tbody>
@@ -136,5 +147,19 @@
         url += "?" + paramStr;
         window.location.href = url;
     }
+
+    $(function() {
+        $('.rate-value').each(function () {
+            $this = $(this);
+            let text = $this.text();
+            if (isFinite(text) && (num = parseFloat(text))) {
+                if (num > 0) {
+                    $this.addClass('rise');
+                } else if (num < 0) {
+                    $this.addClass('fall');
+                }
+            }
+        })
+    });
     </script>
 @endpush
