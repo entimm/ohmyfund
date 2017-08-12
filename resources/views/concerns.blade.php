@@ -40,7 +40,7 @@
                             </tr>
                             <tr>
                                 @for ($i = 0; $i < 13; $i++)
-                                    <td>{{ $fund->histories[$i]->rate }}</td>
+                                    <td>{{ $fund->histories->take(-13)->reverse()->values()[$i]->rate }}</td>
                                 @endfor
                             </tr>
                             </tbody>
