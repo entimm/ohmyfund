@@ -100,6 +100,7 @@ class HomeController extends Controller
         $funds = explode(',', env('COMPARE_FUNDS'));
         $compareStocksJson = Stock::select(['symbol', 'name as title'])->whereIn('symbol', $stocks)->get()->toJson();
         $compareFundsJson = Fund::select(['code', 'name as title'])->whereIn('code', $funds)->get()->toJson();
+
         return view('compare', compact('compareStocksJson', 'compareFundsJson'));
     }
 }
