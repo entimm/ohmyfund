@@ -29,19 +29,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <td>{{ $fund->evaluateRate }}</td>
-                                <td>{{ $fund->rate }}</td>
-                                <td>{{ $fund->in_1week }}</td>
-                                <td>{{ $fund->in_1month }}</td>
-                                <td>{{ $fund->in_3month }}</td>
-                                <td>{{ $fund->in_6month }}</td>
-                                <td>{{ $fund->current_year }}</td>
-                                <td>{{ $fund->in_1year }}</td>
-                                <td>{{ $fund->in_2year }}</td>
-                                <td>{{ $fund->in_3year }}</td>
-                                <td>{{ $fund->in_5year }}</td>
-                                <td>{{ $fund->since_born }}</td>
-                                <td>{{ $fund->born_date }}</td>
+                                <td>{{ $fund->evaluateRate ?: '—'}}</td>
+                                <td>{{ $fund->rate ?: '—'}}</td>
+                                <td>{{ $fund->in_1week ?: '—'}}</td>
+                                <td>{{ $fund->in_1month ?: '—'}}</td>
+                                <td>{{ $fund->in_3month ?: '—'}}</td>
+                                <td>{{ $fund->in_6month ?: '—'}}</td>
+                                <td>{{ $fund->current_year ?: '—'}}</td>
+                                <td>{{ $fund->in_1year ?: '—'}}</td>
+                                <td>{{ $fund->in_2year ?: '—'}}</td>
+                                <td>{{ $fund->in_3year ?: '—'}}</td>
+                                <td>{{ $fund->in_5year ?: '—'}}</td>
+                                <td>{{ $fund->since_born ?: '—'}}</td>
+                                <td>{{ $fund->born_date ?: '—'}}</td>
                             </tbody>
                             </table>
                         </div>
