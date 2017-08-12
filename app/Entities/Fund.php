@@ -142,7 +142,7 @@ class Fund extends Model implements Transformable
     public function getHistoriesAttribute()
     {
         $key = 'histories_'.$this->code;
-        return Cache::remember($key, 10, function () {
+        return Cache::remember($key, 30, function () {
             return History::select(['date', 'unit', 'rate'])
                 ->where('code', $this->code)
                 ->orderBy('date', 'desc')
