@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Entities\Stock;
+use App\Models\Stock;
 use View;
 use Illuminate\Support\ServiceProvider;
 

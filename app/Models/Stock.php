@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * App\Entities\Stock.
+ * App\Models\Stock.
  *
  * @property int $id
  * @property string $symbol
@@ -18,14 +18,14 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereCountedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereSymbol($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Stock whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereCountedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereSymbol($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Stock extends Model implements Transformable

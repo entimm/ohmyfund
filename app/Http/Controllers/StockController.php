@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Stock;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use App\Repositories\StockHistoryRepository;
 

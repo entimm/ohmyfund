@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use App\Services\EastmoneyService;
 use Cache;
@@ -10,7 +10,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * App\Entities\Fund.
+ * App\Models\Fund.
  *
  * @property int $id
  * @property string $code
@@ -38,31 +38,31 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property int $since_born
  * @property string|null $born_date
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereBornDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereCountedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereCurrentYear($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn1month($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn1week($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn1year($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn2year($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn3month($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn3year($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn5year($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereIn6month($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund wherePinyinName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereProfitDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereRate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereShortName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereSinceBorn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereTotal($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereUnit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\Fund whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereBornDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereCountedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereCurrentYear($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn1month($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn1week($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn1year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn2year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn3month($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn3year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn5year($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereIn6month($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund wherePinyinName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereProfitDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereShortName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereSinceBorn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereUnit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Fund extends Model implements Transformable

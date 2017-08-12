@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Fund;
-use App\Entities\History;
-use App\Entities\Stock;
+use App\Models\Fund;
+use App\Models\History;
+use App\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FundRepository;

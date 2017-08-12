@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use App\Entities\Stock;
+use App\Models\Stock;
 use App\Services\XueQiuService;
 use Illuminate\Console\Command;
-use App\Entities\StockHistories;
+use App\Models\StockHistories;
 use App\Repositories\StockHistoryRepository;
 
 class UpdateStocks extends Command

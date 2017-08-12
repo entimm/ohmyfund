@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\Company;
+use App\Models\Company;
 use Illuminate\Console\Command;
 use App\Services\EastmoneyService;
 

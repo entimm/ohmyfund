@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * App\Entities\History.
+ * App\Models\History.
  *
  * @property int $id
  * @property string $code 基金代码
@@ -21,17 +21,17 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property \Carbon\Carbon|null $updated_at
  * @property int $bonus 分红
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereBonus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereBuyStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereRate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereSellStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereTotal($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereUnit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Entities\History whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereBonus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereBuyStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereSellStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereUnit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class History extends Model implements Transformable

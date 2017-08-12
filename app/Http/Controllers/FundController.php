@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Fund;
-use App\Entities\History;
+use App\Models\Fund;
+use App\Models\History;
 use App\Repositories\HistoryRepository;
 use Illuminate\Http\Request;
 

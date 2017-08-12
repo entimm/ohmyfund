@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use App\Entities\Fund;
+use App\Models\Fund;
 use Illuminate\Console\Command;
 use App\Services\EastmoneyService;
 use Illuminate\Support\Facades\Log;

@@ -4,8 +4,8 @@ namespace App\Services;
 
 use Cache;
 use Carbon\Carbon;
-use App\Entities\Fund;
-use App\Entities\History;
+use App\Models\Fund;
+use App\Models\History;
 use App\Traits\HttpRequest;
 use Illuminate\Support\Collection;
 use App\Exceptions\NonDataException;

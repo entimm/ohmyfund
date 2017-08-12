@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use DB;
-use App\Entities\History;
+use App\Models\History;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 
