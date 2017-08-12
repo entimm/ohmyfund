@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Presenters\FundPresenter;
 use App\Services\EastmoneyService;
 use Cache;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\HasPresenter;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -65,7 +66,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Fund extends Model implements Transformable
+class Fund extends Model implements Transformable, HasPresenter
 {
     use TransformableTrait;
 
@@ -115,6 +116,11 @@ class Fund extends Model implements Transformable
         return 'code';
     }
 
+    public function getPresenterClass()
+    {
+        return FundPresenter::class;
+    }
+
     public function transform()
     {
         return [
@@ -142,7 +148,7 @@ class Fund extends Model implements Transformable
     public function getHistoriesAttribute()
     {
         $key = 'histories_'.$this->code;
-        return Cache::remember($key, 30, function () {
+        $histories =  Cache::remember($key, 30, function () {
             return History::select(['date', 'unit', 'rate'])
                 ->where('code', $this->code)
                 ->orderBy('date', 'desc')
@@ -151,6 +157,13 @@ class Fund extends Model implements Transformable
                 ->reverse()
                 ->values();
         });
+        foreach ($histories as $history) {
+            $history->unit = round($history->unit / 10000, 2);
+            $history->total = round($history->total / 10000, 2);
+            $history->rate = round($history->rate / 10000, 2);
+            $history->bonus = round($history->bonus / 10000, 2);
+        }
+        return $histories;
     }
 
     public function getEvaluateRateAttribute()

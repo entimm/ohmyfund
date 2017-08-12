@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Presenters\HistoryPresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\HasPresenter;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -34,7 +36,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class History extends Model implements Transformable
+class History extends Model implements Transformable, HasPresenter
 {
     use TransformableTrait;
 
@@ -58,6 +60,11 @@ class History extends Model implements Transformable
         5 => '暂停交易',
         6 => '封闭期',
     ];
+
+    public function getPresenterClass()
+    {
+        return HistoryPresenter::class;
+    }
 
     public function transform()
     {

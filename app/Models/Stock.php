@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Presenters\StockPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -43,6 +44,11 @@ class Stock extends Model implements Transformable
         'updated_at',
         'counted_at',
     ];
+
+    public function getPresenterClass()
+    {
+        return StockPresenter::class;
+    }
 
     public function getRouteKeyName()
     {
