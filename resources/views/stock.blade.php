@@ -6,6 +6,9 @@
       width : 100%;
       height  : 600px;
     }
+    .amcharts-main-div a[href*="www.amcharts.com"] {
+        display: none!important;;
+    }
   </style>
   <link rel="stylesheet" href="/amcharts/plugins/export/export.css"/>
 @endpush

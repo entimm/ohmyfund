@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@push('csses')
+<style>
+.amcharts-main-div a[href*="www.amcharts.com"] {
+    display: none!important;
+}
+</style>
+@endpush
+
 @section('content')
     <div class="container">
         <div>
@@ -77,10 +85,21 @@
 
             var graph = new AmCharts.AmGraph();
             graph.valueField = "unit";
-            graph.showBalloon = false;
+            graph.showBalloon = true;
             graph.lineColor = "#25bcec";
             graph.fillAlphas = 0.5;
+            graph.balloonText = "<span style='font-size:12px;'>[[rate]] ([[date]])</span>";
+            graph.balloon = {
+                color:"#000",
+                "cornerRadius": 5,
+                borderThickness: 1,
+                shadowAlpha: 0
+            };
             chart.addGraph(graph);
+
+            chart.chartCursor = {
+                cursorAlpha: 0,
+            };
 
             var valueAxis = new AmCharts.ValueAxis();
             valueAxis.gridAlpha = 0;
@@ -91,6 +110,7 @@
             categoryAxis.gridAlpha = 0;
             categoryAxis.axisAlpha = 0;
             categoryAxis.startOnAxis = true;
+
             chart.write("chartdiv-{{ $fund->code }}");
     @endforeach
     });
