@@ -47,7 +47,7 @@
                             </table>
                         </div>
                         <div class="col-md-3">
-                            <div id="chartdiv-{{ $fund->code }}" style="width: auto; height: 170px;"></div>
+                            <div id="chartdiv-{{ $fund->code }}" style="width: auto; height: 150px;"></div>
                         </div>
                     </div>
                 </div>
