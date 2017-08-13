@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use DB;
 use App\Models\History;
-use Prettus\Repository\Eloquent\BaseRepository;
+use DB;
 use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class HistoryRepository.
@@ -32,7 +32,7 @@ class HistoryRepository extends BaseRepository
 
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
     /**

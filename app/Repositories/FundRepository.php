@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use Carbon\Carbon;
 use App\Models\Fund;
-use Prettus\Repository\Eloquent\BaseRepository;
+use Carbon\Carbon;
 use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class FundRepository.
@@ -32,7 +32,7 @@ class FundRepository extends BaseRepository
 
     public function presenter()
     {
-        return "Prettus\\Repository\\Presenter\\ModelFractalPresenter";
+        return 'Prettus\\Repository\\Presenter\\ModelFractalPresenter';
     }
 
     /**
@@ -54,7 +54,7 @@ class FundRepository extends BaseRepository
     }
 
     /**
-     * 获取将作显示的基金集合
+     * 获取将作显示的基金集合.
      */
     public function toShows()
     {

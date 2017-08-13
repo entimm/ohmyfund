@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use Cache;
-use Carbon\Carbon;
+use App\Exceptions\NonDataException;
+use App\Exceptions\ResolveErrorException;
+use App\Exceptions\ValidateException;
 use App\Models\Fund;
 use App\Models\History;
 use App\Traits\HttpRequest;
+use Cache;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use App\Exceptions\NonDataException;
-use App\Exceptions\ValidateException;
-use App\Exceptions\ResolveErrorException;
 
 class EastmoneyService
 {
@@ -245,9 +245,8 @@ class EastmoneyService
         return $record;
     }
 
-
     /**
-     * 获取基金估值并缓存起来
+     * 获取基金估值并缓存起来.
      *
      * @param $fundCode
      * @param $force
@@ -256,16 +255,17 @@ class EastmoneyService
      */
     public function resolveEvaluateAndCache($fundCode, $force = false)
     {
-            $key = 'evaluate_'.$fundCode;
-            if ($force) {
-                $evaluate = $this->requestEvaluate($fundCode);
-                Cache::put($key, $evaluate, 30);
-            } else {
-                $evaluate = Cache::remember($key, 30, function () use ($fundCode) {
-                    return $this->requestEvaluate($fundCode);
-                });
-            }
-            return $evaluate;
+        $key = 'evaluate_'.$fundCode;
+        if ($force) {
+            $evaluate = $this->requestEvaluate($fundCode);
+            Cache::put($key, $evaluate, 30);
+        } else {
+            $evaluate = Cache::remember($key, 30, function () use ($fundCode) {
+                return $this->requestEvaluate($fundCode);
+            });
+        }
+
+        return $evaluate;
     }
 
     /**

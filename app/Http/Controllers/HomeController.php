@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fund;
-use App\Models\History;
 use App\Models\Stock;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Repositories\FundRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class HomeController extends Controller
@@ -63,9 +61,9 @@ class HomeController extends Controller
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
         $funds = $fundRepository->toShows()['data'];
+
         return view('rank', compact('funds', 'columns'));
     }
-
 
     public function concerns(Request $request)
     {
@@ -92,6 +90,7 @@ class HomeController extends Controller
             $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
         }
         $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
+
         return view('concerns', compact('funds', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
     }
 
@@ -101,6 +100,7 @@ class HomeController extends Controller
         $funds = explode(',', env('COMPARE_FUNDS'));
         $compareStocksJson = Stock::select(['symbol', 'name as title'])->whereIn('symbol', $stocks)->get()->toJson();
         $compareFundsJson = Fund::select(['code', 'name as title'])->whereIn('code', $funds)->get()->toJson();
+
         return view('compare', compact('compareStocksJson', 'compareFundsJson'));
     }
 }
