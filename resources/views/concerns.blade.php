@@ -32,7 +32,7 @@
                         <a href="javascript:;" onclick="reload('graphScope', '30')"><span class="label label-default">30天图</span></a>
                         <a href="javascript:;" onclick="reload('graphScope', '100')"><span class="label label-default">100天图</span></a>
                     </div>
-                    <h3 class="panel-title">{{ $fund->name }} (<a href="{{ route('fund', $fund->code) }}">{{ $fund->code }}</a>)</h3>
+                    <h3 class="panel-title">{{ $fund->name }} (<a href="{{ route('fund', $fund->code) }}" target="_blank">{{ $fund->code }}</a>)</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
