@@ -171,10 +171,7 @@ class Fund extends Model implements Transformable, HasPresenter
 
     public function getEvaluateRateAttribute()
     {
-        $key = 'evaluate_'.$this->code;
-        $evaluate = Cache::remember($key, 10, function () {
-            return resolve(EastmoneyService::class)->requestOneEvaluate($this->code);
-        });
+        $evaluate = resolve(EastmoneyService::class)->resolveEvaluateAndCache($this->code);
         return $evaluate['rate'];
     }
 }

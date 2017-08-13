@@ -35,8 +35,9 @@ Artisan::command('evaluate', function () {
         '估值时间',
     ];
     foreach (config('local.concerns', []) as $codes) {
-        $list = resolve(EastmoneyService::class)->requestEvaluates($codes);
-        $list = Collection::make($list)->transform(function ($item) {
+        $list = Collection::make($codes)->map(function (&$item, $key) {
+            return resolve(EastmoneyService::class)->resolveEvaluateAndCache($item);
+        })->transform(function ($item) {
             return [
                 $item['code'],
                 $item['name'],

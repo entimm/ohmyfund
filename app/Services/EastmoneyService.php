@@ -247,35 +247,35 @@ class EastmoneyService
 
 
     /**
-     * 获取一组基金估值
+     * 获取基金估值并缓存起来
      *
-     * @param array $fundCodes
-     * @param bool  $cache
+     * @param $fundCode
+     * @param $force
      *
      * @return array
      */
-    public function requestEvaluates($fundCodes = [], $cache = true)
+    public function resolveEvaluateAndCache($fundCode, $force = false)
     {
-        $list = [];
-        foreach ($fundCodes as $code) {
-            $key = 'evaluate_'.$code;
-            $evaluate = Cache::remember($key, $cache ? 10 : null, function () use ($code) {
-                return $this->requestOneEvaluate($code);
-            });
-            $list[] = $evaluate;
-        }
-
-        return $list;
+            $key = 'evaluate_'.$fundCode;
+            if ($force) {
+                $evaluate = $this->requestEvaluate($fundCode);
+                Cache::put($key, $evaluate, 30);
+            } else {
+                $evaluate = Cache::remember($key, 30, function () use ($fundCode) {
+                    return $this->requestEvaluate($fundCode);
+                });
+            }
+            return $evaluate;
     }
 
     /**
-     * 获取单个基金估值
+     * 获取基金估值
      *
      * @param $fundCode
      *
      * @return array
      */
-    public function requestOneEvaluate($fundCode)
+    protected function requestEvaluate($fundCode)
     {
         $microTime = microtime();
         $url = "http://fundgz.1234567.com.cn/js/{$fundCode}.js?rt={$microTime}";
