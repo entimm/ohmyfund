@@ -1,8 +1,8 @@
 <?php
 
 use App\Services\EastmoneyService;
-use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Collection;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
 /*

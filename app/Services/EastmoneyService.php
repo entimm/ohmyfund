@@ -22,7 +22,8 @@ class EastmoneyService
     const INFINITE_DAY = 10000;
 
     /**
-     * 获取基金公司.
+     * 获取基金�
+     * �司.
      *
      * @return mixed
      */
@@ -245,9 +246,8 @@ class EastmoneyService
         return $record;
     }
 
-
     /**
-     * 获取基金估值并缓存起来
+     * 获取基金估值并缓存起来.
      *
      * @param $fundCode
      * @param $force
@@ -256,16 +256,17 @@ class EastmoneyService
      */
     public function resolveEvaluateAndCache($fundCode, $force = false)
     {
-            $key = 'evaluate_'.$fundCode;
-            if ($force) {
-                $evaluate = $this->requestEvaluate($fundCode);
-                Cache::put($key, $evaluate, 30);
-            } else {
-                $evaluate = Cache::remember($key, 30, function () use ($fundCode) {
-                    return $this->requestEvaluate($fundCode);
-                });
-            }
-            return $evaluate;
+        $key = 'evaluate_'.$fundCode;
+        if ($force) {
+            $evaluate = $this->requestEvaluate($fundCode);
+            Cache::put($key, $evaluate, 30);
+        } else {
+            $evaluate = Cache::remember($key, 30, function () use ($fundCode) {
+                return $this->requestEvaluate($fundCode);
+            });
+        }
+
+        return $evaluate;
     }
 
     /**
