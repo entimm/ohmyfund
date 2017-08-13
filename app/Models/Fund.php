@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Cache;
 use App\Presenters\FundPresenter;
 use App\Services\EastmoneyService;
-use Cache;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
 use Prettus\Repository\Contracts\Transformable;
@@ -127,7 +127,7 @@ class Fund extends Model implements Transformable, HasPresenter
             'id' => $this->id,
             'code' => $this->code,
             'name' => $this->name,
-            'type' => Static::$types[$this->type],
+            'type' => static::$types[$this->type],
             'unit' => round($this->unit / 10000, 2),
             'total' => round($this->total / 10000, 2),
             'rate' => round($this->rate / 10000, 2),
@@ -148,7 +148,7 @@ class Fund extends Model implements Transformable, HasPresenter
     public function getHistoriesAttribute()
     {
         $key = 'histories_'.$this->code;
-        $histories =  Cache::remember($key, 30, function () {
+        $histories = Cache::remember($key, 30, function () {
             $histories = History::select(['date', 'unit', 'rate'])
                 ->where('code', $this->code)
                 ->orderBy('date', 'desc')
@@ -165,7 +165,7 @@ class Fund extends Model implements Transformable, HasPresenter
 
             return $histories;
         });
-        
+
         return $histories;
     }
 
@@ -175,6 +175,7 @@ class Fund extends Model implements Transformable, HasPresenter
         $evaluate = Cache::remember($key, 10, function () {
             return resolve(EastmoneyService::class)->requestOneEvaluate($this->code);
         });
+
         return $evaluate['rate'];
     }
 }
