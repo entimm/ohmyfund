@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\History;
 use DB;
-use Prettus\Repository\Criteria\RequestCriteria;
+use App\Models\History;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
  * Class HistoryRepository.

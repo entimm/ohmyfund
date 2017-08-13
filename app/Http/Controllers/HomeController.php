@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Fund;
 use App\Models\Stock;
-use App\Repositories\FundRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\Repositories\FundRepository;
 
 class HomeController extends Controller
 {
