@@ -148,7 +148,7 @@ class Fund extends Model implements Transformable, HasPresenter
     public function getHistoriesAttribute()
     {
         $key = 'histories_'.$this->code;
-        $histories =  Cache::remember($key, 30, function () {
+        $histories =  Cache::remember($key, 60, function () {
             $histories = History::select(['date', 'unit', 'rate'])
                 ->where('code', $this->code)
                 ->orderBy('date', 'desc')
