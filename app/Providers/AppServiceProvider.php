@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Stock;
 use View;
+use App\Models\Stock;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

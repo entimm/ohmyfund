@@ -25,5 +25,4 @@ class HistoryPresenter extends BasePresenter
     {
         return round($this->wrappedObject->bonus / 10000, 2);
     }
-
 }
