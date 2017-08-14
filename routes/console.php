@@ -27,7 +27,7 @@ Artisan::command('update', function () {
     $this->call('update:histories');
 })->describe('Update all');
 
-Artisan::command('evaluate', function () {
+Artisan::command('evaluate {--f|force}', function ($force) {
     $headers = [
         '代码',
         '名称',
@@ -35,8 +35,8 @@ Artisan::command('evaluate', function () {
         '估值时间',
     ];
     foreach (config('local.concerns', []) as $codes) {
-        $list = Collection::make($codes)->map(function (&$item, $key) {
-            return resolve(EastmoneyService::class)->resolveEvaluateAndCache($item);
+        $list = Collection::make($codes)->map(function (&$item, $key) use ($force) {
+            return resolve(EastmoneyService::class)->resolveEvaluateAndCache($item, $force);
         })->transform(function ($item) {
             return [
                 $item['code'],
