@@ -37,7 +37,8 @@ Artisan::command('evaluate {--f|force}', function ($force) {
     foreach (config('local.concerns', []) as $codes) {
         $list = Collection::make($codes)->map(function (&$item, $key) use ($force) {
             return resolve(EastmoneyService::class)->resolveEvaluateAndCache($item, $force);
-        })->transform(function ($item) {
+        })->sortBy('rate', SORT_REGULAR, 'desc')
+          ->transform(function ($item) {
             return [
                 $item['code'],
                 $item['name'],
