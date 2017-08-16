@@ -20,10 +20,6 @@
 
 @section('content')
     <div class="container">
-        <div>
-
-        </div>
-
         @foreach($funds as $fund)
             <div class="panel panel-success">
                 <div class="panel-heading">
@@ -36,7 +32,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-9 table-responsive">
                             <table class="table">
                             <thead>
                                 <tr>

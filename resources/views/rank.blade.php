@@ -13,7 +13,7 @@
 </style>
 
 @section('content')
-    <div class="container">
+    <div class="container table-responsive">
         <table class="table">
             <thead>
                 <tr>
