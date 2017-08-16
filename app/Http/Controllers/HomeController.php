@@ -103,4 +103,23 @@ class HomeController extends Controller
 
         return view('compare', compact('compareStocksJson', 'compareFundsJson'));
     }
+
+    public function evaluate(Request $request)
+    {
+        $orderBy = $request->input('orderBy', 'evaluateRate');
+        $sortedBy = $request->input('sortedBy', 'desc');
+        $columns = [
+            'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
+            'rate' => ['name' => '增长率', 'sortedBy' => 'asc'],
+            'in_1week' => ['name' => '近1周', 'sortedBy' => 'asc'],
+            'in_1month' => ['name' => '近1月', 'sortedBy' => 'asc'],
+        ];
+        $funds = Collection::make();
+        foreach (config('local.concerns', []) as $codes) {
+            $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
+        }
+        $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
+
+        return view('evaluate', compact('funds', 'columns', 'orderBy', 'sortedBy'));
+    }
 }

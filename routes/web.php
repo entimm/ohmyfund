@@ -23,6 +23,8 @@ Route::get('/rank', 'HomeController@rank')->name('rank');
 
 Route::get('/concerns', 'HomeController@concerns')->name('concerns');
 
+Route::get('/evaluate', 'HomeController@evaluate')->name('evaluate');
+
 Route::get('/compare', 'HomeController@compare')->name('compare');
 
 Route::get('/stock/{stock}', 'HomeController@stock')->name('stock');
