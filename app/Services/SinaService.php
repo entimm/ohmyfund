@@ -9,6 +9,8 @@ class SinaService
     use HttpRequest;
 
     /**
+     * 获取国内股.
+     *
      * @param $stock
      *
      * @return array|mixed
