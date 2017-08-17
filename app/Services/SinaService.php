@@ -9,7 +9,7 @@ class SinaService
     use HttpRequest;
 
     /**
-     * 获取国内股
+     * 获取国内股.
      *
      * @param $stock
      *
@@ -26,7 +26,7 @@ class SinaService
     }
 
     /**
-     * 获取美国股
+     * 获取美国股.
      *
      * @param $stock
      *

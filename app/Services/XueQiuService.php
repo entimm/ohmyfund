@@ -86,7 +86,7 @@ class XueQiuService
             return $this->get('https://xueqiu.com/stock/forchartk/stocklist.json', [
                 'symbol' => $symbol,
                 'period' => '1day', // all、1day、1weel、1month
-                'type' => $typeName, // before 前复权、normal 不复权
+                'type' => $typeName, // before 前复权 \ normal 不复权
                 'begin' => max(($countedAt - 86400) * 1000, 0),
                 'end' => microtime(),
                 '_' => microtime(),
@@ -104,7 +104,7 @@ class XueQiuService
     }
 
     /**
-     * 获取内容，如果失败一次则清除cookie后尝试认证，然后再进行内容的获取.
+     * 获取内容, 如果失败一次则清除cookie后尝试认证, 然后再进行内容的获取.
      *
      * @param callable $callback
      * @param int      $sleep
