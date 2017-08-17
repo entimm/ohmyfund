@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Cache;
 use App\Presenters\FundPresenter;
 use App\Services\EastmoneyService;
-use Cache;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
 use Prettus\Repository\Contracts\Transformable;
@@ -165,7 +165,7 @@ class Fund extends Model implements Transformable, HasPresenter
 
             return $histories;
         });
-        
+
         return $histories;
     }
 

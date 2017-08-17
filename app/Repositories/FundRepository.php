@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Fund;
 use Carbon\Carbon;
-use Prettus\Repository\Criteria\RequestCriteria;
+use App\Models\Fund;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
  * Class FundRepository.
