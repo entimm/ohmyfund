@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
-use Illuminate\Http\Request;
 use App\Repositories\StockHistoryRepository;
+use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
@@ -54,9 +54,9 @@ class StockController extends Controller
     public function candlesticks(Request $request, $symbol)
     {
         $this->validate($request, [
-            'type' => 'string',
+            'type'  => 'string',
             'begin' => 'date',
-            'end' => 'date',
+            'end'   => 'date',
         ]);
 
         $begin = $request->get('begin');
@@ -78,9 +78,9 @@ class StockController extends Controller
     public function values(Request $request, $symbol)
     {
         $this->validate($request, [
-            'type' => 'string',
+            'type'  => 'string',
             'begin' => 'date',
-            'end' => 'date',
+            'end'   => 'date',
         ]);
 
         $begin = $request->get('begin');

@@ -39,13 +39,13 @@ Artisan::command('evaluate {--f|force}', function ($force) {
             return resolve(EastmoneyService::class)->resolveEvaluateAndCache($item, $force);
         })->sortBy('rate', SORT_REGULAR, 'desc')
           ->transform(function ($item) {
-            return [
+              return [
                 $item['code'],
                 $item['name'],
                 $item['rate'],
                 $item['time'],
             ];
-        });
+          });
         $this->table($headers, $list);
     }
 });
