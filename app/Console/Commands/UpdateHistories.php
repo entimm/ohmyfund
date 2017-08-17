@@ -2,16 +2,16 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use App\Models\Fund;
-use Illuminate\Console\Command;
-use App\Services\EastmoneyService;
-use Illuminate\Support\Facades\Log;
 use App\Exceptions\NonDataException;
-use App\Repositories\FundRepository;
-use App\Exceptions\ValidateException;
-use App\Repositories\HistoryRepository;
 use App\Exceptions\ResolveErrorException;
+use App\Exceptions\ValidateException;
+use App\Models\Fund;
+use App\Repositories\FundRepository;
+use App\Repositories\HistoryRepository;
+use App\Services\EastmoneyService;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class UpdateHistories extends Command
 {
@@ -94,7 +94,7 @@ class UpdateHistories extends Command
         } catch (ResolveErrorException $e) {
             Log::error($e->getMessage(), [
                 'fund_code' => $fund->code,
-                'row' => $e->getData(),
+                'row'       => $e->getData(),
             ]);
             $fund->status = 5;
 
@@ -109,7 +109,7 @@ class UpdateHistories extends Command
         } catch (\Exception $e) {
             Log::error($e->getMessage(), [
                 'fund_code' => $fund->code,
-                'where' => $e->getFile().':'.$e->getLine(),
+                'where'     => $e->getFile().':'.$e->getLine(),
             ]);
 
             return 0;

@@ -77,7 +77,7 @@ return [
 
     'extra' => [
         'Eloquent' => ['Illuminate\Database\Eloquent\Builder', 'Illuminate\Database\Query\Builder'],
-        'Session' => ['Illuminate\Session\Store'],
+        'Session'  => ['Illuminate\Session\Store'],
     ],
 
     'magic' => [
@@ -135,7 +135,7 @@ return [
     */
     'custom_db_types' => [
         'mysql'=> [
-            'json'=>'json_array',
+            'json'=> 'json_array',
         ],
     ],
 
