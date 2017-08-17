@@ -90,15 +90,15 @@ class Fund extends Model implements Transformable, HasPresenter
     ];
 
     public static $types = [
-      1 => '混合型',
-      2 => '债券型',
-      3 => '定开债券',
-      4 => '联接基金',
-      5 => '货币型',
-      6 => '债券指数',
-      7 => '保本型',
-      8 => '理财型',
-      9 => 'QDII',
+      1  => '混合型',
+      2  => '债券型',
+      3  => '定开债券',
+      4  => '联接基金',
+      5  => '货币型',
+      6  => '债券指数',
+      7  => '保本型',
+      8  => '理财型',
+      9  => 'QDII',
       10 => '股票指数',
       11 => 'QDII-指数',
       12 => '股票型',
@@ -124,24 +124,24 @@ class Fund extends Model implements Transformable, HasPresenter
     public function transform()
     {
         return [
-            'id' => $this->id,
-            'code' => $this->code,
-            'name' => $this->name,
-            'type' => static::$types[$this->type],
-            'unit' => round($this->unit / 10000, 2),
-            'total' => round($this->total / 10000, 2),
-            'rate' => round($this->rate / 10000, 2),
-            'in_1week' => round($this->in_1week / 10000, 2),
-            'in_1month' => round($this->in_1month / 10000, 2),
-            'in_3month' => round($this->in_3month / 10000, 2),
-            'in_6month' => round($this->in_6month / 10000, 2),
+            'id'           => $this->id,
+            'code'         => $this->code,
+            'name'         => $this->name,
+            'type'         => static::$types[$this->type],
+            'unit'         => round($this->unit / 10000, 2),
+            'total'        => round($this->total / 10000, 2),
+            'rate'         => round($this->rate / 10000, 2),
+            'in_1week'     => round($this->in_1week / 10000, 2),
+            'in_1month'    => round($this->in_1month / 10000, 2),
+            'in_3month'    => round($this->in_3month / 10000, 2),
+            'in_6month'    => round($this->in_6month / 10000, 2),
             'current_year' => round($this->current_year / 10000, 2),
-            'in_1year' => round($this->in_1year / 10000, 2),
-            'in_2year' => round($this->in_2year / 10000, 2),
-            'in_3year' => round($this->in_3year / 10000, 2),
-            'in_5year' => round($this->in_5year / 10000, 2),
-            'since_born' => round($this->since_born / 10000, 2),
-            'born_date' => $this->born_date,
+            'in_1year'     => round($this->in_1year / 10000, 2),
+            'in_2year'     => round($this->in_2year / 10000, 2),
+            'in_3year'     => round($this->in_3year / 10000, 2),
+            'in_5year'     => round($this->in_5year / 10000, 2),
+            'since_born'   => round($this->since_born / 10000, 2),
+            'born_date'    => $this->born_date,
         ];
     }
 
@@ -165,7 +165,7 @@ class Fund extends Model implements Transformable, HasPresenter
 
             return $histories;
         });
-        
+
         return $histories;
     }
 

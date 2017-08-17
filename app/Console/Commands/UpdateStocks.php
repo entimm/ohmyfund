@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use App\Models\Stock;
-use App\Services\XueQiuService;
-use Illuminate\Console\Command;
 use App\Models\StockHistories;
 use App\Repositories\StockHistoryRepository;
+use App\Services\XueQiuService;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class UpdateStocks extends Command
 {

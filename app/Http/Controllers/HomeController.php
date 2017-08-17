@@ -43,18 +43,18 @@ class HomeController extends Controller
     public function rank(Request $request, FundRepository $fundRepository)
     {
         $columns = [
-            'rate' => ['name' => '增长率', 'sortedBy' => 'asc'],
-            'in_1week' => ['name' => '近1周', 'sortedBy' => 'asc'],
-            'in_1month' => ['name' => '近1月', 'sortedBy' => 'asc'],
-            'in_3month' => ['name' => '近3月', 'sortedBy' => 'asc'],
-            'in_6month' => ['name' => '近6月', 'sortedBy' => 'asc'],
+            'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
+            'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
+            'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
+            'in_3month'    => ['name' => '近3月', 'sortedBy' => 'asc'],
+            'in_6month'    => ['name' => '近6月', 'sortedBy' => 'asc'],
             'current_year' => ['name' => '今年', 'sortedBy' => 'asc'],
-            'in_1year' => ['name' => '近1年', 'sortedBy' => 'asc'],
-            'in_2year' => ['name' => '近2年', 'sortedBy' => 'asc'],
-            'in_3year' => ['name' => '近3年', 'sortedBy' => 'asc'],
-            'in_5year' => ['name' => '近5年', 'sortedBy' => 'asc'],
-            'since_born' => ['name' => '成立来', 'sortedBy' => 'asc'],
-            'born_date' => ['name' => '成立日期', 'sortedBy' => 'asc'],
+            'in_1year'     => ['name' => '近1年', 'sortedBy' => 'asc'],
+            'in_2year'     => ['name' => '近2年', 'sortedBy' => 'asc'],
+            'in_3year'     => ['name' => '近3年', 'sortedBy' => 'asc'],
+            'in_5year'     => ['name' => '近5年', 'sortedBy' => 'asc'],
+            'since_born'   => ['name' => '成立来', 'sortedBy' => 'asc'],
+            'born_date'    => ['name' => '成立日期', 'sortedBy' => 'asc'],
         ];
         $orderBy = $request->input('orderBy');
         if ($orderBy && isset($columns[$orderBy])) {
@@ -72,18 +72,18 @@ class HomeController extends Controller
         $sortedBy = $request->input('sortedBy', 'desc');
         $columns = [
             'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
-            'rate' => ['name' => '增长率', 'sortedBy' => 'asc'],
-            'in_1week' => ['name' => '近1周', 'sortedBy' => 'asc'],
-            'in_1month' => ['name' => '近1月', 'sortedBy' => 'asc'],
-            'in_3month' => ['name' => '近3月', 'sortedBy' => 'asc'],
-            'in_6month' => ['name' => '近6月', 'sortedBy' => 'asc'],
+            'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
+            'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
+            'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
+            'in_3month'    => ['name' => '近3月', 'sortedBy' => 'asc'],
+            'in_6month'    => ['name' => '近6月', 'sortedBy' => 'asc'],
             'current_year' => ['name' => '今年', 'sortedBy' => 'asc'],
-            'in_1year' => ['name' => '近1年', 'sortedBy' => 'asc'],
-            'in_2year' => ['name' => '近2年', 'sortedBy' => 'asc'],
-            'in_3year' => ['name' => '近3年', 'sortedBy' => 'asc'],
-            'in_5year' => ['name' => '近5年', 'sortedBy' => 'asc'],
-            'since_born' => ['name' => '成立来', 'sortedBy' => 'asc'],
-            'born_date' => ['name' => '成立日期', 'sortedBy' => 'asc'],
+            'in_1year'     => ['name' => '近1年', 'sortedBy' => 'asc'],
+            'in_2year'     => ['name' => '近2年', 'sortedBy' => 'asc'],
+            'in_3year'     => ['name' => '近3年', 'sortedBy' => 'asc'],
+            'in_5year'     => ['name' => '近5年', 'sortedBy' => 'asc'],
+            'since_born'   => ['name' => '成立来', 'sortedBy' => 'asc'],
+            'born_date'    => ['name' => '成立日期', 'sortedBy' => 'asc'],
         ];
         $funds = Collection::make();
         foreach (config('local.concerns', []) as $codes) {
@@ -110,9 +110,9 @@ class HomeController extends Controller
         $sortedBy = $request->input('sortedBy', 'desc');
         $columns = [
             'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
-            'rate' => ['name' => '增长率', 'sortedBy' => 'asc'],
-            'in_1week' => ['name' => '近1周', 'sortedBy' => 'asc'],
-            'in_1month' => ['name' => '近1月', 'sortedBy' => 'asc'],
+            'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
+            'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
+            'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
         ];
         $funds = Collection::make();
         foreach (config('local.concerns', []) as $codes) {
