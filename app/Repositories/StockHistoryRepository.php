@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use DB;
 use App\Models\StockHistories;
-use Prettus\Repository\Eloquent\BaseRepository;
+use DB;
 use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class StockHistoryRepository.
@@ -48,11 +48,11 @@ class StockHistoryRepository extends BaseRepository
                 $date = date('Y-m-d', $item['timestamp'] / 1000);
                 $uniqueKeys = [
                     'symbol' => $symbol,
-                    'date' => $date,
-                    'type' => $type,
+                    'date'   => $date,
+                    'type'   => $type,
                 ];
                 $history = StockHistories::firstOrCreate($uniqueKeys, $item);
-                if (! $history->wasRecentlyCreated) {
+                if (!$history->wasRecentlyCreated) {
                     break;
                 }
                 $touchNum++;

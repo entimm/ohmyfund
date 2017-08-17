@@ -84,21 +84,21 @@ class EastmoneyService
 
             return [
                 $item[0] => [
-                    'rank_date' => $item[3] ?: null,
-                    'unit' => $item[4] * 10000,
-                    'total' => $item[5] * 10000,
-                    'rate' => $item[6] * 10000,
-                    'in_1week' => $item[7] * 10000,
-                    'in_1month' => $item[8] * 10000,
-                    'in_3month' => $item[9] * 10000,
-                    'in_6month' => $item[10] * 10000,
+                    'rank_date'    => $item[3] ?: null,
+                    'unit'         => $item[4] * 10000,
+                    'total'        => $item[5] * 10000,
+                    'rate'         => $item[6] * 10000,
+                    'in_1week'     => $item[7] * 10000,
+                    'in_1month'    => $item[8] * 10000,
+                    'in_3month'    => $item[9] * 10000,
+                    'in_6month'    => $item[10] * 10000,
                     'current_year' => $item[14] * 10000,
-                    'in_1year' => $item[11] * 10000,
-                    'in_2year' => $item[12] * 10000,
-                    'in_3year' => $item[13] * 10000,
-                    'in_5year' => $item[24] * 10000,
-                    'since_born' => $item[15] * 10000,
-                    'born_date' => $item[16] ?: null,
+                    'in_1year'     => $item[11] * 10000,
+                    'in_2year'     => $item[12] * 10000,
+                    'in_3year'     => $item[13] * 10000,
+                    'in_5year'     => $item[24] * 10000,
+                    'since_born'   => $item[15] * 10000,
+                    'born_date'    => $item[16] ?: null,
                 ],
             ];
         });
@@ -129,7 +129,7 @@ class EastmoneyService
 
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecord = $matches[1];
-        if (! $totalRecord) {
+        if (!$totalRecord) {
             throw new NonDataException();
         }
 
@@ -283,13 +283,13 @@ class EastmoneyService
         $json = substr($content, $beginPos, -2);
         $result = json_decode($json, true);
         $data = [
-            'code' => $result['fundcode'],
-            'name' => $result['name'],
-            'date' => $result['jzrq'],
+            'code'   => $result['fundcode'],
+            'name'   => $result['name'],
+            'date'   => $result['jzrq'],
             'origin' => $result['dwjz'],
-            'value' => $result['gsz'],
-            'rate' => $result['gszzl'],
-            'time' => $result['gztime'],
+            'value'  => $result['gsz'],
+            'rate'   => $result['gszzl'],
+            'time'   => $result['gztime'],
         ];
 
         return $data;
