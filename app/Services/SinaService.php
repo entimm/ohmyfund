@@ -9,6 +9,8 @@ class SinaService
     use HttpRequest;
 
     /**
+     * request chinese stock.
+     *
      * @param $stock
      *
      * @return array|mixed

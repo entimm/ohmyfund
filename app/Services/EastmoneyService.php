@@ -22,6 +22,8 @@ class EastmoneyService
     const INFINITE_DAY = 10000;
 
     /**
+     * request fund companies
+     *
      * @return mixed
      */
     public function requestCompanies()
