@@ -53,7 +53,7 @@ class FundController extends Controller
     {
         $this->validate($request, [
             'begin' => 'date',
-            'end' => 'date',
+            'end'   => 'date',
         ]);
 
         $begin = $request->get('begin');
