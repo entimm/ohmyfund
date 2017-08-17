@@ -15,8 +15,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $stocks = Stock::select(['symbol', 'name'])->get();
-        View::share('stocks', $stocks);
+        try {
+            $stocks = Stock::select(['symbol', 'name'])->get();
+            View::share('stocks', $stocks);
+        } catch (\Exception $e) {
+
+        }
     }
 
     /**
