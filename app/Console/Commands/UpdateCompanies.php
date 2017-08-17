@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Company;
-use Illuminate\Console\Command;
 use App\Services\EastmoneyService;
+use Illuminate\Console\Command;
 
 class UpdateCompanies extends Command
 {

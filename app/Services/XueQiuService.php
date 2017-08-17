@@ -35,11 +35,11 @@ class XueQiuService
         }
         $this->post(self::POST_LOGIN_PATH, [
             'remember_me' => true,
-            'username' => env('XUEQIU_USERNAME'),
-            'password' => env('XUEQIU_PASSWORD'),
+            'username'    => env('XUEQIU_USERNAME'),
+            'password'    => env('XUEQIU_PASSWORD'),
         ], [
             'cookies' => $this->cookie,
-            'verify' => false,
+            'verify'  => false,
         ]);
     }
 
@@ -56,10 +56,10 @@ class XueQiuService
         $data = $this->retryRequest(function () use ($symbol) {
             return $this->get('https://xueqiu.com/v4/stock/quote.json', [
                 'code' => $symbol,
-                '_' => microtime(),
+                '_'    => microtime(),
             ], [
                 'cookies' => $this->cookie,
-                'verify' => false,
+                'verify'  => false,
             ]);
         }, 1);
 
@@ -86,13 +86,13 @@ class XueQiuService
             return $this->get('https://xueqiu.com/stock/forchartk/stocklist.json', [
                 'symbol' => $symbol,
                 'period' => '1day', // all、1day、1weel、1month
-                'type' => $typeName, // before 前复权 \ normal 不复权
-                'begin' => max(($countedAt - 86400) * 1000, 0),
-                'end' => microtime(),
-                '_' => microtime(),
+                'type'   => $typeName, // before 前复权 \ normal 不复权
+                'begin'  => max(($countedAt - 86400) * 1000, 0),
+                'end'    => microtime(),
+                '_'      => microtime(),
             ], [
                 'cookies' => $this->cookie,
-                'verify' => false,
+                'verify'  => false,
             ]);
         }, 1);
 
@@ -104,7 +104,10 @@ class XueQiuService
     }
 
     /**
-     * 获取内容, 如果失败一次则清除cookie后尝试认证, 然后再进行内容的获取.
+     * 获取�
+     * 容, 如果失败一次则�
+     * 除cookie后尝试认证, 然后再进行�
+     * 容的获取.
      *
      * @param callable $callback
      * @param int      $sleep
