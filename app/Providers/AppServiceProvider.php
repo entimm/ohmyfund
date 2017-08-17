@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Stock;
 use View;
+use App\Models\Stock;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
             $stocks = Stock::select(['symbol', 'name'])->get();
             View::share('stocks', $stocks);
         } catch (\Exception $e) {
-
         }
     }
 

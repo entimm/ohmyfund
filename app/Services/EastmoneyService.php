@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Exceptions\NonDataException;
-use App\Exceptions\ResolveErrorException;
-use App\Exceptions\ValidateException;
+use Cache;
+use Carbon\Carbon;
 use App\Models\Fund;
 use App\Models\History;
 use App\Traits\HttpRequest;
-use Cache;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use App\Exceptions\NonDataException;
+use App\Exceptions\ValidateException;
+use App\Exceptions\ResolveErrorException;
 
 class EastmoneyService
 {
@@ -22,7 +22,8 @@ class EastmoneyService
     const INFINITE_DAY = 10000;
 
     /**
-     * 获取基金公司.
+     * 获取基金�
+     * �司.
      *
      * @return mixed
      */
