@@ -104,7 +104,10 @@ class XueQiuService
     }
 
     /**
-     * 获取内容, 如果失败一次则清除 cookie 后尝试认证, 然后再进行内容的获取.
+     * 获取�
+     * 容, 如果失败一次则�
+     * 除 cookie 后尝试认证, 然后再进行�
+     * 容的获取.
      *
      * @param callable $callback
      * @param int      $sleep
