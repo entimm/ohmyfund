@@ -53,7 +53,8 @@ var chart = AmCharts.makeChart("chartdiv", {
     graphs: [{
         id: "g1",
         balloon:{
-          drop:true,
+          drop:false,
+          cornerRadius: 5,
           adjustBorderColor:false,
           horizontalPadding:5,
           color:"#000"
@@ -69,7 +70,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         fillAlphas: 0.5,
         useLineColorForBulletBorder: true,
         valueField: "unit",
-        balloonText: "<span style='font-size:16px;'>[[value]]</span>"
+        balloonText: "<span style='font-size:16px;'>[[value]] ([[rate]])</span>"
     }],
     chartScrollbar: {
         graph: "g1",
