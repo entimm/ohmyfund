@@ -284,7 +284,7 @@ class EastmoneyService
         $json = substr($content, $beginPos, -2);
         $result = json_decode($json, true);
         $data = [
-            'code'   => $result['fundcode'],
+            'code'   => $fundCode,
             'name'   => $result['name'],
             'date'   => $result['jzrq'],
             'origin' => $result['dwjz'],

@@ -109,6 +109,7 @@ class Fund extends Model implements Transformable, HasPresenter
       17 => 'QDII-ETF',
       18 => '债券创新-场内',
       19 => '封闭式',
+      20 => '混合-FOF',
     ];
 
     public function getRouteKeyName()
