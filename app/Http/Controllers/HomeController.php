@@ -114,6 +114,10 @@ class HomeController extends Controller
             'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
             'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
         ];
+        $orderBy = $request->input('orderBy');
+        if ($orderBy && isset($columns[$orderBy])) {
+            $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
+        }
         $funds = Collection::make();
         foreach (config('local.concerns', []) as $codes) {
             $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
