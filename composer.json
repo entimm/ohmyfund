@@ -14,7 +14,8 @@
         "mccool/laravel-auto-presenter": "^6.0",
         "mews/purifier": "^2.0",
         "predis/predis": "^1.1",
-        "prettus/l5-repository": "^2.6"
+        "prettus/l5-repository": "^2.6",
+        "symfony/dom-crawler": "^3.3"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

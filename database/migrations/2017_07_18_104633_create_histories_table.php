@@ -22,6 +22,7 @@ class CreateHistoriesTable extends Migration
             $table->integer('rate')->comment('日增长率');
             $table->tinyInteger('buy_status')->comment('申购状态');
             $table->tinyInteger('sell_status')->comment('赎回状态');
+            $table->string('bonus')->default('')->comment('分红送配');
             $table->timestamps();
 
             $table->unique(['code', 'date']);

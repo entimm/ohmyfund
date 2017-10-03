@@ -11,6 +11,7 @@ use App\Traits\HttpRequest;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use App\Table2Array;
 
 class EastmoneyService
 {
@@ -119,7 +120,7 @@ class EastmoneyService
      *
      * @return array
      */
-    public function requestHistories($fundCode, $fundCountedAt)
+    public function requestHistories($fundCode, $fundCountedAt = 0)
     {
         $pageSize = self::INFINITE_DAY;
         if ($fundCountedAt) {
@@ -135,20 +136,13 @@ class EastmoneyService
         }
 
         // 解析行记录
-        $beginPos = strpos($content, '<tbody>') + strlen('<tbody>');
-        $endPos = strpos($content, '</tbody>');
-        $table = substr($content, $beginPos, $endPos - $beginPos);
-        $rows = explode('</tr>', $table);
-        $rows = array_filter($rows);
+        $rows = Table2Array::convert($content);
 
         // 处理数据,从第一期开始
         $records = [];
         foreach (array_reverse($rows) as $k => $row) {
-            $elements = explode('</td>', $row);
-            $elements = array_filter($elements);
-
             try {
-                $record = $this->resolveHistoryRecord($elements, $records);
+                $record = $this->resolveHistoryRecord($row, $records);
             } catch (\Exception $e) {
                 throw new ResolveErrorException($e->getMessage(), $row);
             }
@@ -167,81 +161,67 @@ class EastmoneyService
     /**
      * 解析基金净值记录.
      *
-     * @param $elements
+     * @param $row
      * @param $records
      *
      * @throws \Exception
      *
      * @return array
      */
-    protected function resolveHistoryRecord($elements, $records)
+    protected function resolveHistoryRecord($row, $records)
     {
-        $record = [];
-        if (count($elements) < 6) {
+        if (count($row) < 7) {
             throw new \Exception('记录格式异常');
         }
+        // key转换
         $keyMaps = [
-            'date',
-            'unit',
-            'total',
-            'rate',
-            'buy_status',
-            'sell_status',
-            'bonus',
+            'date' => '净值日期',
+            'unit' => '单位净值',
+            'total' => '累计净值',
+            'rate' => '日增长率',
+            'buy_status' => '申购状态',
+            'sell_status' => '赎回状态',
+            'bonus' => '分红送配',
         ];
-        // 处理单条数据的每一个字段
-        foreach ($elements as $kk => $element) {
-            $last = $records[0] ?? null;
-            $key = $keyMaps[$kk];
-            // 处理日期,这个比较特殊，要特殊处理
-            if ($kk == 0) {
-                preg_match('/\d{4}-\d{2}-\d{2}/', $element, $matches);
-                $record[$key] = $matches[0];
-                continue;
-            }
-
-            // 分割获取后续字段
-            $value = explode('>', $element);
-            $value = end($value);
-
-            if (in_array($kk, [1, 2])) {
-                // 处理单位净值、累计净值,如果为空就取之前的值
-                $value = $value ? $value * 10000 : ($last[$kk] ?: 0);
-            } elseif ($kk == 3) {
-                /*
-                 * 处理盈亏率
-                 * 1. 匹配数值去掉模板的百分号
-                 * 2. 处理空值，这时尝试自己计算盈亏率
-                 */
-                $value = $value ? substr($value, 0, strlen($value) - 1) : null;
-                if (is_null($value)) {
-                    $value = $last ? ($record['unit'] / $last['unit'] - 1) * 100 : 0;
-                }
-                $value *= 10000;
-            } elseif ($kk == 4) {
-                // 转换申购状态
-                $value = $value ? array_search($value, History::$buyStatusList) : 0;
-                if ($value === false) {
-                    throw new \Exception('未知申购状态');
-                }
-            } elseif ($kk == 5) {
-                // 转换赎回状态
-                $value = $value ? array_search($value, History::$sellStatusList) : 0;
-                if ($value === false) {
-                    throw new \Exception('未知赎回状态');
-                }
-            } elseif ($kk == 6) {
-                // 处理分红
-                if ($value && preg_match('/每份派现金(\d*\.\d*)元/', $value, $matches)) {
-                    $value = $matches[1] * 10000;
-                } else {
-                    $value = 0;
-                }
-            }
-            $record[$key] = $value;
+        foreach ($keyMaps as $key => $value) {
+            $row[$key] = $row[$value];
+            unset($row[$value]);
         }
 
-        return $record;
+        // 处理单条数据的每一个字段
+        $last = $records[0] ?? null;
+        // 处理日期,这个比较特殊，要特殊处理
+        preg_match('/\d{4}-\d{2}-\d{2}/', $row['date'], $matches);
+        $row['date'] = $matches[0];
+
+        // 处理单位净值、累计净值,如果为空就取之前的值
+        $row['unit'] = $row['unit'] ? $row['unit'] * 10000 : ($last['unit'] ?: 0);
+        $row['total'] = $row['total'] ? $row['total'] * 10000 : ($last['total'] ?: 0);
+
+        /*
+         * 处理盈亏率
+         * 1. 匹配数值去掉模板的百分号
+         * 2. 处理空值，这时尝试自己计算盈亏率
+         */
+        $row['rate'] = $row['rate'] ? substr($row['rate'], 0, strlen($row['rate']) - 1) : null;
+        if (is_null($row['rate'])) {
+            $row['rate'] = $last ? ($row['unit'] / $last['unit'] - 1) * 100 : 0;
+        }
+        $row['rate'] *= 10000;
+
+        // 转换申购状态
+        $row['buy_status'] = $row['buy_status'] ? array_search($row['buy_status'], History::$buyStatusList) : 0;
+        if ($row['buy_status'] === false) {
+            throw new \Exception('未知申购状态');
+        }
+
+        // 转换赎回状态
+        $row['sell_status'] = $row['sell_status'] ? array_search($row['sell_status'], History::$sellStatusList) : 0;
+        if ($row['sell_status'] === false) {
+            throw new \Exception('未知赎回状态');
+        }
+
+        return $row;
     }
 
     /**

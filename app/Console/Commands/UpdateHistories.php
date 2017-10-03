@@ -84,6 +84,7 @@ class UpdateHistories extends Command
     protected function updateOneFund(Fund $fund)
     {
         try {
+            $fund->status = 0;
             // 通过 profit_date 判断这只基金是否有被处理过
             $records = resolve(EastmoneyService::class)->requestHistories($fund->code, $fund->counted_at);
         } catch (NonDataException $e) {
@@ -97,6 +98,7 @@ class UpdateHistories extends Command
                 'row'       => $e->getData(),
             ]);
             $fund->status = 5;
+            $this->error("ResolveErrorException happen, fund code is {$fund->code}");
 
             return 0;
         } catch (ValidateException $e) {
@@ -104,6 +106,7 @@ class UpdateHistories extends Command
                 'fund_code' => $fund->code,
             ]);
             $fund->status = 5;
+            $this->error("ValidateException happen, fund code is {$fund->code}");
 
             return 0;
         } catch (\Exception $e) {
@@ -111,6 +114,8 @@ class UpdateHistories extends Command
                 'fund_code' => $fund->code,
                 'where'     => $e->getFile().':'.$e->getLine(),
             ]);
+            $fund->status = 5;
+            $this->error("{$e->getMessage()}, fund code is {$fund->code}");
 
             return 0;
         }

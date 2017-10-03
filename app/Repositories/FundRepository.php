@@ -46,9 +46,9 @@ class FundRepository extends BaseRepository
                 ->orWhereNull('profit_date');
         })->where(function ($query) {
             // 60分钟内更新过的不在更新
-            $query->where('counted_at', '<', Carbon::now()->subMinutes(60))
+            $query->where('counted_at', '<', Carbon::now()->subMinutes(300))
                 ->orWhereNull('counted_at');
-        })->whereNotIn('status', [3, 4, 5]) // 过滤没有数据和极少数据、有异常的基金
+        })->whereNotIn('status', [3, 4]) // 过滤没有数据和极少数据
         ->whereNotIn('type', [5, 8]) // 过滤货币基金、理财型基金
         ->get();
     }
