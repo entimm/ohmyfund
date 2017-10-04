@@ -93,15 +93,19 @@
             var graph = new AmCharts.AmGraph();
             graph.valueField = "unit";
             graph.showBalloon = true;
-            graph.lineColor = "#25bcec";
+            graph.lineColor = "#fe1c40";
             graph.fillAlphas = 0.5;
             graph.bullet = "round";
-            graph.hideBulletsCount = 50;
+            // graph.hideBulletsCount = 50;
             graph.bulletBorderAlpha = 1;
-            graph.bulletColor = "#FFFFFF";
-            graph.bulletSize = 7;
+            // graph.bulletColor = "#FFFFFF";
+            graph.negativeLineColor = "#23dc1e";
+            graph.bulletBorderColor = "#FFFFFF";
+            graph.bulletSize = 6;
+            graph.fillColors = "#25bcec";
             graph.lineThickness = 2;
-            graph.useLineColorForBulletBorder = true;
+            graph.useNegativeColorIfDown = true;
+            // graph.useLineColorForBulletBorder = true;
             graph.balloonText = "<span style='font-size:12px;'>[[rate]] ([[date]])<br/>[[bonus]]</span>";
             graph.balloon = {
                 color:"#000",
@@ -113,6 +117,8 @@
 
             chart.chartCursor = {
                 cursorAlpha: 0,
+                valueLineEnabled: true,
+                valueLineBalloonEnabled: true
             };
 
             var valueAxis = new AmCharts.ValueAxis();
