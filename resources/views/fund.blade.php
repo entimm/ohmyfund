@@ -70,7 +70,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         fillAlphas: 0.5,
         useLineColorForBulletBorder: true,
         valueField: "unit",
-        balloonText: "<span style='font-size:16px;'>[[value]] ([[rate]])</span>"
+        balloonText: "<span style='font-size:16px;'>[[value]] ([[rate]])<br/>[[bonus]]</span>"
     }],
     chartScrollbar: {
         graph: "g1",
@@ -106,7 +106,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         gridAlpha: 1,
     },
     export: {
-        enabled: true
+        enabled: false
     },
     dataLoader: {
         url: "/api/funds/{{ $fund->code }}/history",

@@ -20,6 +20,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::get('funds/{code}/history', 'FundController@history');
+Route::get('funds/{code}/event', 'FundController@event');
 Route::resource('funds', 'FundController', ['only' => [
     'index', 'show',
 ]]);

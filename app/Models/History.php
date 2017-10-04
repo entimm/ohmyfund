@@ -68,12 +68,15 @@ class History extends Model implements Transformable, HasPresenter
 
     public function transform()
     {
-        return [
+        $data = [
             'date'  => $this->date,
             'unit'  => round($this->unit / 10000, 4),
             'total' => round($this->total / 10000, 4),
             'rate'  => round($this->rate / 10000, 4),
-            'bonus' => round($this->bonus / 10000, 4),
         ];
+        if ($this->bonus) {
+            $data['bonus'] = $this->bonus;
+        }
+        return $data;
     }
 }

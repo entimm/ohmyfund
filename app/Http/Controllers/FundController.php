@@ -61,4 +61,17 @@ class FundController extends Controller
 
         return $this->historyRepository->history($code, $begin, $end)['data'];
     }
+
+    public function event(Request $request, $code)
+    {
+        $this->validate($request, [
+            'begin' => 'date',
+            'end'   => 'date',
+        ]);
+
+        $begin = $request->get('begin');
+        $end = $request->get('end');
+
+        return $this->historyRepository->event($code, $begin, $end);
+    }
 }

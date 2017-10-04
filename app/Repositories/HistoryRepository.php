@@ -66,7 +66,7 @@ class HistoryRepository extends BaseRepository
     public function history($code, $begin, $end)
     {
         return $this->scopeQuery(function ($query) use ($code, $begin, $end) {
-            return $query->select(['date', 'unit', 'rate'])
+            return $query->select(['date', 'unit', 'rate', 'bonus'])
                 ->where('code', $code)
                 ->when($begin, function ($query) use ($begin) {
                     return $query->where('date', '>=', $begin);
@@ -74,5 +74,19 @@ class HistoryRepository extends BaseRepository
                     return $query->where('date', '<=', $end);
                 })->orderBy('date', 'asc');
         })->all();
+    }
+
+    public function event($code, $begin, $end)
+    {
+        return $this->scopeQuery(function ($query) use ($code, $begin, $end) {
+            return $query->select(['date', 'bonus'])
+                ->where('code', $code)
+                ->where('bonus', '<>', '')
+                ->when($begin, function ($query) use ($begin) {
+                    return $query->where('date', '>=', $begin);
+                })->when($end, function ($query) use ($end) {
+                    return $query->where('date', '<=', $end);
+                })->orderBy('date', 'asc');
+        })->skipPresenter()->all();
     }
 }

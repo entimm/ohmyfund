@@ -95,7 +95,14 @@
             graph.showBalloon = true;
             graph.lineColor = "#25bcec";
             graph.fillAlphas = 0.5;
-            graph.balloonText = "<span style='font-size:12px;'>[[rate]] ([[date]])</span>";
+            graph.bullet = "round";
+            graph.hideBulletsCount = 50;
+            graph.bulletBorderAlpha = 1;
+            graph.bulletColor = "#FFFFFF";
+            graph.bulletSize = 7;
+            graph.lineThickness = 2;
+            graph.useLineColorForBulletBorder = true;
+            graph.balloonText = "<span style='font-size:12px;'>[[rate]] ([[date]])<br/>[[bonus]]</span>";
             graph.balloon = {
                 color:"#000",
                 cornerRadius: 5,
