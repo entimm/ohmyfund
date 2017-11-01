@@ -116,9 +116,7 @@
             chart.addGraph(graph);
 
             chart.chartCursor = {
-                cursorAlpha: 0,
-                valueLineEnabled: true,
-                valueLineBalloonEnabled: true
+                cursorAlpha: 0.3,
             };
 
             var valueAxis = new AmCharts.ValueAxis();

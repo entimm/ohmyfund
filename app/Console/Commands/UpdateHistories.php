@@ -122,11 +122,11 @@ class UpdateHistories extends Command
 
         $touchNum = $this->historyRepository->saveRecords($records, $fund->code);
         // 标记10天内都没数据的基金
+        $fund->profit_date = $records[0]['date'] ?: null;
         $diffDay = date_diff(date_create($fund->profit_date), date_create())->days;
         if ($diffDay > 10) {
             $fund->status = 4;
         }
-        $fund->profit_date = $records[0]['date'] ?: null;
         $fund->counted_at = Carbon::now();
 
         return $touchNum;

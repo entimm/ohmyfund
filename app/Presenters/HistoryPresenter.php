@@ -8,12 +8,12 @@ class HistoryPresenter extends BasePresenter
 {
     public function unit()
     {
-        return round($this->wrappedObject->unit / 10000, 2);
+        return round($this->wrappedObject->unit / 10000, 4);
     }
 
     public function total()
     {
-        return round($this->wrappedObject->total / 10000, 2);
+        return round($this->wrappedObject->total / 10000, 4);
     }
 
     public function rate()

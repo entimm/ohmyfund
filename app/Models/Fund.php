@@ -158,8 +158,8 @@ class Fund extends Model implements Transformable, HasPresenter
                 ->reverse()
                 ->values();
             foreach ($histories as $history) {
-                $history->unit = round($history->unit / 10000, 2);
-                $history->total = round($history->total / 10000, 2);
+                $history->unit = round($history->unit / 10000, 4);
+                $history->total = round($history->total / 10000, 4);
                 $history->rate = round($history->rate / 10000, 2);
             }
 

@@ -13,6 +13,7 @@
         "league/fractal": "^0.17.0",
         "mccool/laravel-auto-presenter": "^6.0",
         "mews/purifier": "^2.0",
+        "overtrue/chinese-calendar": "^0.0.3",
         "predis/predis": "^1.1",
         "prettus/l5-repository": "^2.6",
         "symfony/dom-crawler": "^3.3"
