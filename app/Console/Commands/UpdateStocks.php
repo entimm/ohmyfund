@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Stock;
 use App\Models\StockHistories;
-use App\Repositories\StockHistoryRepository;
+use App\Models\StockHistory;
 use App\Services\XueQiuService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -26,20 +26,20 @@ class UpdateStocks extends Command
     protected $description = 'Update stocks';
 
     /**
-     * @var StockHistoryRepository
+     * @var StockHistory
      */
-    private $stockHistoryRepository;
+    private $stockHistory;
 
     /**
      * Create a new command instance.
      *
-     * @param StockHistoryRepository $stockHistoryRepository
+     * @param StockHistory $stockHistory
      */
-    public function __construct(StockHistoryRepository $stockHistoryRepository)
+    public function __construct(StockHistory $stockHistory)
     {
         parent::__construct();
 
-        $this->stockHistoryRepository = $stockHistoryRepository;
+        $this->stockHistory = $stockHistory;
     }
 
     /**
@@ -80,7 +80,7 @@ class UpdateStocks extends Command
         $list = resolve(XueQiuService::class)->requestHistory($symbol, $typeName, $stock->counted_at ? $stock->counted_at->getTimestamp() : 0);
         $list = array_reverse($list);
 
-        $touchNum = $this->stockHistoryRepository->saveRecords($list, $symbol, $type);
+        $touchNum = $this->stockHistory->saveRecords($list, $symbol, $type);
         $this->info("{$symbol} | {$typeName} | {$touchNum}");
     }
 }

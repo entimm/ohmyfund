@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * App\Models\Company.
@@ -22,9 +20,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Company extends Model implements Transformable
+class Company extends Model
 {
-    use TransformableTrait;
-
     protected $fillable = ['code', 'name'];
 }

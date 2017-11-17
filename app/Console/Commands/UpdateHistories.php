@@ -6,8 +6,8 @@ use App\Exceptions\NonDataException;
 use App\Exceptions\ResolveErrorException;
 use App\Exceptions\ValidateException;
 use App\Models\Fund;
-use App\Repositories\FundRepository;
-use App\Repositories\HistoryRepository;
+use App\Models\Fund;
+use App\Models\History;
 use App\Services\EastmoneyService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -30,27 +30,27 @@ class UpdateHistories extends Command
     protected $description = 'Update history';
 
     /**
-     * @var HistoryRepository
+     * @var History
      */
-    protected $historyRepository;
+    protected $history;
 
     /**
-     * @var FundRepository
+     * @var Fund
      */
-    private $fundRepository;
+    private $fund;
 
     /**
      * Create a new command instance.
      *
-     * @param HistoryRepository $historyRepository
-     * @param FundRepository    $fundRepository
+     * @param History $history
+     * @param Fund    $fund
      */
-    public function __construct(HistoryRepository $historyRepository, FundRepository $fundRepository)
+    public function __construct(History $history, Fund $fund)
     {
         parent::__construct();
 
-        $this->historyRepository = $historyRepository;
-        $this->fundRepository = $fundRepository;
+        $this->history = $history;
+        $this->fund = $fund;
     }
 
     /**
@@ -61,7 +61,7 @@ class UpdateHistories extends Command
     public function handle()
     {
         $this->info('update history 🙏');
-        $funds = $this->fundRepository->toUpdates();
+        $funds = $this->fund->toUpdates();
         $count = count($funds);
         foreach ($funds as $key => $fund) {
             $touchNum = $this->updateOneFund($fund);
@@ -120,7 +120,7 @@ class UpdateHistories extends Command
             return 0;
         }
 
-        $touchNum = $this->historyRepository->saveRecords($records, $fund->code);
+        $touchNum = $this->history->saveRecords($records, $fund->code);
         // 标记10天内都没数据的基金
         $diffDay = date_diff(date_create($fund->profit_date), date_create())->days;
         if ($diffDay > 10) {

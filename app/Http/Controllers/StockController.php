@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
-use App\Repositories\StockHistoryRepository;
+use App\Models\StockHistory;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
     /**
-     * @var StockHistoryRepository
+     * @var StockHistory
      */
-    private $stockHistoryRepository;
+    private $stockHistory;
 
     /**
      * StockController constructor.
      *
-     * @param StockHistoryRepository $stockHistoryRepository
+     * @param StockHistory $stockHistory
      */
-    public function __construct(StockHistoryRepository $stockHistoryRepository)
+    public function __construct(StockHistory $stockHistory)
     {
-        $this->stockHistoryRepository = $stockHistoryRepository;
+        $this->stockHistory = $stockHistory;
     }
 
     /**
@@ -62,7 +62,7 @@ class StockController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
         $type = $request->get('type') ?: 1;
-        $candlestick = $this->stockHistoryRepository->candlestick($symbol, $type, $begin, $end);
+        $candlestick = $this->stockHistory->candlestick($symbol, $type, $begin, $end);
 
         return $candlestick;
     }
@@ -86,7 +86,7 @@ class StockController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
         $type = $request->get('type') ?: 1;
-        $values = $this->stockHistoryRepository->values($symbol, $type, $begin, $end);
+        $values = $this->stockHistory->values($symbol, $type, $begin, $end);
 
         return $values;
     }

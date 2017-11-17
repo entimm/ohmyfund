@@ -4,24 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Fund;
 use App\Models\History;
-use App\Repositories\HistoryRepository;
+use App\Models\History;
 use Illuminate\Http\Request;
 
 class FundController extends Controller
 {
     /**
-     * @var HistoryRepository
+     * @var History
      */
-    private $historyRepository;
+    private $history;
 
     /**
      * FundController constructor.
      *
-     * @param HistoryRepository $historyRepository
+     * @param History $history
      */
-    public function __construct(HistoryRepository $historyRepository)
+    public function __construct(History $history)
     {
-        $this->historyRepository = $historyRepository;
+        $this->history = $history;
     }
 
     public function index(Request $request)
@@ -59,7 +59,7 @@ class FundController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
 
-        return $this->historyRepository->history($code, $begin, $end)['data'];
+        return $this->history->history($code, $begin, $end)['data'];
     }
 
     public function event(Request $request, $code)
@@ -72,6 +72,6 @@ class FundController extends Controller
         $begin = $request->get('begin');
         $end = $request->get('end');
 
-        return $this->historyRepository->event($code, $begin, $end);
+        return $this->history->event($code, $begin, $end);
     }
 }

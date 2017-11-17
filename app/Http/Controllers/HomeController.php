@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fund;
 use App\Models\Stock;
-use App\Repositories\FundRepository;
+use App\Models\Fund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -40,7 +40,7 @@ class HomeController extends Controller
         return view('fund', compact('fund'));
     }
 
-    public function rank(Request $request, FundRepository $fundRepository)
+    public function rank(Request $request, Fund $fund)
     {
         $columns = [
             'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
@@ -60,7 +60,7 @@ class HomeController extends Controller
         if ($orderBy && isset($columns[$orderBy])) {
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
-        $funds = $fundRepository->toShows()['data'];
+        $funds = $fund->toShows()['data'];
 
         return view('rank', compact('funds', 'columns'));
     }

@@ -7,8 +7,6 @@ use App\Services\EastmoneyService;
 use Cache;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * App\Models\Fund.
@@ -66,10 +64,8 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Fund extends Model implements Transformable, HasPresenter
+class Fund extends Model implements HasPresenter
 {
-    use TransformableTrait;
-
     protected $fillable = ['code', 'name', 'type', 'short_name', 'pinyin_name',
         'unit', 'total', 'rate', 'in_1week', 'in_1month', 'in_3month', 'in_6month',
         'current_year', 'in_1year', 'in_2year', 'in_3year', 'in_5year', 'since_born', 'born_date', ];
@@ -175,4 +171,33 @@ class Fund extends Model implements Transformable, HasPresenter
 
         return $evaluate['rate'];
     }
+
+    /**
+     * 获取即将更新的基金集合.
+     */
+    public function toUpdates()
+    {
+        return static::where(function ($query) {
+            // 过滤掉今天结算过的
+            $query->where('profit_date', '<', date('Y-m-d'))
+                ->orWhereNull('profit_date');
+        })->where(function ($query) {
+            // 60分钟内更新过的不在更新
+            $query->where('counted_at', '<', Carbon::now()->subMinutes(300))
+                ->orWhereNull('counted_at');
+        })->whereNotIn('status', [3, 4]) // 过滤没有数据和极少数据
+        ->whereNotIn('type', [5, 8]) // 过滤货币基金、理财型基金
+        ->get();
+    }
+
+    /**
+     * 获取将作显示的基金集合.
+     */
+    public function toShows()
+    {
+        return $query->whereNotIn('status', [3, 4, 5])
+                ->whereNotIn('type', [5, 8])
+                ->take(500)->all();
+    }
+
 }
