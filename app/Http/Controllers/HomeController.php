@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Models\Fund;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -92,9 +91,8 @@ class HomeController extends Controller
         }
         $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
         $page = $request->input('page', '1');
-        $path = Paginator::resolveCurrentPath();
         $funds = new LengthAwarePaginator($funds->forPage($page, 20), count($funds), 20, $page, [
-            'path' => $path,
+            'path' => $request->getRequestUri(),
         ]);
 
         return view('concerns', compact('funds', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
@@ -110,7 +108,6 @@ class HomeController extends Controller
             'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
             'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
         ];
-        $orderBy = $request->input('orderBy');
         if ($orderBy && isset($columns[$orderBy])) {
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
@@ -120,12 +117,34 @@ class HomeController extends Controller
         }
         $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
         $page = $request->input('page', '1');
-        $path = Paginator::resolveCurrentPath();
-        $funds = new LengthAwarePaginator($funds->forPage($page, 20), count($funds), 20, $page, [
-            'path' => $path,
+        $funds = new LengthAwarePaginator($funds->forPage($page, 18), count($funds), 18, $page, [
+            'path' => $request->getRequestUri(),
         ]);
 
         return view('evaluate', compact('funds', 'columns', 'orderBy', 'sortedBy'));
+    }
+
+    public function simple(Request $request, Fund $fund)
+    {
+        $graphScope = $request->input('graphScope', 100);
+        $orderBy = $request->input('orderBy', 'evaluateRate');
+        $sortedBy = $request->input('sortedBy', 'desc');
+        $columns = [
+            'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
+            'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
+            'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
+            'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
+        ];
+        if ($orderBy && isset($columns[$orderBy])) {
+            $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
+        }
+        $collection = Collection::make();
+        foreach (config('local.concerns', []) as $codes) {
+            $funds = Fund::whereIn('code', $codes)->get()->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
+            $collection->push($funds);
+        }
+
+        return view('simple', compact('collection', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
     }
 
     public function compare()

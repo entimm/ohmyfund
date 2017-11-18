@@ -15,6 +15,10 @@
     color: green;
     font-weight: bolder;
 }
+
+.panel .panel-body {
+    padding: 5px 0px 5px 6px;
+}
 </style>
 @endpush
 

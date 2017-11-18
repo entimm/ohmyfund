@@ -48,6 +48,9 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li>
+                                <a href="{{ route('simple') }}">简单估值</a>
+                            </li>
+                            <li>
                                 <a href="{{ route('evaluate') }}">基金估值</a>
                             </li>
                             <li>
