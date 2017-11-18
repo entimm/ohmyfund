@@ -49,6 +49,8 @@
             @endforeach
             </tbody>
         </table>
+
+        {{ $funds->links() }}
     </div>
 @endsection
 

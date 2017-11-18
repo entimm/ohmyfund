@@ -30,16 +30,17 @@
             <tbody>
             @foreach ($funds as $fund)
                 <tr>
-                    <td><a href="{{ route('fund', $fund['code']) }}" target="_blank">{{ $fund['code'] }}</a></td>
-                    <td>{{ $fund['name'] }}</td>
-                    <td>{{ $fund['type'] }}</td>
+                    <td><a href="{{ route('fund', $fund->code) }}" target="_blank">{{ $fund->code }}</a></td>
+                    <td>{{ $fund->name }}</td>
+                    <td>{{ $fund->type }}</td>
                     @foreach ($columns as $key => $column)
-                    <td class="rate-value">{{ $fund[$key] }}</td>
+                    <td class="rate-value">{{ $fund->$key }}</td>
                     @endforeach
                 </tr>
             @endforeach
             </tbody>
         </table>
+        {{ $funds->links() }}
     </div>
 @endsection
 

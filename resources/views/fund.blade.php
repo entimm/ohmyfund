@@ -114,12 +114,8 @@ var chart = AmCharts.makeChart("chartdiv", {
         showCurtain: true,
         showErrors: true,
         async: true,
-        reverse: true,
         delimiter: ",",
         useColumnNames: true,
-        complete: function (chart) {
-            chart.addListener("dataUpdated", zoomChart);
-        }
     }
 });
 

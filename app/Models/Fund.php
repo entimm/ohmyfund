@@ -5,10 +5,9 @@ namespace App\Models;
 use App\Presenters\FundPresenter;
 use App\Services\EastmoneyService;
 use Cache;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * App\Models\Fund.
@@ -66,10 +65,8 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fund whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Fund extends Model implements Transformable, HasPresenter
+class Fund extends Model implements HasPresenter
 {
-    use TransformableTrait;
-
     protected $fillable = ['code', 'name', 'type', 'short_name', 'pinyin_name',
         'unit', 'total', 'rate', 'in_1week', 'in_1month', 'in_3month', 'in_6month',
         'current_year', 'in_1year', 'in_2year', 'in_3year', 'in_5year', 'since_born', 'born_date', ];
@@ -122,30 +119,6 @@ class Fund extends Model implements Transformable, HasPresenter
         return FundPresenter::class;
     }
 
-    public function transform()
-    {
-        return [
-            'id'           => $this->id,
-            'code'         => $this->code,
-            'name'         => $this->name,
-            'type'         => static::$types[$this->type],
-            'unit'         => round($this->unit / 10000, 2),
-            'total'        => round($this->total / 10000, 2),
-            'rate'         => round($this->rate / 10000, 2),
-            'in_1week'     => round($this->in_1week / 10000, 2),
-            'in_1month'    => round($this->in_1month / 10000, 2),
-            'in_3month'    => round($this->in_3month / 10000, 2),
-            'in_6month'    => round($this->in_6month / 10000, 2),
-            'current_year' => round($this->current_year / 10000, 2),
-            'in_1year'     => round($this->in_1year / 10000, 2),
-            'in_2year'     => round($this->in_2year / 10000, 2),
-            'in_3year'     => round($this->in_3year / 10000, 2),
-            'in_5year'     => round($this->in_5year / 10000, 2),
-            'since_born'   => round($this->since_born / 10000, 2),
-            'born_date'    => $this->born_date,
-        ];
-    }
-
     public function getHistoriesAttribute()
     {
         $key = 'histories_'.$this->code;
@@ -175,4 +148,34 @@ class Fund extends Model implements Transformable, HasPresenter
 
         return $evaluate['rate'];
     }
+
+    /**
+     * 获取即将更新的基金集合.
+     */
+    public function toUpdates()
+    {
+        return static::where(function ($query) {
+            // 过滤掉今天结算过的
+            $query->where('profit_date', '<', date('Y-m-d'))
+                ->orWhereNull('profit_date');
+        })->where(function ($query) {
+            // 60分钟内更新过的不在更新
+            $query->where('counted_at', '<', Carbon::now()->subMinutes(300))
+                ->orWhereNull('counted_at');
+        })->whereNotIn('status', [3, 4]) // 过滤没有数据和极少数据
+        ->whereNotIn('type', [5, 8]) // 过滤货币基金、理财型基金
+        ->get();
+    }
+
+    /**
+     * 获取将作显示的基金集合.
+     */
+    public function toShows()
+    {
+        return $this->whereNotIn('status', [3, 4, 5])
+          ->whereNotIn('type', [5, 8])
+          ->take(500)
+          ->paginate(20);
+    }
+
 }

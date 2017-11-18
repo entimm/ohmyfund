@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Presenters\StockPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * App\Models\Stock.
@@ -29,9 +28,8 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Stock whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Stock extends Model implements Transformable
+class Stock extends Model
 {
-    use TransformableTrait;
 
     protected $fillable = ['symbol', 'code', 'name'];
 

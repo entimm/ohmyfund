@@ -3,8 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Stock;
-use App\Models\StockHistories;
-use App\Repositories\StockHistoryRepository;
+use App\Models\StockHistory;
 use App\Services\XueQiuService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -26,20 +25,20 @@ class UpdateStocks extends Command
     protected $description = 'Update stocks';
 
     /**
-     * @var StockHistoryRepository
+     * @var StockHistory
      */
-    private $stockHistoryRepository;
+    private $stockHistory;
 
     /**
      * Create a new command instance.
      *
-     * @param StockHistoryRepository $stockHistoryRepository
+     * @param StockHistory $stockHistory
      */
-    public function __construct(StockHistoryRepository $stockHistoryRepository)
+    public function __construct(StockHistory $stockHistory)
     {
         parent::__construct();
 
-        $this->stockHistoryRepository = $stockHistoryRepository;
+        $this->stockHistory = $stockHistory;
     }
 
     /**
@@ -56,8 +55,8 @@ class UpdateStocks extends Command
             $stock = Stock::firstOrNew(array_only($quotes, 'symbol'), $quotes);
             $stock->data = array_except($quotes, ['symbol', 'code', 'name']);
 
-            $this->process($stock, StockHistories::NORMAL_TYPE);
-            $this->process($stock, StockHistories::BEFORE_TYPE);
+            $this->process($stock, StockHistory::NORMAL_TYPE);
+            $this->process($stock, StockHistory::BEFORE_TYPE);
 
             $stock->counted_at = Carbon::now();
 
@@ -76,11 +75,11 @@ class UpdateStocks extends Command
     protected function process($stock, $type)
     {
         $symbol = $stock->symbol;
-        $typeName = $type == StockHistories::NORMAL_TYPE ? 'normal' : 'before';
+        $typeName = $type == StockHistory::NORMAL_TYPE ? 'normal' : 'before';
         $list = resolve(XueQiuService::class)->requestHistory($symbol, $typeName, $stock->counted_at ? $stock->counted_at->getTimestamp() : 0);
         $list = array_reverse($list);
 
-        $touchNum = $this->stockHistoryRepository->saveRecords($list, $symbol, $type);
+        $touchNum = $this->stockHistory->saveRecords($list, $symbol, $type);
         $this->info("{$symbol} | {$typeName} | {$touchNum}");
     }
 }

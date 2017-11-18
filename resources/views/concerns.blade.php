@@ -68,6 +68,8 @@
                 </div>
             </div>
         @endforeach
+
+        {{ $funds->links() }}
     </div>
 @endsection
 
@@ -80,57 +82,69 @@
     <script src="/amcharts/themes/light.js"></script>
     <script>
     AmCharts.ready(function () {
-    @foreach($funds as $fund)
-            var chart = new AmCharts.AmSerialChart();
-            chart.dataProvider = {!! $fund->histories->take(-$graphScope)->values()->toJson() !!};
-            chart.categoryField = "date";
-            chart.autoMargins = false;
-            chart.marginLeft = 0;
-            chart.marginRight = 5;
-            chart.marginTop = 0;
-            chart.marginBottom = 0;
+    var funds = {!! $funds->pluck('code') !!};
+        for(fund of funds) {
+            (function() {
+                var chart = new AmCharts.AmSerialChart();
+                // chart.dataProvider = {!! $fund->histories->take(-$graphScope)->values()->toJson() !!};
+                chart.dataLoader = {
+                    url: "/api/funds/"+fund+"/history?limit={{ $graphScope }}",
+                    format: "json",
+                    showCurtain: true,
+                    showErrors: true,
+                    async: true,
+                    delimiter: ",",
+                    useColumnNames: true,
+                }
+                chart.categoryField = "date";
+                chart.autoMargins = false;
+                chart.marginLeft = 0;
+                chart.marginRight = 5;
+                chart.marginTop = 0;
+                chart.marginBottom = 0;
 
-            var graph = new AmCharts.AmGraph();
-            graph.valueField = "total";
-            graph.showBalloon = true;
-            graph.lineColor = "#fe1c40";
-            graph.fillAlphas = 0.5;
-            graph.bullet = "round";
-            // graph.hideBulletsCount = 50;
-            graph.bulletBorderAlpha = 1;
-            // graph.bulletColor = "#FFFFFF";
-            graph.negativeLineColor = "#23dc1e";
-            graph.bulletBorderColor = "#FFFFFF";
-            graph.bulletSize = 6;
-            graph.fillColors = "#25bcec";
-            graph.lineThickness = 2;
-            graph.useNegativeColorIfDown = true;
-            // graph.useLineColorForBulletBorder = true;
-            graph.balloonText = "<span style='font-size:12px;'>[[rate]] ([[date]])<br/>[[bonus]]</span>";
-            graph.balloon = {
-                color:"#000",
-                cornerRadius: 5,
-                borderThickness: 1,
-                shadowAlpha: 0
-            };
-            chart.addGraph(graph);
+                var graph = new AmCharts.AmGraph();
+                graph.valueField = "total";
+                graph.showBalloon = true;
+                graph.lineColor = "#fe1c40";
+                graph.fillAlphas = 0.5;
+                graph.bullet = "round";
+                // graph.hideBulletsCount = 50;
+                graph.bulletBorderAlpha = 1;
+                // graph.bulletColor = "#FFFFFF";
+                graph.negativeLineColor = "#23dc1e";
+                graph.bulletBorderColor = "#FFFFFF";
+                graph.bulletSize = 6;
+                graph.fillColors = "#25bcec";
+                graph.lineThickness = 2;
+                graph.useNegativeColorIfDown = true;
+                // graph.useLineColorForBulletBorder = true;
+                graph.balloonText = "<span style='font-size:12px;'>[[rate]] ([[date]])<br/>[[bonus]]</span>";
+                graph.balloon = {
+                    color:"#000",
+                    cornerRadius: 5,
+                    borderThickness: 1,
+                    shadowAlpha: 0
+                };
+                chart.addGraph(graph);
 
-            chart.chartCursor = {
-                cursorAlpha: 0.3,
-            };
+                chart.chartCursor = {
+                    cursorAlpha: 0.3,
+                };
 
-            var valueAxis = new AmCharts.ValueAxis();
-            valueAxis.gridAlpha = 0;
-            valueAxis.axisAlpha = 0;
-            chart.addValueAxis(valueAxis);
+                var valueAxis = new AmCharts.ValueAxis();
+                valueAxis.gridAlpha = 0;
+                valueAxis.axisAlpha = 0;
+                chart.addValueAxis(valueAxis);
 
-            var categoryAxis = chart.categoryAxis;
-            categoryAxis.gridAlpha = 0;
-            categoryAxis.axisAlpha = 0;
-            categoryAxis.startOnAxis = true;
+                var categoryAxis = chart.categoryAxis;
+                categoryAxis.gridAlpha = 0;
+                categoryAxis.axisAlpha = 0;
+                categoryAxis.startOnAxis = true;
 
-            chart.write("chartdiv-{{ $fund->code }}");
-    @endforeach
+                chart.write("chartdiv-" + fund);
+            })();
+        }
     });
 
     var params = {

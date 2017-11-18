@@ -3,30 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fund;
+use App\Http\Resources\Fund as FundResource;
 use App\Models\History;
-use App\Repositories\HistoryRepository;
+use App\Http\Resources\History as HistoryResource;
 use Illuminate\Http\Request;
 
 class FundController extends Controller
 {
     /**
-     * @var HistoryRepository
+     * @var History
      */
-    private $historyRepository;
+    private $history;
 
     /**
      * FundController constructor.
      *
-     * @param HistoryRepository $historyRepository
+     * @param History $history
      */
-    public function __construct(HistoryRepository $historyRepository)
+    public function __construct(History $history)
     {
-        $this->historyRepository = $historyRepository;
+        $this->history = $history;
     }
 
     public function index(Request $request)
     {
-        return Fund::get();
+        return FundResource::collection(Fund::paginate());
     }
 
     /**
@@ -34,11 +35,11 @@ class FundController extends Controller
      *
      * @param Fund $fund
      *
-     * @return Fund
+     * @return FundResource|Fund
      */
     public function show(Fund $fund)
     {
-        return $fund;
+        return new FundResource($fund);
     }
 
     /**
@@ -58,8 +59,9 @@ class FundController extends Controller
 
         $begin = $request->get('begin');
         $end = $request->get('end');
+        $limit = $request->get('limit');
 
-        return $this->historyRepository->history($code, $begin, $end)['data'];
+        return HistoryResource::collection($this->history->history($code, $begin, $end, $limit));
     }
 
     public function event(Request $request, $code)
@@ -71,7 +73,8 @@ class FundController extends Controller
 
         $begin = $request->get('begin');
         $end = $request->get('end');
+        $limit = $request->get('graphScope');
 
-        return $this->historyRepository->event($code, $begin, $end);
+        return $this->history->event($code, $begin, $end, $limit);
     }
 }

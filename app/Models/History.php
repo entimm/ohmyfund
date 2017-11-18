@@ -5,8 +5,7 @@ namespace App\Models;
 use App\Presenters\HistoryPresenter;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
+use DB;
 
 /**
  * App\Models\History.
@@ -36,10 +35,8 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\History whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class History extends Model implements Transformable, HasPresenter
+class History extends Model implements HasPresenter
 {
-    use TransformableTrait;
-
     protected $fillable = ['code', 'date', 'unit', 'total', 'rate', 'buy_status', 'sell_status', 'bonus'];
 
     public static $buyStatusList = [
@@ -66,17 +63,68 @@ class History extends Model implements Transformable, HasPresenter
         return HistoryPresenter::class;
     }
 
-    public function transform()
+    /**
+     * 保存基金历史记录，并返回操作数量.
+     *
+     * @param $records
+     * @param $fundCode
+     *
+     * @return int
+     */
+    public function saveRecords($records, $fundCode)
     {
-        $data = [
-            'date'  => $this->date,
-            'unit'  => round($this->unit / 10000, 4),
-            'total' => round($this->total / 10000, 4),
-            'rate'  => round($this->rate / 10000, 4),
-        ];
-        if ($this->bonus) {
-            $data['bonus'] = $this->bonus;
-        }
-        return $data;
+        // 开启事务，保证下面sql语句一起执行成功
+        $touchNum = 0;
+        DB::transaction(function () use ($records, $fundCode, &$touchNum) {
+            foreach ($records as $key => $record) {
+                $record['code'] = $fundCode;
+                $history = History::firstOrNew(array_only($record, ['code', 'date']), $record);
+                // 如果存在数据，那么就停止后续数据库操作
+                if ($history->exists) {
+                    break;
+                }
+                $history->save();
+                $touchNum++;
+            }
+        });
+
+        return $touchNum;
+    }
+
+    public function history($code, $begin, $end, $limit = null)
+    {
+        return $this->select(['date', 'unit', 'rate', 'bonus', 'total'])
+            ->where('code', $code)
+            ->when($begin, function ($query) use ($begin) {
+                return $query->where('date', '>=', $begin);
+            })
+            ->when($end, function ($query) use ($end) {
+                return $query->where('date', '<=', $end);
+            })
+            ->when($limit, function ($query) use ($limit) {
+                return $query->take($limit);
+            })
+            ->orderBy('date', 'desc')
+            ->get()
+            ->reverse();
+    }
+
+    public function event($code, $begin, $end)
+    {
+        return $this->select(['date', 'bonus'])
+            ->where('code', $code)
+            ->where('bonus', '<>', '')
+            ->when($begin, function ($query) use ($begin) {
+                return $query->where('date', '>=', $begin);
+            })
+            ->when($end, function ($query) use ($end) {
+                return $query->where('date', '<=', $end);
+            })
+            ->when($limit, function ($query) use ($limit) {
+                return $query->take($limit);
+            })
+            ->orderBy('date', 'desc')
+            ->get()
+            ->reverse();
     }
 }
