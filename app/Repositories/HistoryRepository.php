@@ -66,7 +66,7 @@ class HistoryRepository extends BaseRepository
     public function history($code, $begin, $end)
     {
         return $this->scopeQuery(function ($query) use ($code, $begin, $end) {
-            return $query->select(['date', 'unit', 'rate', 'bonus'])
+            return $query->select(['date', 'unit', 'rate', 'bonus', 'total'])
                 ->where('code', $code)
                 ->when($begin, function ($query) use ($begin) {
                     return $query->where('date', '>=', $begin);

@@ -150,7 +150,7 @@ class Fund extends Model implements Transformable, HasPresenter
     {
         $key = 'histories_'.$this->code;
         $histories = Cache::remember($key, 60, function () {
-            $histories = History::select(['date', 'unit', 'rate', 'bonus'])
+            $histories = History::select(['date', 'unit', 'rate', 'bonus', 'total'])
                 ->where('code', $this->code)
                 ->orderBy('date', 'desc')
                 ->take(100)

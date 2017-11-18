@@ -69,7 +69,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         lineColor: "#ccc",
         fillAlphas: 0.5,
         useLineColorForBulletBorder: true,
-        valueField: "unit",
+        valueField: "total",
         balloonText: "<span style='font-size:16px;'>[[value]] ([[rate]])<br/>[[bonus]]</span>"
     }],
     chartScrollbar: {

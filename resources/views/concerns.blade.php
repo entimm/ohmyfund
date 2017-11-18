@@ -91,7 +91,7 @@
             chart.marginBottom = 0;
 
             var graph = new AmCharts.AmGraph();
-            graph.valueField = "unit";
+            graph.valueField = "total";
             graph.showBalloon = true;
             graph.lineColor = "#fe1c40";
             graph.fillAlphas = 0.5;

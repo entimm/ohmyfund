@@ -239,7 +239,7 @@ class EastmoneyService
             $evaluate = $this->requestEvaluate($fundCode);
             Cache::put($key, $evaluate, 30);
         } else {
-            $evaluate = Cache::remember($key, 30, function () use ($fundCode) {
+            $evaluate = Cache::remember($key, 60, function () use ($fundCode) {
                 return $this->requestEvaluate($fundCode);
             });
         }
