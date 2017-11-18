@@ -7,6 +7,7 @@ use App\Models\Fund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Cache;
 
 class HomeController extends Controller
 {
@@ -126,6 +127,7 @@ class HomeController extends Controller
 
     public function simple(Request $request, Fund $fund)
     {
+        Cache::flush();
         $graphScope = $request->input('graphScope', 100);
         $orderBy = $request->input('orderBy', 'evaluateRate');
         $sortedBy = $request->input('sortedBy', 'desc');
