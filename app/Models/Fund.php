@@ -170,11 +170,12 @@ class Fund extends Model implements HasPresenter
     /**
      * 获取将作显示的基金集合.
      */
-    public function toShows()
+    public function toShows($orderBy, $sortedBy)
     {
         return $this->whereNotIn('status', [3, 4, 5])
           ->whereNotIn('type', [5, 8])
           ->take(500)
+          ->orderBy($orderBy, $sortedBy)
           ->paginate(20);
     }
 

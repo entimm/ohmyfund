@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -58,10 +58,11 @@ class HomeController extends Controller
             'born_date'    => ['name' => '成立日期', 'sortedBy' => 'asc'],
         ];
         $orderBy = $request->input('orderBy');
+        $sortedBy = $request->input('sortedBy', 'desc');
         if ($orderBy && isset($columns[$orderBy])) {
-            $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
+            $columns[$orderBy]['sortedBy'] = $sortedBy == 'asc' ? 'desc' : 'asc';
         }
-        $funds = $fund->toShows();
+        $funds = $fund->toShows($orderBy, $sortedBy);
 
         return view('rank', compact('funds', 'columns'));
     }
