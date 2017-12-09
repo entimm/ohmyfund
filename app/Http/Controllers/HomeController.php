@@ -57,9 +57,9 @@ class HomeController extends Controller
             'since_born'   => ['name' => '成立来', 'sortedBy' => 'asc'],
             'born_date'    => ['name' => '成立日期', 'sortedBy' => 'asc'],
         ];
-        $orderBy = $request->input('orderBy');
+        $orderBy = $request->input('orderBy', 'rate');
         $sortedBy = $request->input('sortedBy', 'desc');
-        if ($orderBy && isset($columns[$orderBy])) {
+        if ($orderBy && isset($columns[$orderBy]['sortedBy'])) {
             $columns[$orderBy]['sortedBy'] = $sortedBy == 'asc' ? 'desc' : 'asc';
         }
         $funds = $fund->toShows($orderBy, $sortedBy);
