@@ -52,6 +52,10 @@
     margin: 0;
     line-height: 1;
 }
+.row .col {
+    padding-left: 5px;
+    padding-right: 5px;
+}
 </style>
 @endpush
 
@@ -59,7 +63,7 @@
     <div class="container table-responsive">
         <div class="row">
             @foreach ($collection as $funds)
-            <div class="col-md-4">
+            <div class="col-md-4 col">
             <div class="box">
                 <div class="box-body">
                     <table class="table">
