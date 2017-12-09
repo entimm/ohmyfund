@@ -58,19 +58,19 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li>
-                                <a href="{{ route('simple') }}">简单估值</a>
+                                <a href="{{ route('simple') }}">估值</a>
                             </li>
                             <li>
-                                <a href="{{ route('evaluate') }}">基金估值</a>
+                                <a href="{{ route('evaluate') }}">一览</a>
                             </li>
                             <li>
-                                <a href="{{ route('concerns') }}">关注基金</a>
+                                <a href="{{ route('concerns') }}">有图</a>
                             </li>
                             <li>
-                                <a href="{{ route('compare') }}">基金比较</a>
+                                <a href="{{ route('compare') }}">比较</a>
                             </li>
                             <li>
-                                <a href="{{ route('rank') }}">基金排名</a>
+                                <a href="{{ route('rank') }}">排名</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
