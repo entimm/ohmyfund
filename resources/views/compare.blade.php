@@ -15,7 +15,9 @@
 
 @section('content')
     <div class="container">
-        <div id="chartdiv"></div>
+        <div class="box">
+            <div id="chartdiv"></div>
+        </div>
     </div>
 @endsection
 

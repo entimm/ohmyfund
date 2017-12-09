@@ -13,6 +13,16 @@
     <!-- Styles -->
     @stack('csses')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #EBECEE;
+        }
+        .box {
+            padding: 10px;
+            background: white;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+        }
+    </style>
 </head>
 <body>
     <div id="app">

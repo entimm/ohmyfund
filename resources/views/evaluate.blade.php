@@ -15,7 +15,7 @@
 @endpush
 
 @section('content')
-    <div class="container table-responsive">
+    <div class="container table-responsive box">
         <table class="table">
             <thead>
             <tr>

@@ -25,7 +25,7 @@
 @section('content')
     <div class="container">
         @foreach($funds as $fund)
-            <div class="panel panel-success">
+            <div class="panel panel-success box">
                 <div class="panel-heading">
                     <div class="pull-right">
                         <a href="javascript:;" onclick="reload('graphScope', '7')"><span class="label label-default">7天图</span></a>

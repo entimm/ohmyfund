@@ -131,9 +131,9 @@ class HomeController extends Controller
         $sortedBy = $request->input('sortedBy', 'desc');
         $columns = [
             'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
-            'evaluateTime' => ['name' => '时间', 'sortedBy' => 'asc'],
+            'evaluateTime' => ['name' => '时间'],
         ];
-        if ($orderBy && isset($columns[$orderBy])) {
+        if ($orderBy && isset($columns[$orderBy]['sortedBy'])) {
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
         $collection = Collection::make();

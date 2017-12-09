@@ -59,19 +59,19 @@
     <div class="container table-responsive">
         <div class="row">
             @foreach ($collection as $funds)
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-4">
             <div class="box">
                 <div class="box-body">
                     <table class="table">
                         <thead>
                         <tr>
-                            <td>基金代码</td>
                             <td>名称</td>
                             @foreach ($columns as $key => $column)
                                 <td>
                                     @if (isset($column['sortedBy']))
                                     <a href="{{ route('simple', ['orderBy' => $key, 'sortedBy' => $column['sortedBy']]) }}">
-                                        {{ $column['name'] }}</a>
+                                        {{ $column['name'] }}
+                                    </a>
                                     @else
                                         {{ $column['name'] }}
                                     @endif
@@ -82,10 +82,11 @@
                         <tbody>
                         @foreach ($funds as $fund)
                             <tr id="fund-{{ $fund->code }}">
-                                <td><a href="{{ route('fund', $fund->code) }}" target="_blank">
-                                    {{ $fund->code }}
-                                </a></td>
-                                <td>{{ $fund->name }}</td>
+                                <td>
+                                    <a href="{{ route('fund', $fund->code) }}" target="_blank">
+                                    {{ $fund->name }}
+                                    </a>
+                                </td>
                                 @foreach ($columns as $key => $column)
                                     <td class="rate-value {{$key}}">{{ $fund->$key ?: '—' }}</td>
                                 @endforeach
