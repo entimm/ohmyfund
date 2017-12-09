@@ -73,7 +73,6 @@ class HomeController extends Controller
         $orderBy = $request->input('orderBy', 'evaluateRate');
         $sortedBy = $request->input('sortedBy', 'desc');
         $columns = [
-            'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
             'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
             'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
             'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
@@ -105,7 +104,6 @@ class HomeController extends Controller
         $orderBy = $request->input('orderBy', 'evaluateRate');
         $sortedBy = $request->input('sortedBy', 'desc');
         $columns = [
-            'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
             'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
             'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
             'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
@@ -128,15 +126,12 @@ class HomeController extends Controller
 
     public function simple(Request $request, Fund $fund)
     {
-        Cache::flush();
         $graphScope = $request->input('graphScope', 100);
         $orderBy = $request->input('orderBy', 'evaluateRate');
         $sortedBy = $request->input('sortedBy', 'desc');
         $columns = [
             'evaluateRate' => ['name' => '估算', 'sortedBy' => 'asc'],
-            'rate'         => ['name' => '增长率', 'sortedBy' => 'asc'],
-            'in_1week'     => ['name' => '近1周', 'sortedBy' => 'asc'],
-            'in_1month'    => ['name' => '近1月', 'sortedBy' => 'asc'],
+            'evaluateTime' => ['name' => '时间', 'sortedBy' => 'asc'],
         ];
         if ($orderBy && isset($columns[$orderBy])) {
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';

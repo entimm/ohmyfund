@@ -68,19 +68,26 @@
                             <td>基金代码</td>
                             <td>名称</td>
                             @foreach ($columns as $key => $column)
-                                <td><a href="{{ route('simple', ['orderBy' => $key, 'sortedBy' => $column['sortedBy']]) }}">
+                                <td>
+                                    @if (isset($column['sortedBy']))
+                                    <a href="{{ route('simple', ['orderBy' => $key, 'sortedBy' => $column['sortedBy']]) }}">
                                         {{ $column['name'] }}</a>
+                                    @else
+                                        {{ $column['name'] }}
+                                    @endif
                                 </td>
                             @endforeach
                         </tr>
                         </thead>
                         <tbody>
                         @foreach ($funds as $fund)
-                            <tr>
-                                <td><a href="{{ route('fund', $fund->code) }}" target="_blank">{{ $fund->code }}</a></td>
+                            <tr id="fund-{{ $fund->code }}">
+                                <td><a href="{{ route('fund', $fund->code) }}" target="_blank">
+                                    {{ $fund->code }}
+                                </a></td>
                                 <td>{{ $fund->name }}</td>
                                 @foreach ($columns as $key => $column)
-                                    <td class="rate-value">{{ $fund->$key ?: '—'}}</td>
+                                    <td class="rate-value {{$key}}">{{ $fund->$key ?: '—' }}</td>
                                 @endforeach
                             </tr>
                         @endforeach
@@ -117,18 +124,36 @@
         window.location.href = url;
     }
 
-    $(function() {
+    makeColor();
+
+    getEvaluate();
+    setInterval(getEvaluate, 120000);
+
+    function getEvaluate()
+    {
+        $.get('/api/fund/evaluate', function(list) {
+            for(item of list) {
+                $tr = $('#fund-'+item.code);
+                $tr.find('.evaluateRate').html(item.rate);
+                $tr.find('.evaluateTime').html(item.time);
+            }
+            makeColor();
+        });
+    }
+
+    function makeColor()
+    {
         $('.rate-value').each(function () {
             $this = $(this);
             let text = $this.text();
             if (isFinite(text) && (num = parseFloat(text))) {
                 if (num > 0) {
-                    $this.addClass('rise');
+                    $this.addClass('rise').removeClass('fall');
                 } else if (num < 0) {
-                    $this.addClass('fall');
+                    $this.addClass('fall').removeClass('rise');
                 }
             }
-        })
-    });
+        });
+    }
     </script>
 @endpush

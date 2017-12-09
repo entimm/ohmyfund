@@ -7,6 +7,7 @@ use App\Http\Resources\Fund as FundResource;
 use App\Models\History;
 use App\Http\Resources\History as HistoryResource;
 use Illuminate\Http\Request;
+use App\Services\EastmoneyService;
 
 class FundController extends Controller
 {
@@ -76,5 +77,17 @@ class FundController extends Controller
         $limit = $request->get('graphScope');
 
         return $this->history->event($code, $begin, $end, $limit);
+    }
+
+    public function evaluate()
+    {
+        $collection = collect();
+        $codes = collect(config('local.concerns'))->flatten();
+        foreach ($codes as $code) {
+            $result = resolve(EastmoneyService::class)->resolveEvaluateAndCache($code);
+            $result = array_only($result, ['code', 'rate', 'time']);
+            $collection->push($result);
+        }
+        return $collection;
     }
 }

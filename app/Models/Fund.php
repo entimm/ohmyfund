@@ -144,9 +144,20 @@ class Fund extends Model implements HasPresenter
 
     public function getEvaluateRateAttribute()
     {
-        $evaluate = resolve(EastmoneyService::class)->resolveEvaluateAndCache($this->code);
+        $key = 'evaluate_'.$this->code;
 
-        return $evaluate['rate'];
+        $evaluate = Cache::get($key);
+
+        return $evaluate ? $evaluate['rate'] : '—';
+    }
+
+    public function getEvaluateTimeAttribute()
+    {
+        $key = 'evaluate_'.$this->code;
+
+        $evaluate = Cache::get($key);
+
+        return $evaluate ? $evaluate['time'] : '—';
     }
 
     /**
