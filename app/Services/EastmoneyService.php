@@ -228,18 +228,18 @@ class EastmoneyService
      * 获取基金估值并缓存起来.
      *
      * @param $fundCode
-     * @param $force
+     * @param $noCache
      *
      * @return array
      */
-    public function resolveEvaluateAndCache($fundCode, $force = false)
+    public function resolveEvaluateAndCache($fundCode, $noCache = false)
     {
         $key = 'evaluate_'.$fundCode;
-        if ($force) {
+        if ($noCache) {
             $evaluate = $this->requestEvaluate($fundCode);
-            Cache::put($key, $evaluate, 2);
+            Cache::put($key, $evaluate, 5);
         } else {
-            $evaluate = Cache::remember($key, 2, function () use ($fundCode) {
+            $evaluate = Cache::remember($key, 5, function () use ($fundCode) {
                 return $this->requestEvaluate($fundCode);
             });
         }

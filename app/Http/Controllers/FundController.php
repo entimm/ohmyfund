@@ -79,12 +79,12 @@ class FundController extends Controller
         return $this->history->event($code, $begin, $end, $limit);
     }
 
-    public function evaluate()
+    public function evaluate($noCache = null)
     {
         $collection = collect();
         $codes = collect(config('local.concerns'))->flatten();
         foreach ($codes as $code) {
-            $result = resolve(EastmoneyService::class)->resolveEvaluateAndCache($code);
+            $result = resolve(EastmoneyService::class)->resolveEvaluateAndCache($code, $noCache);
             $result = array_only($result, ['code', 'rate', 'time']);
             $collection->push($result);
         }

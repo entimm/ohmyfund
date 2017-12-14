@@ -136,7 +136,7 @@
 
     function getEvaluate()
     {
-        $.get('/api/fund/evaluate', function(list) {
+        $.get('/api/fund/evaluate/1', function(list) {
             for(item of list) {
                 $tr = $('#fund-'+item.code);
                 $tr.find('.evaluateRate').html(item.rate);
