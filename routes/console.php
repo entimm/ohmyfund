@@ -24,7 +24,7 @@ Artisan::command('update', function () {
     $this->call('update:companies');
     $this->call('update:funds');
     $this->call('update:ranks');
-    $this->call('update:histories');
+    // $this->call('update:histories');
 })->describe('Update all');
 
 Artisan::command('evaluate {--f|force}', function ($force) {
