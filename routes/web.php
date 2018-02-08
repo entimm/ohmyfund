@@ -21,11 +21,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/rank', 'HomeController@rank')->name('rank');
 
-Route::get('/concerns', 'HomeController@concerns')->name('concerns');
+Route::get('/watchlist2', 'HomeController@watchlist2')->name('watchlist2');
+
+Route::get('/watchlist1', 'HomeController@watchlist1')->name('watchlist1');
 
 Route::get('/evaluate', 'HomeController@evaluate')->name('evaluate');
-
-Route::get('/simple', 'HomeController@simple')->name('simple');
 
 Route::get('/compare', 'HomeController@compare')->name('compare');
 

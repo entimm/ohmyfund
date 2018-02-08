@@ -58,13 +58,13 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li>
-                                <a href="{{ route('simple') }}">估值</a>
+                                <a href="{{ route('evaluate') }}">估值</a>
                             </li>
                             <li>
-                                <a href="{{ route('evaluate') }}">一览</a>
+                                <a href="{{ route('watchlist1') }}">简单数据</a>
                             </li>
                             <li>
-                                <a href="{{ route('concerns') }}">有图</a>
+                                <a href="{{ route('watchlist2') }}">带图数据</a>
                             </li>
                             <li>
                                 <a href="{{ route('compare') }}">比较</a>

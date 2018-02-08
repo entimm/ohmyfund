@@ -82,7 +82,7 @@ class FundController extends Controller
     public function evaluate($noCache = null)
     {
         $collection = collect();
-        $codes = collect(config('local.concerns'))->flatten();
+        $codes = collect(config('local.watchlist'))->flatten();
         foreach ($codes as $code) {
             $result = resolve(EastmoneyService::class)->resolveEvaluateAndCache($code, $noCache);
             $result = array_only($result, ['code', 'rate', 'time']);

@@ -67,7 +67,7 @@ class HomeController extends Controller
         return view('rank', compact('funds', 'columns'));
     }
 
-    public function concerns(Request $request)
+    public function watchlist2(Request $request)
     {
         $graphScope = $request->input('graphScope', 100);
         $orderBy = $request->input('orderBy', 'evaluateRate');
@@ -87,7 +87,7 @@ class HomeController extends Controller
             'born_date'    => ['name' => '成立日期', 'sortedBy' => 'asc'],
         ];
         $funds = Collection::make();
-        foreach (config('local.concerns', []) as $codes) {
+        foreach (config('local.watchlist', []) as $codes) {
             $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
         }
         $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
@@ -96,10 +96,10 @@ class HomeController extends Controller
             'path' => $request->getRequestUri(),
         ]);
 
-        return view('concerns', compact('funds', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
+        return view('watchlist2', compact('funds', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
     }
 
-    public function evaluate(Request $request)
+    public function watchlist1(Request $request)
     {
         $orderBy = $request->input('orderBy', 'evaluateRate');
         $sortedBy = $request->input('sortedBy', 'desc');
@@ -112,7 +112,7 @@ class HomeController extends Controller
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
         $funds = Collection::make();
-        foreach (config('local.concerns', []) as $codes) {
+        foreach (config('local.watchlist', []) as $codes) {
             $funds = $funds->merge(Fund::whereIn('code', $codes)->get());
         }
         $funds = $funds->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
@@ -121,10 +121,10 @@ class HomeController extends Controller
             'path' => $request->getRequestUri(),
         ]);
 
-        return view('evaluate', compact('funds', 'columns', 'orderBy', 'sortedBy'));
+        return view('watchlist1', compact('funds', 'columns', 'orderBy', 'sortedBy'));
     }
 
-    public function simple(Request $request, Fund $fund)
+    public function evaluate(Request $request, Fund $fund)
     {
         $graphScope = $request->input('graphScope', 100);
         $orderBy = $request->input('orderBy', 'evaluateRate');
@@ -137,12 +137,12 @@ class HomeController extends Controller
             $columns[$orderBy]['sortedBy'] = $request->input('sortedBy') == 'asc' ? 'desc' : 'asc';
         }
         $collection = Collection::make();
-        foreach (config('local.concerns', []) as $codes) {
+        foreach (config('local.watchlist', []) as $codes) {
             $funds = Fund::whereIn('code', $codes)->get()->sortBy($orderBy, SORT_REGULAR, $sortedBy == 'desc');
             $collection->push($funds);
         }
 
-        return view('simple', compact('collection', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
+        return view('evaluate', compact('collection', 'columns', 'graphScope', 'orderBy', 'sortedBy'));
     }
 
     public function compare()
