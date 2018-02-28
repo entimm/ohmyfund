@@ -15,7 +15,7 @@ class SinaService
      *
      * @return array|mixed
      */
-    public function requestCnStock($stock)
+    public function requestCnStockHistory($stock)
     {
         $url = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol={$stock}&scale=240&datalen=100000";
         $content = $this->get($url);
@@ -32,7 +32,7 @@ class SinaService
      *
      * @return array|mixed
      */
-    public function requestUsStock($stock)
+    public function requestUsStockHistory($stock)
     {
         $url = "http://stock.finance.sina.com.cn/usstock/api/jsonp_v2.php/var%20_{$stock}=/US_MinKService.getDailyK?symbol=.{$stock}";
         $content = $this->get($url);
