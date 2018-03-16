@@ -32,3 +32,5 @@ Route::get('/compare', 'HomeController@compare')->name('compare');
 Route::get('/stock/{stock}', 'HomeController@stock')->name('stock');
 
 Route::get('/fund/{fund}', 'HomeController@fund')->name('fund');
+
+Route::resource('monitor', 'MonitorController');
