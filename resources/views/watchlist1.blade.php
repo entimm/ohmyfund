@@ -23,7 +23,7 @@
                 <td>名称</td>
                 <td>类型</td>
                 @foreach ($columns as $key => $column)
-                    <td><a href="{{ route('evaluate', ['orderBy' => $key, 'sortedBy' => $column['sortedBy']]) }}">
+                    <td><a href="{{ route('watchlist1', ['orderBy' => $key, 'sortedBy' => $column['sortedBy']]) }}">
                             {{ $column['name'] }}</a>
                     </td>
                 @endforeach
