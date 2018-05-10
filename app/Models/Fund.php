@@ -107,6 +107,7 @@ class Fund extends Model implements HasPresenter
       18 => '债券创新-场内',
       19 => '封闭式',
       20 => '混合-FOF',
+      21 => '股票创新-场内',
     ];
 
     public function getRouteKeyName()
