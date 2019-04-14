@@ -59,7 +59,7 @@
                             <tr>
                                 @for ($i = 0; $i < 13; $i++)
                                     <td class="rate-value">
-                                    {{ $fund->histories->take(-13)->reverse()->values()[$i]->rate }}</td>
+                                    {{ $fund->histories->take(-13)->reverse()->values()[$i]->rate ?? '...' }}</td>
                                 @endfor
                             </tr>
                             </tbody>
@@ -90,7 +90,6 @@
         for(fund of funds) {
             (function() {
                 var chart = new AmCharts.AmSerialChart();
-                // chart.dataProvider = {!! $fund->histories->take(-$graphScope)->values()->toJson() !!};
                 chart.dataLoader = {
                     url: "/api/funds/"+fund+"/history?limit={{ $graphScope }}",
                     format: "json",

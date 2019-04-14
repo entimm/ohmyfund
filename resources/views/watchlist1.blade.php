@@ -43,7 +43,8 @@
                     @endforeach
                     @for ($i = 0; $i < 7; $i++)
                         <td class="rate-value">
-                            {{ $fund->histories->take(-7)->reverse()->values()[$i]->rate }}</td>
+                            {{ $fund->histories->take(-7)->reverse()->values()[$i]->rate ?? '...' }}
+                        </td>
                     @endfor
                 </tr>
             @endforeach
