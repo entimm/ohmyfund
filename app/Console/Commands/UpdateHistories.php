@@ -105,7 +105,7 @@ class UpdateHistories extends Command
                 'fund_code' => $fund->code,
             ]);
             $fund->status = 5;
-            $this->error("ValidateException happen, fund code is {$fund->code}");
+            $this->error("ValidateException happen, fund code is {$fund->code},".$e->getMessage());
 
             return 0;
         } catch (\Exception $e) {

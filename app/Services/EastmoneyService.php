@@ -152,7 +152,7 @@ class EastmoneyService
 
         // 验证数据是否解析有误
         if ($pageSize == self::INFINITE_DAY && $totalRecord != count($records)) {
-            throw new ValidateException("数据自我验证失败：{$totalRecord} <> ".count($records));
+            throw new ValidateException("数据自我验证失败：{$totalRecord} <> ".count($records)."url={$url}");
         }
 
         return $records;
