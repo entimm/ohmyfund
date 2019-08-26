@@ -67,7 +67,8 @@ class UpdateHistories extends Command
             // 进度百分数
             $processPercent = str_pad(round(($key + 1) * 100 / $count, 2).'%', 7, ' ', STR_PAD_LEFT);
             // 进度 | 最新收益日期 | 基金代码 | 更新条数
-            $this->info("😃{$processPercent} | {$fund->profit_date} | {$fund->code} | {$touchNum}");
+            $date = $fund->profit_date ?: '0000-00-00';
+            $touchNum && $this->info("😃{$processPercent} | {$date} | {$fund->code} | {$touchNum}");
             $fund->save();
         }
         $this->info('update history done 😎');
@@ -83,9 +84,27 @@ class UpdateHistories extends Command
     protected function updateOneFund(Fund $fund)
     {
         try {
+            $sdate = $fund->counted_at ?? $fund->born_date;
+            if (!$sdate) {
+                return 0;
+            }
+            if ($sdate instanceof Carbon) {
+                $sdate = $sdate->toDateString();
+            }
+
+            $edate = Carbon::createFromFormat('Y-m-d', $sdate)->addDays(65);
+            if ($edate->gt($now = Carbon::today()->subDay())) {
+                $edate = $now;
+            }
+
+            if (Carbon::createFromFormat('Y-m-d', $sdate)->gte($edate)) {
+                // $this->warn('满了哦');
+                return 0;
+            }
+            $edate = $edate->toDateString();
+
             $fund->status = 0;
-            // 通过 profit_date 判断这只基金是否有被处理过
-            $records = resolve(EastmoneyService::class)->requestHistories($fund->code, $fund->counted_at);
+            $records = resolve(EastmoneyService::class)->requestHistories($fund->code, $sdate, $edate);
         } catch (NonDataException $e) {
             // 如果没有历史就进行标记
             $fund->status = 3;
@@ -97,7 +116,7 @@ class UpdateHistories extends Command
                 'row'       => $e->getData(),
             ]);
             $fund->status = 5;
-            $this->error("ResolveErrorException happen, fund code is {$fund->code}");
+            $this->error("ResolveErrorException happen, fund code is {$fund->code}, err is {$e->getMessage()}");
 
             return 0;
         } catch (ValidateException $e) {
@@ -121,12 +140,9 @@ class UpdateHistories extends Command
 
         $touchNum = $this->history->saveRecords($records, $fund->code);
         // 标记10天内都没数据的基金
-        $fund->profit_date = $records[0]['date'] ?: null;
-        $diffDay = date_diff(date_create($fund->profit_date), date_create())->days;
-        if ($diffDay > 10) {
-            $fund->status = 4;
-        }
-        $fund->counted_at = Carbon::now();
+        $fund->profit_date = $records[0]['date'] ?: $fund->profit_date;
+
+        $fund->counted_at = $edate;
 
         return $touchNum;
     }

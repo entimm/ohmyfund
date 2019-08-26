@@ -120,19 +120,21 @@ class EastmoneyService
      *
      * @return array
      */
-    public function requestHistories($fundCode, $fundCountedAt = 0)
+    public function requestHistories($fundCode, $sdate, $edate)
     {
-        $pageSize = self::INFINITE_DAY;
-        if ($fundCountedAt) {
-            $pageSize = Carbon::now()->diffInDays($fundCountedAt) + 1;
-        }
-        $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&page=1&per={$pageSize}";
+        $url = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={$fundCode}&sdate={$sdate}&edate={$edate}&per=49";
         $content = $this->get($url);
 
         preg_match('/records:(\d+)/', $content, $matches);
         $totalRecord = $matches[1];
         if (!$totalRecord) {
-            throw new NonDataException();
+            // throw new NonDataException();
+        }
+
+        preg_match('/pages:(\d+)/', $content, $matches);
+        $pages = $matches[1];
+        if ($pages > 1) {
+            dd('page = '.$pages);
         }
 
         // 解析行记录
@@ -148,11 +150,6 @@ class EastmoneyService
             }
 
             array_unshift($records, $record);
-        }
-
-        // 验证数据是否解析有误
-        if ($pageSize == self::INFINITE_DAY && $totalRecord != count($records)) {
-            throw new ValidateException("数据自我验证失败：{$totalRecord} <> ".count($records)."url={$url}");
         }
 
         return $records;
@@ -171,6 +168,9 @@ class EastmoneyService
     protected function resolveHistoryRecord($row, $records)
     {
         if (count($row) < 7) {
+            if (count($row) == 1) {
+                throw new \Exception(reset($row));
+            }
             throw new \Exception('记录格式异常');
         }
         // key转换
@@ -205,7 +205,7 @@ class EastmoneyService
          */
         $row['rate'] = $row['rate'] ? substr($row['rate'], 0, strlen($row['rate']) - 1) : null;
         if (is_null($row['rate'])) {
-            $row['rate'] = $last ? ($row['unit'] / $last['unit'] - 1) * 100 : 0;
+            $row['rate'] = $last['unit'] ? ($row['unit'] / $last['unit'] - 1) * 100 : 0;
         }
         $row['rate'] *= 10000;
 
